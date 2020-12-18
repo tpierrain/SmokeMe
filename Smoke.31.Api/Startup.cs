@@ -9,11 +9,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Diverse;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Smoke.Api.FakeDomain;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -40,7 +42,15 @@ namespace Smoke.Api
 
             services.AddVersioning();
 
-            services.AddSingleton<IFindSmokeTests, SmokeTestFinder>();
+            Fuzzer.Log +=obj =>
+            {
+            };
+
+            // -----------------------------------------------------------------
+            services.AddSingleton<IFindSmokeTests, SmokeTestAutoFinder>();
+            services.AddTransient<IFuzz, Fuzzer>();
+            services.AddTransient<IProviderNumbers, NumberProvider>();
+            // -----------------------------------------------------------------
 
             services.AddSwaggerGenNewtonsoftSupport();
 
@@ -49,9 +59,9 @@ namespace Smoke.Api
                 Name = "Super contact team",
                 Email = "api.me@whatever.com"
             };
-            
+
             var swaggerTitle = this.GetType().Assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product ?? "";
-            
+
             services.AddSwaggerGen((Action<SwaggerGenOptions>)(o =>
             {
                 var str = Path.Combine(AppContext.BaseDirectory, Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty) + ".xml";
@@ -59,7 +69,7 @@ namespace Smoke.Api
                     return;
                 o.IncludeXmlComments(str);
             }));
-            
+
             services.AddSwaggerGeneration(apiContact, swaggerTitle, this.GetType());
         }
 
@@ -70,7 +80,7 @@ namespace Smoke.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             ConfigureSwagger(app, provider);
 
             app.UseHttpsRedirection();
@@ -99,8 +109,10 @@ namespace Smoke.Api
                 var entryAssembly = Assembly.GetEntryAssembly();
                 var str = ((object)entryAssembly != null ? entryAssembly.GetName().Name : (string)null) + " - Swagger";
                 swaggerUiOptions.DocumentTitle = str;
-                foreach (var versionDescription in (IEnumerable<ApiVersionDescription>)provider.ApiVersionDescriptions)
+                foreach (var versionDescription in provider.ApiVersionDescriptions)
+                {
                     options.SwaggerEndpoint("/swagger/" + versionDescription.GroupName + "/swagger.json", versionDescription.GroupName.ToUpperInvariant());
+                }
             }));
         }
 
@@ -122,7 +134,7 @@ namespace Smoke.Api
                 foreach (ApiVersionDescription versionDescription in (IEnumerable<ApiVersionDescription>)services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>().ApiVersionDescriptions)
                     options.SwaggerDoc(versionDescription.GroupName, new OpenApiInfo()
                     {
-                        Title = swaggerTitle + $" {(object) versionDescription.ApiVersion}",
+                        Title = swaggerTitle + $" {(object)versionDescription.ApiVersion}",
                         Version = versionDescription.ApiVersion.ToString(),
                         Contact = apiContact
                     });
@@ -171,7 +183,7 @@ namespace Smoke.Api
                 var parameterDescription = context.ApiDescription.ParameterDescriptions.First<ApiParameterDescription>((Func<ApiParameterDescription, bool>)(p => p.Name == parameter.Name));
                 var routeInfo = parameterDescription.RouteInfo;
                 parameter.Description ??= parameterDescription.ModelMetadata?.Description;
-               
+
                 if (routeInfo != null)
                 {
                     parameter.Required |= !routeInfo.IsOptional;

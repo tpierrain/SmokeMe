@@ -9,12 +9,4 @@ namespace Smoke
     {
         IEnumerable<ISmokeTestAScenario> FindAllSmokeTestsToRun();
     }
-
-    public class SmokeTestFinder : IFindSmokeTests
-    {
-        public IEnumerable<ISmokeTestAScenario> FindAllSmokeTestsToRun()
-        {
-            return new ISmokeTestAScenario[0];
-        }
-    }
 }
