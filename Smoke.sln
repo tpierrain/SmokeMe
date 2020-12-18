@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoke", "Smoke\Smoke.csproj", "{D4A8CD58-1FAF-4BDA-98F6-1B28A16718EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoke.Tests", "Smoke.Tests\Smoke.Tests.csproj", "{3D0F52DD-7261-4EEF-A5E9-37A4F38DF412}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smoke.31.Api", "Smoke.31.Api\Smoke.31.Api.csproj", "{B65119F4-C952-40C6-949E-A02A81575452}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4A8CD58-1FAF-4BDA-98F6-1B28A16718EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4A8CD58-1FAF-4BDA-98F6-1B28A16718EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4A8CD58-1FAF-4BDA-98F6-1B28A16718EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4A8CD58-1FAF-4BDA-98F6-1B28A16718EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D0F52DD-7261-4EEF-A5E9-37A4F38DF412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D0F52DD-7261-4EEF-A5E9-37A4F38DF412}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D0F52DD-7261-4EEF-A5E9-37A4F38DF412}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D0F52DD-7261-4EEF-A5E9-37A4F38DF412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B65119F4-C952-40C6-949E-A02A81575452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B65119F4-C952-40C6-949E-A02A81575452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B65119F4-C952-40C6-949E-A02A81575452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B65119F4-C952-40C6-949E-A02A81575452}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4FC3D105-496A-4BA9-85CA-B24A886BBDF8}
+	EndGlobalSection
+EndGlobal
