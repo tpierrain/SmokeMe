@@ -2,7 +2,7 @@
 
 namespace Smoke.Api.SmokeTests
 {
-    public class WeCanGenerateNumbersSmokeTests : ITestWithSmoke
+    public class WeCanGenerateNumbersSmokeTests : ISmokeTestAScenario
     {
         private readonly IProviderNumbers _numbersProvider;
 
@@ -11,7 +11,7 @@ namespace Smoke.Api.SmokeTests
             _numbersProvider = numbersProvider;
         }
 
-        public SmokeTestResult Execute()
+        public SmokeTestResult ExecuteScenario()
         {
             _numbersProvider.GiveMeANumber();
 

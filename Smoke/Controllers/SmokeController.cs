@@ -21,7 +21,7 @@ namespace Smoke.Controllers
         /// Instantiates a <see cref="SmokeController"/>.
         /// </summary>
         /// <param name="configuration">The configuration of the API.</param>
-        /// <param name="serviceProvider">A Service provider to be used to instantiate <see cref="ITestWithSmoke"/> smoke tests.</param>
+        /// <param name="serviceProvider">A Service provider to be used to instantiate <see cref="ISmokeTestAScenario"/> smoke tests.</param>
         /// <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
         public SmokeController(IConfiguration configuration, IServiceProvider serviceProvider, IFindSmokeTests smokeTestProvider = null)
         {

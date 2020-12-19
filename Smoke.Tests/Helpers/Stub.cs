@@ -12,7 +12,7 @@ namespace Smoke.Tests.Helpers
     /// </summary>
     public class Stub
     {
-        public static IFindSmokeTests ASmokeTestProvider(params ITestWithSmoke[] smokeTestsToFind)
+        public static IFindSmokeTests ASmokeTestProvider(params ISmokeTestAScenario[] smokeTestsToFind)
         {
             var smokeTestProvider = Substitute.For<IFindSmokeTests>();
             smokeTestProvider.FindAllSmokeTestsToRun().Returns(smokeTestsToFind);

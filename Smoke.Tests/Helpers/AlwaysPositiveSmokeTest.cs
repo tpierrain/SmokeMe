@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Smoke.Tests.Helpers
 {
-    internal class AlwaysPositiveSmokeTest : ITestWithSmoke
+    internal class AlwaysPositiveSmokeTest : ISmokeTestAScenario
     {
         private readonly TimeSpan _duration;
 
@@ -12,7 +12,7 @@ namespace Smoke.Tests.Helpers
             _duration = duration;
         }
 
-        public SmokeTestResult Execute()
+        public SmokeTestResult ExecuteScenario()
         {
             Thread.Sleep(_duration);
 

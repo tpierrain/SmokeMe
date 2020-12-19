@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 namespace Smoke
 {
     /// <summary>
-    /// Runner for <see cref="ITestWithSmoke"/> instances.
+    /// Runner for <see cref="ISmokeTestAScenario"/> instances.
     /// </summary>
     public class SmokeTestRunner
     {
-        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ITestWithSmoke> smokeTests, TimeSpan globalTimeout)
+        /// <summary>
+        /// Executes <see cref="ISmokeTestAScenario"/> instances that has been found for this API.
+        /// </summary>
+        /// <param name="smokeTests">The <see cref="ISmokeTestAScenario"/> instances to be executed in parallel.</param>
+        /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ISmokeTestAScenario"/> instances to be executed.</param>
+        /// <returns>The <see cref="SmokeTestSessionResult"/>.</returns>
+        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ISmokeTestAScenario> smokeTests, TimeSpan globalTimeout)
         {
             var tasks = new List<Task<StopWatchedSmokeTestExecution>>();
             foreach (var smokeTest in smokeTests)
@@ -21,7 +27,7 @@ namespace Smoke
                     var stopwatch = new Stopwatch();
                     try
                     {
-                        var smokeTestResult = smokeTest.Execute();
+                        var smokeTestResult = smokeTest.ExecuteScenario();
                         stopwatch.Stop();
                         var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
 

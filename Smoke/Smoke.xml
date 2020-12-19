@@ -15,7 +15,7 @@
             Responsible to find smoke tests to be run within an executable.
             </summary>
         </member>
-        <member name="T:Smoke.ITestWithSmoke">
+        <member name="T:Smoke.ISmokeTestAScenario">
             <summary>
             Contains code to be ran in order to 'smoke test' something.
             </summary>
@@ -27,7 +27,7 @@
         </member>
         <member name="T:Smoke.SmokeTestRunner">
             <summary>
-            Runner for <see cref="T:Smoke.ITestWithSmoke"/> instances.
+            Runner for <see cref="T:Smoke.ISmokeTestAScenario"/> instances.
             </summary>
         </member>
         <member name="T:Smoke.SmokeTestSessionResult">
