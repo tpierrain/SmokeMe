@@ -29,7 +29,7 @@ public interface ISmokeTestAScenario
     /// Executes the scenario of this Smoke Test.
     /// </summary>
     /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-    SmokeTestResult ExecuteScenario();
+    Task<SmokeTestResult> ExecuteScenario();
 }
 
 ```
