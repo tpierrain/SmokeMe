@@ -22,38 +22,47 @@ namespace Smoke
             var tasks = new List<Task<StopWatchedSmokeTestExecution>>();
             foreach (var smokeTest in smokeTests)
             {
-                var task = Task.Run(() =>
-                {
-                    var stopwatch = new Stopwatch();
-                    try
-                    {
-                        var smokeTestResult = smokeTest.ExecuteScenario();
-                        stopwatch.Stop();
-                        var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
-
-                        return smokeTestExecution;
-                    }
-                    catch (Exception ex)
-                    {
-                        stopwatch.Stop();
-                        var smokeTestResult = new SmokeTestResult("", ex);
-                        var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
-                        return smokeTestExecution;
-                    }
-                });
-
+                var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTest));
                 tasks.Add(task);
             }
 
-            var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout.Milliseconds));
             var allSmokeTasks = Task.WhenAll(tasks);
+            var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout));
 
-            if (await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false) == timeoutTask)
+            if (timeoutTask == await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false))
             {
-                return new TimeoutSmokeTestSessionResult(globalTimeout);
+                if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
+                {
+                    return new TimeoutSmokeTestSessionResult(globalTimeout);
+                }
             }
 
             return new SmokeTestSessionResult(await allSmokeTasks);
+        }
+
+        private static bool IsNotAFalsePositive(Task<StopWatchedSmokeTestExecution[]> allSmokeTasks)
+        {
+            return !allSmokeTasks.IsCompletedSuccessfully;
+        }
+
+        private static StopWatchedSmokeTestExecution StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
+        {
+            var stopwatch = new Stopwatch();
+            try
+            {
+                var smokeTestResult = smokeTest.ExecuteScenario();
+                stopwatch.Stop();
+                var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
+
+                return smokeTestExecution;
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                var smokeTestResult = new SmokeTestResult("", ex);
+                var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
+                return smokeTestExecution;
+            }
         }
     }
 

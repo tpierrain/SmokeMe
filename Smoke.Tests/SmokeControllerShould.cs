@@ -15,6 +15,7 @@ namespace Smoke.Tests
     public class SmokeControllerShould
     {
         [Test]
+        [Repeat(10)]
         public async Task Run_all_smoke_tests()
         {
             var configuration = Substitute.For<IConfiguration>();
@@ -28,9 +29,9 @@ namespace Smoke.Tests
 
         [Test]
         [Ignore("Because NFluent LastLessThan seems not accurate enough")]
-        public void Return_false_success_when_smoke_tests_timeout_globally()
+        public void Return_false_success_when_smoke_tests_timeout_globally_NFluent_sucks_here()
         {
-            var globalTimeoutInMsec = 1200;
+            var globalTimeoutInMsec = 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(3.0)));
 
@@ -49,11 +50,11 @@ namespace Smoke.Tests
         }
 
         [Test]
-        public async Task Return_false_success_when_smoke_tests_timeout_globally_without_NFluentLastLessThan()
+        public async Task Return_false_success_when_smoke_tests_timeout_globally()
         {
-            var globalTimeoutInMsec = 1200;
+            var globalTimeoutInMsec = 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(3.0)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(1.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
