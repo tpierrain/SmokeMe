@@ -45,12 +45,12 @@ namespace SmokeMe
             return !allSmokeTasks.IsCompletedSuccessfully;
         }
 
-        private static StopWatchedSmokeTestExecution StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
+        private static async Task<StopWatchedSmokeTestExecution> StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
         {
             var stopwatch = new Stopwatch();
             try
             {
-                var smokeTestResult = smokeTest.ExecuteScenario();
+                var smokeTestResult = await smokeTest.ExecuteScenario();
                 stopwatch.Stop();
                 var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
 

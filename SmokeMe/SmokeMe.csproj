@@ -18,7 +18,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>.\Smoke.xml</DocumentationFile>
+    <DocumentationFile>.\SmokeMe.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>.\SmokeMe.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

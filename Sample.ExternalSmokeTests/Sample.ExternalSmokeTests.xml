@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sample.ExternalSmokeTests</name>
+    </assembly>
+    <members>
+        <member name="T:Sample.ExternalSmokeTests.SmokeTestLocatedInAnotherAssembly">
+            <summary>
+            Smoke test only to check that SmokeMe is able to detect and run all <see cref="T:SmokeMe.ISmokeTestAScenario"/>
+            types wherever they are located (i.e. in other assemblies than the API).
+            </summary>
+        </member>
+        <member name="T:Sample.ExternalSmokeTests.Utilities.IRestClient">
+            <summary>
+            Abstraction for HttpClient class that can be used and tested easily since the HttpClient could
+            not be stubbed.
+            </summary>
+        </member>
+        <member name="T:Sample.ExternalSmokeTests.Utilities.RestClient">
+            <summary>
+            Wrapper upon HttpClient that can be used and tested easily since the HttpClient could
+            not be stubbed.
+            </summary>
+        </member>
+    </members>
+</doc>

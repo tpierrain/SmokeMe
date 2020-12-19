@@ -1,4 +1,6 @@
-﻿namespace SmokeMe
+﻿using System.Threading.Tasks;
+
+namespace SmokeMe
 {
     /// <summary>
     /// Contains scenario to be executed in order to 'smoke test' something.
@@ -13,6 +15,6 @@
         /// Executes the scenario of this Smoke Test.
         /// </summary>
         /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-        SmokeTestResult ExecuteScenario();
+        Task<SmokeTestResult> ExecuteScenario();
     }
 }

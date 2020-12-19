@@ -16,6 +16,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Sample.Api.FakeDomain;
+using Sample.ExternalSmokeTests.Utilities;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -47,6 +48,8 @@ namespace Sample.Api
             };
 
             // -------- Specific services for the API (no need to register anything for Smoke lib usage ---------
+            services.AddSingleton<IRestClient, RestClient>();
+
             services.AddTransient<IFuzz, Fuzzer>();
             services.AddTransient<IProviderNumbers, NumberProvider>();
             // --------------------------------------------------------------------------------------------------

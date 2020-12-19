@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SmokeMe.Tests.Helpers
 {
@@ -12,11 +13,11 @@ namespace SmokeMe.Tests.Helpers
             _duration = duration;
         }
 
-        public SmokeTestResult ExecuteScenario()
+        public Task<SmokeTestResult> ExecuteScenario()
         {
             Thread.Sleep(_duration);
 
-            return new SmokeTestResult(true);
+            return Task.FromResult(new SmokeTestResult(true));
         }
     }
 }

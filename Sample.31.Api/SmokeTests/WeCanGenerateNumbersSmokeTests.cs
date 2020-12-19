@@ -1,4 +1,5 @@
-﻿using Sample.Api.FakeDomain;
+﻿using System.Threading.Tasks;
+using Sample.Api.FakeDomain;
 using SmokeMe;
 
 namespace Sample.Api.SmokeTests
@@ -12,11 +13,11 @@ namespace Sample.Api.SmokeTests
             _numbersProvider = numbersProvider;
         }
 
-        public SmokeTestResult ExecuteScenario()
+        public Task<SmokeTestResult> ExecuteScenario()
         {
             _numbersProvider.GiveMeANumber();
 
-            return new SmokeTestResult(true);
+            return Task.FromResult(new SmokeTestResult(true));
         }
     }
 }
