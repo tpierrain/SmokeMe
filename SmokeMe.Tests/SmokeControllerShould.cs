@@ -41,7 +41,7 @@ namespace SmokeMe.Tests
 
             var acceptableDeltaInMsec = 200;
 
-            Check.ThatAsyncCode(async () =>
+            Check.ThatCode(async () =>
             {
                 smokeTestResult = await controller.RunSmokeTests();
             }).LastsLessThan(globalTimeoutInMsec + acceptableDeltaInMsec, TimeUnit.Milliseconds);

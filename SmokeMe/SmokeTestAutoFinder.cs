@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using SmokeMe.Helpers;
 
 namespace SmokeMe
 {
@@ -27,16 +30,64 @@ namespace SmokeMe
         {
             var smokeTestInstances = new List<ISmokeTestAScenario>();
 
-
-
-            //var myself = _serviceProvider.GetRequiredService<T>();
+            var types = GetTypesImplementing<ISmokeTestAScenario>();
+            foreach (var smokeTestType in types)
+            {
+                var constructors = smokeTestType.GetConstructorsOrderedByNumberOfParametersDesc();
+                var smokeTest = InstantiateSmokeTest(constructors, _serviceProvider);
+                if (smokeTest != null)
+                {
+                    smokeTestInstances.Add(smokeTest);
+                }
+            }
             
-
-            // Search all types implementing the ISmokeTestAScenario interface
-
-            // Instantiate them using the IoC
-
             return smokeTestInstances;
+        }
+
+        private static ISmokeTestAScenario InstantiateSmokeTest(IEnumerable<ConstructorInfo> constructors, IServiceProvider serviceProvider)
+        {
+            foreach (var constructor in constructors)
+            {
+                try
+                {
+                    var constructorParameters = PrepareParametersForThisConstructor(constructor, serviceProvider);
+                    var instance = (ISmokeTestAScenario)constructor.Invoke(constructorParameters);
+                    return instance;
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+            }
+
+            // We couldn't use any of its Constructor. Let's return a default instance (degraded mode)
+            // write an error message
+            return null;
+        }
+
+        private static object?[]? PrepareParametersForThisConstructor(ConstructorInfo constructor, IServiceProvider serviceProvider)
+        {
+            var parameters = new List<object>();
+            var parameterInfos = constructor.GetParameters();
+            foreach (var parameterInfo in parameterInfos)
+            {
+                var type = parameterInfo.ParameterType;
+
+                // Default .NET types
+                parameters.Add(serviceProvider.GetService(type));
+            }
+
+            return parameters.ToArray();
+        }
+
+        private static Type[] GetTypesImplementing<T>()
+        {
+            var types = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof(T).IsAssignableFrom(p))
+                .ToArray();
+            return types;
         }
     }
 }

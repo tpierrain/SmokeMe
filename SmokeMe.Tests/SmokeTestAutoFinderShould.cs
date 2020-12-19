@@ -10,7 +10,6 @@ namespace SmokeMe.Tests
     public class SmokeTestAutoFinderShould
     {
         [Test]
-        [Ignore("TBF")]
         public void Instantiate_all_concrete_classes_implementing_ITestWithSmoke()
         {
             var serviceProvider = Stub.AServiceProvider();
@@ -20,7 +19,9 @@ namespace SmokeMe.Tests
             var smokeTests = smokeTestAutoFinder.FindAllSmokeTestsToRun();
 
             Check.That(smokeTests.Select(x => x.GetType()))
-                .Contains(typeof(AlwaysPositiveSmokeTest), typeof(SmokeTestThrowingAnAccessViolationException), typeof(WeCanGenerateNumbersSmokeTests));
+                .Contains(typeof(AlwaysPositiveSmokeTest), 
+                                                typeof(SmokeTestThrowingAnAccessViolationException), 
+                                                typeof(WeCanGenerateNumbersSmokeTests));
         }
     }
 }
