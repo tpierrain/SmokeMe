@@ -16,9 +16,9 @@ namespace Smoke
             _serviceProvider = serviceProvider;
         }
 
-        public IEnumerable<ISmokeTestAScenario> FindAllSmokeTestsToRun()
+        public IEnumerable<ITestWithSmoke> FindAllSmokeTestsToRun()
         {
-            var smokeTestInstances = new List<ISmokeTestAScenario>();
+            var smokeTestInstances = new List<ITestWithSmoke>();
 
             //var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //var serviceProvider = serviceCollection.BuildServiceProvider();
@@ -36,7 +36,7 @@ namespace Smoke
                 
             }
 
-            // Search all types implementing the ISmokeTestAScenario interface
+            // Search all types implementing the ITestWithSmoke interface
 
             // Instantiate them using the IoC
 

@@ -7,6 +7,6 @@ namespace Smoke
     /// </summary>
     public interface IFindSmokeTests
     {
-        IEnumerable<ISmokeTestAScenario> FindAllSmokeTestsToRun();
+        IEnumerable<ITestWithSmoke> FindAllSmokeTestsToRun();
     }
 }

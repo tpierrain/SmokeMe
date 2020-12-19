@@ -28,7 +28,7 @@ namespace Smoke.Controllers
         }
 
         /// <summary>
-        /// Execute all registered Smoke Tests for this API.
+        /// Run all registered Smoke Tests for this API.
         /// </summary>
         /// <returns>The <see cref="SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
         [HttpGet]

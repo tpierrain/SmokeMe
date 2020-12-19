@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace Smoke
 {
     /// <summary>
-    /// Runner for <see cref="ISmokeTestAScenario"/> instances.
+    /// Runner for <see cref="ITestWithSmoke"/> instances.
     /// </summary>
     public class SmokeTestRunner
     {
-        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ISmokeTestAScenario> smokeTests, TimeSpan globalTimeout)
+        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ITestWithSmoke> smokeTests, TimeSpan globalTimeout)
         {
             var tasks = new List<Task<StopWatchedSmokeTestExecution>>();
             foreach (var smokeTest in smokeTests)
@@ -21,7 +21,7 @@ namespace Smoke
                     var stopwatch = new Stopwatch();
                     try
                     {
-                        var smokeTestResult = smokeTest.RunSmokeTest();
+                        var smokeTestResult = smokeTest.Run();
                         stopwatch.Stop();
                         var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
 
