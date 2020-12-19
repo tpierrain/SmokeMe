@@ -14,6 +14,11 @@
             Gets the name of the configuration key for the smoke test global execution timeout.
             </summary>
         </member>
+        <member name="F:Smoke.Constants.GlobalTimeoutInMsecDefaultValue">
+            <summary>
+            Gets the default value for the global timeout in milliseconds if the (<see cref="F:Smoke.Constants.GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
+            </summary>
+        </member>
         <member name="T:Smoke.Controllers.SmokeController">
             <summary>
             Executes smoke test declared for this API.
@@ -70,7 +75,10 @@
         <member name="T:Smoke.ISmokeTestAScenario">
             <summary>
             Contains scenario to be executed in order to 'smoke test' something.
-            Smoke test actually.
+            (a Smoke test actually).
+            Note: all the services and dependencies you need for it will be automatically
+            injected by the lib via the ASP.NET IServiceProvider of your API
+            (classical constructor-based injection).
             </summary>
         </member>
         <member name="M:Smoke.ISmokeTestAScenario.ExecuteScenario">
