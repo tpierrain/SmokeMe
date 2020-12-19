@@ -5,7 +5,7 @@
     <Version>0.1.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
-    <Description>A tiny framework executing all your declared smoke tests when calling /smoke on your own API.</Description>
+    <Description>A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the /smoke ressource on your own API.</Description>
     <Copyright>Copyright © Thomas PIERRAIN 2020</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/Smoke</PackageProjectUrl>
