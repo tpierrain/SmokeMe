@@ -1,4 +1,4 @@
-# Smoke ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
+# SmokeMe! ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
 A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** ressource on your own API.
 
@@ -10,7 +10,7 @@ A convention-based mini framework allowing you to execute all your declared smok
 
 ## Can't be more easy!
 
-1. You add the reference to the **Smoke** library in your API project
+1. You add the reference to the **SmokeMe** library in your API project
 2. You code all the smoke tests scenario you want in your code base
     - A Smoke test scenario is just a class implementing the **ISmokeTestAScenario** interface
 

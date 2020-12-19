@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>0.1.0</Version>
+    <Authors>Thomas PIERRAIN (use case driven)</Authors>
+    <Company>42 skillz</Company>
+    <Description>A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the /smoke ressource on your own API.</Description>
+    <Copyright>Copyright © Thomas PIERRAIN 2020</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
+    <PackageIcon>smoke-icon.jpg</PackageIcon>
+    <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
+    <PackageTags>SmokeTests tests ContiuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
+    <PackageReleaseNotes>First version of the Smoke library.</PackageReleaseNotes>
+    <PackageId>SmokeMe</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>.\Smoke.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\smoke-icon.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

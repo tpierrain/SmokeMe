@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Sample.31.Api</AssemblyName>
+    <RootNamespace>Sample.Api</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>.\Sample.31.Api.xml</DocumentationFile>
+    <WarningLevel>2</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="Smoke.31.Api.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Diverse" Version="0.4.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmokeMe\SmokeMe.csproj" />
+  </ItemGroup>
+
+
+</Project>
