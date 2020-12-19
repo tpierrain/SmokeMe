@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Smoke</name>
+    </assembly>
+    <members>
+        <member name="M:Smoke.Controllers.SmokeController.RunSmokeTests">
+            <summary>
+            Run all registered Smoke Tests for this API.
+            </summary>
+            <returns>The <see cref="T:Smoke.SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
+        </member>
+        <member name="T:Smoke.IFindSmokeTests">
+            <summary>
+            Responsible to find smoke tests to be run within an executable.
+            </summary>
+        </member>
+        <member name="T:Smoke.ITestWithSmoke">
+            <summary>
+            Contains code to be ran in order to 'smoke test' something.
+            </summary>
+        </member>
+        <member name="T:Smoke.SmokeTestAutoFinder">
+            <summary>
+            Responsible to find and instantiate smoke tests to be run within an executable.
+            </summary>
+        </member>
+        <member name="T:Smoke.SmokeTestRunner">
+            <summary>
+            Runner for <see cref="T:Smoke.ITestWithSmoke"/> instances.
+            </summary>
+        </member>
+        <member name="T:Smoke.SmokeTestSessionResult">
+            <summary>
+            Result of a smoke test session.
+            </summary>
+        </member>
+    </members>
+</doc>

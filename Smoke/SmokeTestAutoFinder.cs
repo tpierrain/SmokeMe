@@ -20,21 +20,10 @@ namespace Smoke
         {
             var smokeTestInstances = new List<ITestWithSmoke>();
 
-            //var serviceCollection = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //var serviceProvider = serviceCollection.BuildServiceProvider();
-           
 
-            //_serviceProvider.GetRequiredService<IProviderNumbers>();
 
-            var myself = _serviceProvider.GetRequiredService<IFindSmokeTests>();
-            if (myself == this)
-            {
-
-            }
-            else
-            {
-                
-            }
+            //var myself = _serviceProvider.GetRequiredService<T>();
+            
 
             // Search all types implementing the ITestWithSmoke interface
 

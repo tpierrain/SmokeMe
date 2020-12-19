@@ -1,5 +1,9 @@
+using System;
+using Diverse;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Smoke.Api.FakeDomain;
 
 namespace Smoke.Tests.Helpers
 {
@@ -21,6 +25,14 @@ namespace Smoke.Tests.Helpers
             configuration[Constants.GlobaltimeoutinmsecConfigurationKey].Returns(globalTimeoutInMsec.ToString());
 
             return configuration;
+        }
+
+        public static IServiceProvider AServiceProvider()
+        {
+            var serviceProvider = Substitute.For<IServiceProvider>();
+
+            serviceProvider.GetService(typeof(IProviderNumbers)).Returns(new NumberProvider(new Fuzzer()));
+            return serviceProvider;
         }
     }
 }

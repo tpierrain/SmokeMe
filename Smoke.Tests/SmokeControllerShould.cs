@@ -28,15 +28,15 @@ namespace Smoke.Tests
         [Test]
         public void Return_false_success_when_smoke_tests_timeout_globally()
         {
-            var globalTimeoutInMsec = 1000;
+            var globalTimeoutInMsec = 2000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(1.0)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(3.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
             SmokeTestSessionResult smokeTestResult = null;
 
-            var acceptableDeltaInMsec = 200;
+            var acceptableDeltaInMsec = 700;
             Check.ThatAsyncCode(async () =>
             {
                 smokeTestResult = await controller.RunSmokeTests();
