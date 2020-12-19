@@ -82,12 +82,26 @@ namespace SmokeMe
 
         private static Type[] GetTypesImplementing<T>()
         {
-            var types = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(T).IsAssignableFrom(p))
-                .ToArray();
-            return types;
+            var smokeTesTypes = new List<Type>();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (var assembly in assemblies)
+            {
+                try
+                {
+                    var types = assembly.GetTypes()
+                                                .Where(p => typeof(T).IsAssignableFrom(p))
+                                                .ToArray();
+                    smokeTesTypes.AddRange(types);
+                }
+                catch (Exception e)
+                {
+                    // something went wrong during the reflection phase
+                }
+            }
+
+            
+            return smokeTesTypes.ToArray();
         }
     }
 }
