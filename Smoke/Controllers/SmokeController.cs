@@ -5,6 +5,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace Smoke.Controllers
 {
+    /// <summary>
+    /// Executes smoke test declared for this API.
+    /// Smoke tests are a set of short functional tests checking that the minimum viable prerequisites for this API is fine.
+    /// </summary>
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -13,8 +17,13 @@ namespace Smoke.Controllers
         private readonly IFindSmokeTests _smokeTestProvider;
         private readonly IConfiguration _configuration;
 
-        public SmokeController(IConfiguration configuration, IServiceProvider serviceProvider,
-            IFindSmokeTests smokeTestProvider = null)
+        /// <summary>
+        /// Instantiates a <see cref="SmokeController"/>.
+        /// </summary>
+        /// <param name="configuration">The configuration of the API.</param>
+        /// <param name="serviceProvider">A Service provider to be used to instantiate <see cref="ITestWithSmoke"/> smoke tests.</param>
+        /// <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
+        public SmokeController(IConfiguration configuration, IServiceProvider serviceProvider, IFindSmokeTests smokeTestProvider = null)
         {
             _configuration = configuration;
 
@@ -28,7 +37,7 @@ namespace Smoke.Controllers
         }
 
         /// <summary>
-        /// Run all registered Smoke Tests for this API.
+        /// Execute all registered Smoke Tests for this API.
         /// </summary>
         /// <returns>The <see cref="SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
         [HttpGet]
@@ -43,7 +52,7 @@ namespace Smoke.Controllers
                 globalTimeout = TimeSpan.FromMilliseconds(globalTimeoutInMsec);
             }
 
-            // Run them in //
+            // Execute them in //
             var results = await SmokeTestRunner.ExecuteAllSmokeTests(smokeTests, globalTimeout);
 
             // Adapt from business to DTO

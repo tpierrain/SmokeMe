@@ -11,7 +11,7 @@ namespace Smoke.Api.SmokeTests
             _numbersProvider = numbersProvider;
         }
 
-        public SmokeTestResult Run()
+        public SmokeTestResult Execute()
         {
             _numbersProvider.GiveMeANumber();
 

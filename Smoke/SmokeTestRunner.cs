@@ -21,7 +21,7 @@ namespace Smoke
                     var stopwatch = new Stopwatch();
                     try
                     {
-                        var smokeTestResult = smokeTest.Run();
+                        var smokeTestResult = smokeTest.Execute();
                         stopwatch.Stop();
                         var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
 
@@ -51,10 +51,17 @@ namespace Smoke
         }
     }
 
+    /// <summary>
+    /// Represents a failed (due to timeout) smoke test session.
+    /// </summary>
     public class TimeoutSmokeTestSessionResult : SmokeTestSessionResult
     {
         private readonly TimeSpan _globalTimeout;
 
+        /// <summary>
+        /// Instantiates a <see cref="TimeoutSmokeTestSessionResult"/>.
+        /// </summary>
+        /// <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
         public TimeoutSmokeTestSessionResult(TimeSpan globalTimeout) : base(new StopWatchedSmokeTestExecution[0], false)
         {
             _globalTimeout = globalTimeout;

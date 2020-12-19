@@ -3,6 +3,9 @@
 namespace Smoke
 {
 
+    /// <summary>
+    /// Result of a <see cref="ITestWithSmoke"/> execution.
+    /// </summary>
     public class SmokeTestResult
     {
 
@@ -24,26 +27,6 @@ namespace Smoke
         public override string ToString()
         {
             return $"Outcome:{Outcome}";
-        }
-    }
-
-    public class StopWatchedSmokeTestExecution
-    {
-        public bool Outcome => SmokeTestResult.Outcome;
-        public Error ErrorMessage => SmokeTestResult.ErrorMessage;
-        
-        private SmokeTestResult SmokeTestResult { get; }
-        public TimeSpan Duration { get; }
-
-        public StopWatchedSmokeTestExecution(SmokeTestResult smokeTestResult, TimeSpan duration)
-        {
-            SmokeTestResult = smokeTestResult;
-            Duration = duration;
-        }
-
-        public override string ToString()
-        {
-            return $"Outcome:{SmokeTestResult.Outcome}({Duration.TotalMilliseconds} msec)";
         }
     }
 }

@@ -6,7 +6,7 @@
     <members>
         <member name="M:Smoke.Controllers.SmokeController.RunSmokeTests">
             <summary>
-            Run all registered Smoke Tests for this API.
+            Execute all registered Smoke Tests for this API.
             </summary>
             <returns>The <see cref="T:Smoke.SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
         </member>

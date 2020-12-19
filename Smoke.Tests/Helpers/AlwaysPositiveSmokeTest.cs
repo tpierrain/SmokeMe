@@ -12,7 +12,7 @@ namespace Smoke.Tests.Helpers
             _duration = duration;
         }
 
-        public SmokeTestResult Run()
+        public SmokeTestResult Execute()
         {
             Thread.Sleep(_duration);
 
