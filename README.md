@@ -1,6 +1,6 @@
 # Smoke ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
-A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the /smoke ressource on your own API.
+A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** ressource on your own API.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)   
   
@@ -19,8 +19,9 @@ A convention-based mini framework allowing you to execute all your declared smok
 /// <summary>
 /// Contains scenario to be executed in order to 'smoke test' something.
 /// (a Smoke test actually).
-/// Note: all the services and dependencies you need for it will be injected using the
-/// ASP.NET IServiceProvider of your API (classical constructor-based injection).
+/// Note: all the services and dependencies you need for it will be automatically
+/// injected by the lib via the ASP.NET IServiceProvider of your API
+/// (classical constructor-based injection).
 /// </summary>
 public interface ISmokeTestAScenario
 {
