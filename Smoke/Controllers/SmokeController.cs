@@ -18,6 +18,11 @@ namespace Smoke.Controllers
         {
             _configuration = configuration;
 
+            if (serviceProvider == null && smokeTestProvider == null)
+            {
+                throw new ArgumentNullException("serviceProvider", "Must provide a non-null serviceProvider when smokeTestProvider is not provided.");
+            }
+
             smokeTestProvider??= new SmokeTestAutoFinder(serviceProvider);
             _smokeTestProvider = smokeTestProvider;
         }

@@ -30,18 +30,30 @@ namespace Smoke.Tests
         {
             var globalTimeoutInMsec = 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(1.1)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(1.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
             SmokeTestSessionResult smokeTestResult = null;
 
+            var acceptableDeltaInMsec = 200;
             Check.ThatAsyncCode(async () =>
             {
                 smokeTestResult = await controller.RunSmokeTests();
-            }).LastsLessThan(globalTimeoutInMsec + 1, TimeUnit.Milliseconds);
+            }).LastsLessThan(globalTimeoutInMsec + acceptableDeltaInMsec, TimeUnit.Milliseconds);
 
             Check.That(smokeTestResult.IsSuccess).IsFalse();
+        }
+
+        [Test]
+        public void Only_accept_null_ServiceProvider_for_unit_testing_purpose_when_we_provide_a_non_null_SmokeTestProvider()
+        {
+            var smokeControllerForTesting = new SmokeController(Substitute.For<IConfiguration>(), null, Substitute.For<IFindSmokeTests>());
+
+            Check.ThatCode(() =>
+            {
+                var smokeControllerForRealUsage = new SmokeController(Substitute.For<IConfiguration>(), null, null);
+            }).Throws<ArgumentNullException>().WithMessage("Must provide a non-null serviceProvider when smokeTestProvider is not provided. (Parameter 'serviceProvider')");
         }
     }
 }
