@@ -1,6 +1,6 @@
 # SmokeMe! ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
-A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** ressource on your own API.
+A convention-based tiny framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** resource that will automatically appear in your own API.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)   
   
