@@ -19,7 +19,7 @@ namespace Smoke.Tests
             var configuration = Substitute.For<IConfiguration>();
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
 
-            var controller = new SmokeController(smokeTestProvider, configuration);
+            var controller = new SmokeController(configuration, null, smokeTestProvider);
             var smokeTestResult = await controller.RunSmokeTests();
 
             Check.That(smokeTestResult.Results.Select(x => x.Outcome)).ContainsExactly(true, false);
@@ -32,7 +32,7 @@ namespace Smoke.Tests
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(1.1)));
 
-            var controller = new SmokeController(smokeTestProvider, configuration);
+            var controller = new SmokeController(configuration, null, smokeTestProvider);
 
             SmokeTestSessionResult smokeTestResult = null;
 

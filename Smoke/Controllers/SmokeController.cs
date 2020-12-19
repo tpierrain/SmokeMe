@@ -13,10 +13,13 @@ namespace Smoke.Controllers
         private readonly IFindSmokeTests _smokeTestProvider;
         private readonly IConfiguration _configuration;
 
-        public SmokeController(IFindSmokeTests smokeTestProvider, IConfiguration configuration)
+        public SmokeController(IConfiguration configuration, IServiceProvider serviceProvider,
+            IFindSmokeTests smokeTestProvider = null)
         {
-            _smokeTestProvider = smokeTestProvider;
             _configuration = configuration;
+
+            smokeTestProvider??= new SmokeTestAutoFinder(serviceProvider);
+            _smokeTestProvider = smokeTestProvider;
         }
 
         /// <summary>

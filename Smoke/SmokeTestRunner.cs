@@ -42,7 +42,7 @@ namespace Smoke
             var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout.Milliseconds));
             var allSmokeTasks = Task.WhenAll(tasks);
 
-            if (await Task.WhenAny(timeoutTask, allSmokeTasks) == timeoutTask)
+            if (await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false) == timeoutTask)
             {
                 return new TimeoutSmokeTestSessionResult(globalTimeout);
             }

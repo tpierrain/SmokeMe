@@ -46,11 +46,10 @@ namespace Smoke.Api
             {
             };
 
-            // -----------------------------------------------------------------
-            services.AddSingleton<IFindSmokeTests, SmokeTestAutoFinder>();
+            // -------- Specific services for the API (no need to register anything for Smoke lib usage ---------
             services.AddTransient<IFuzz, Fuzzer>();
             services.AddTransient<IProviderNumbers, NumberProvider>();
-            // -----------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------
 
             services.AddSwaggerGenNewtonsoftSupport();
 
