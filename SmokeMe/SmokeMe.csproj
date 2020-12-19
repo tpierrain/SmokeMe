@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
-    <PackageTags>SmokeTests tests ContiuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
+    <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
     <PackageReleaseNotes>First version of the Smoke library.</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
   </PropertyGroup>
