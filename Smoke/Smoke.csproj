@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <WarningLevel>5</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <DocumentationFile>.\Smoke.xml</DocumentationFile>
   </PropertyGroup>
 
