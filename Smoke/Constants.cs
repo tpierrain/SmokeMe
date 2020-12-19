@@ -1,4 +1,6 @@
-﻿namespace Smoke
+﻿using System.ComponentModel;
+
+namespace Smoke
 {
     /// <summary>
     /// Constants for the /smoke library
@@ -9,5 +11,10 @@
         /// Gets the name of the configuration key for the smoke test global execution timeout.
         /// </summary>
         public static string GlobaltimeoutinmsecConfigurationKey = "Smoke:GlobalTimeoutInMsec";
+
+        /// <summary>
+        /// Gets the default value for the global timeout in milliseconds if the (<see cref="GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
+        /// </summary>
+        public static int GlobalTimeoutInMsecDefaultValue = 2* 1000;
     }
 }

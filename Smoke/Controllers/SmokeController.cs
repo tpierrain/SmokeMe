@@ -46,7 +46,7 @@ namespace Smoke.Controllers
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun();
 
-            var globalTimeout = TimeSpan.FromSeconds(1);
+            var globalTimeout = TimeSpan.FromMilliseconds(Constants.GlobalTimeoutInMsecDefaultValue);
             if(int.TryParse(_configuration[Constants.GlobaltimeoutinmsecConfigurationKey], out var globalTimeoutInMsec))
             {
                 globalTimeout = TimeSpan.FromMilliseconds(globalTimeoutInMsec);
