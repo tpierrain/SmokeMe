@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: nupkg
-        path: /home/runner/work/Diverse/Diverse/Diverse/bin/Release/*.nupkg
+        path: /home/runner/work/Smoke/Smoke/Smoke/bin/Release/*.nupkg
