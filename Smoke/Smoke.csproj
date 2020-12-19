@@ -7,7 +7,7 @@
     <Company>42 skillz</Company>
     <Description>A tiny framework executing all your declared smoke tests when calling /smoke on your own API.</Description>
     <Copyright>Copyright © Thomas PIERRAIN 2020</Copyright>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/Smoke</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/Smoke</RepositoryUrl>
@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE.txt">
+    <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
