@@ -4,36 +4,235 @@
         <name>Smoke</name>
     </assembly>
     <members>
+        <member name="T:Smoke.Constants">
+            <summary>
+            Constants for the /smoke library
+            </summary>
+        </member>
+        <member name="F:Smoke.Constants.GlobaltimeoutinmsecConfigurationKey">
+            <summary>
+            Gets the name of the configuration key for the smoke test global execution timeout.
+            </summary>
+        </member>
+        <member name="T:Smoke.Controllers.SmokeController">
+            <summary>
+            Executes smoke test declared for this API.
+            Smoke tests are a set of short functional tests checking that the minimum viable prerequisites for this API is fine.
+            </summary>
+        </member>
+        <member name="M:Smoke.Controllers.SmokeController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,Smoke.IFindSmokeTests)">
+            <summary>
+            Instantiates a <see cref="T:Smoke.Controllers.SmokeController"/>.
+            </summary>
+            <param name="configuration">The configuration of the API.</param>
+            <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:Smoke.ISmokeTestAScenario"/> smoke tests.</param>
+            <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
+        </member>
         <member name="M:Smoke.Controllers.SmokeController.RunSmokeTests">
             <summary>
             Execute all registered Smoke Tests for this API.
             </summary>
             <returns>The <see cref="T:Smoke.SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
         </member>
+        <member name="T:Smoke.Error">
+            <summary>
+            Error during a <see cref="T:Smoke.ISmokeTestAScenario"/> excecution.
+            </summary>
+        </member>
+        <member name="M:Smoke.Error.#ctor(System.String,System.Exception)">
+            <summary>
+            Instantiates an <see cref="T:Smoke.Error"/>.
+            </summary>
+            <param name="errorMessage">The error message.</param>
+            <param name="exception">An exception that has been catched during the <see cref="T:Smoke.ISmokeTestAScenario"/> execution.</param>
+        </member>
+        <member name="P:Smoke.Error.Message">
+            <summary>
+            The error message.
+            </summary>
+        </member>
+        <member name="P:Smoke.Error.Exception">
+            <summary>
+            The exception that has been catched during the <see cref="T:Smoke.ISmokeTestAScenario"/> execution.
+            </summary>
+        </member>
         <member name="T:Smoke.IFindSmokeTests">
             <summary>
             Responsible to find smoke tests to be run within an executable.
             </summary>
         </member>
+        <member name="M:Smoke.IFindSmokeTests.FindAllSmokeTestsToRun">
+            <summary>
+            Instantiates all the <see cref="T:Smoke.ISmokeTestAScenario"/> instances that have been found in the running code.
+            </summary>
+            <returns>A collection of <see cref="T:Smoke.ISmokeTestAScenario"/> instances.</returns>
+        </member>
         <member name="T:Smoke.ISmokeTestAScenario">
             <summary>
-            Contains code to be ran in order to 'smoke test' something.
+            Contains scenario to be executed in order to 'smoke test' something.
+            Smoke test actually.
             </summary>
+        </member>
+        <member name="M:Smoke.ISmokeTestAScenario.ExecuteScenario">
+            <summary>
+            Executes the scenario of this Smoke Test.
+            </summary>
+            <returns>The <see cref="T:Smoke.SmokeTestResult"/> of this Smoke test.</returns>
         </member>
         <member name="T:Smoke.SmokeTestAutoFinder">
             <summary>
             Responsible to find and instantiate smoke tests to be run within an executable.
             </summary>
         </member>
+        <member name="M:Smoke.SmokeTestAutoFinder.#ctor(System.IServiceProvider)">
+            <summary>
+            Instantiates a <see cref="T:Smoke.SmokeTestAutoFinder"/>
+            </summary>
+            <param name="serviceProvider">The (IoC) <see cref="T:System.IServiceProvider"/> instance needed to instantiate <see cref="T:Smoke.ISmokeTestAScenario"/> instances.</param>
+        </member>
+        <member name="M:Smoke.SmokeTestAutoFinder.FindAllSmokeTestsToRun">
+            <summary>
+            Finds all smoke tests scenarii that have to be executed for this API.
+            </summary>
+            <returns>The collection of all <see cref="T:Smoke.ISmokeTestAScenario"/> instance declared in this API to be executed.</returns>
+        </member>
+        <member name="T:Smoke.SmokeTestResult">
+            <summary>
+            Result of a <see cref="T:Smoke.ISmokeTestAScenario"/> execution.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestResult.Outcome">
+            <summary>
+            Indicates whether the outcome of this <see cref="T:Smoke.ISmokeTestAScenario"/> execution is positive or not.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestResult.ErrorMessage">
+            <summary>
+            Gets the <see cref="T:Smoke.Error"/> associated to this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.
+            </summary>
+        </member>
+        <member name="M:Smoke.SmokeTestResult.#ctor(System.String,System.Exception)">
+            <summary>
+            Instantiates a <see cref="T:Smoke.SmokeTestResult"/>.
+            </summary>
+            <param name="errorMessage">The error message associated to the smoke test execution.</param>
+            <param name="exception">The <see cref="T:System.Exception"/> associated to the smoke test execution.</param>
+        </member>
+        <member name="M:Smoke.SmokeTestResult.#ctor(System.Nullable{System.Boolean})">
+            <summary>
+            Instantiates a <see cref="T:Smoke.SmokeTestResult"/>.
+            </summary>
+            <param name="outcome">The outcome of this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.</param>
+        </member>
+        <member name="M:Smoke.SmokeTestResult.ToString">
+            <summary>
+            Returns a string representing the object.
+            </summary>
+            <returns>A string representing the object.</returns>
+        </member>
         <member name="T:Smoke.SmokeTestRunner">
             <summary>
             Runner for <see cref="T:Smoke.ISmokeTestAScenario"/> instances.
             </summary>
         </member>
+        <member name="M:Smoke.SmokeTestRunner.ExecuteAllSmokeTests(System.Collections.Generic.IEnumerable{Smoke.ISmokeTestAScenario},System.TimeSpan)">
+            <summary>
+            Executes <see cref="T:Smoke.ISmokeTestAScenario"/> instances that has been found for this API.
+            </summary>
+            <param name="smokeTests">The <see cref="T:Smoke.ISmokeTestAScenario"/> instances to be executed in parallel.</param>
+            <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:Smoke.ISmokeTestAScenario"/> instances to be executed.</param>
+            <returns>The <see cref="T:Smoke.SmokeTestSessionResult"/>.</returns>
+        </member>
+        <member name="T:Smoke.TimeoutSmokeTestSessionResult">
+            <summary>
+            Represents a failed (due to timeout) smoke test session.
+            </summary>
+        </member>
+        <member name="M:Smoke.TimeoutSmokeTestSessionResult.#ctor(System.TimeSpan)">
+            <summary>
+            Instantiates a <see cref="T:Smoke.TimeoutSmokeTestSessionResult"/>.
+            </summary>
+            <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
+        </member>
         <member name="T:Smoke.SmokeTestSessionResult">
             <summary>
             Result of a smoke test session.
             </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.Results">
+            <summary>
+            Gets all the <see cref="T:Smoke.StopWatchedSmokeTestExecution"/> results of this Smoke test session.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.IsSuccess">
+            <summary>
+            Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
+            </summary>
+        </member>
+        <member name="M:Smoke.SmokeTestSessionResult.#ctor(Smoke.StopWatchedSmokeTestExecution[],System.Nullable{System.Boolean})">
+            <summary>
+            Instantiates a <see cref="T:Smoke.SmokeTestSessionResult"/>.
+            </summary>
+            <param name="results">The results of this Smoke test session.</param>
+            <param name="isSuccess">Whether or not the <see cref="T:Smoke.SmokeTestSessionResult"/> is successful or not.</param>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.InstanceIdentifier">
+            <summary>
+            Gets the API instance identifier.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.ApiVersion">
+            <summary>
+            Gets the API version.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.OsName">
+            <summary>
+            Gets the OS name of this API instance.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.AzureRegionName">
+            <summary>
+            Gets the Azure region name where this API instance is running.
+            </summary>
+        </member>
+        <member name="P:Smoke.SmokeTestSessionResult.NbOfProcessors">
+            <summary>
+            Gets the number of Processors this API instance has.
+            </summary>
+        </member>
+        <member name="T:Smoke.StopWatchedSmokeTestExecution">
+            <summary>
+            Result of a <see cref="T:Smoke.ISmokeTestAScenario"/> execution but with its <see cref="P:Smoke.StopWatchedSmokeTestExecution.Duration"/>.
+            </summary>
+        </member>
+        <member name="P:Smoke.StopWatchedSmokeTestExecution.Outcome">
+            <summary>
+            Indicates whether the outcome of this <see cref="T:Smoke.ISmokeTestAScenario"/> execution is positive or not.
+            </summary>
+        </member>
+        <member name="P:Smoke.StopWatchedSmokeTestExecution.ErrorMessage">
+            <summary>
+            Gets the <see cref="T:Smoke.Error"/> associated to this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.
+            </summary>
+        </member>
+        <member name="P:Smoke.StopWatchedSmokeTestExecution.Duration">
+            <summary>
+            Gets the duration of this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.
+            </summary>
+        </member>
+        <member name="M:Smoke.StopWatchedSmokeTestExecution.#ctor(Smoke.SmokeTestResult,System.TimeSpan)">
+            <summary>
+            Instantiates a <see cref="T:Smoke.StopWatchedSmokeTestExecution"/>.
+            </summary>
+            <param name="smokeTestResult">The <see cref="P:Smoke.StopWatchedSmokeTestExecution.SmokeTestResult"/> associated with this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.</param>
+            <param name="duration">The duration of this <see cref="T:Smoke.ISmokeTestAScenario"/> execution.</param>
+        </member>
+        <member name="M:Smoke.StopWatchedSmokeTestExecution.ToString">
+            <summary>
+            Returns a string representing the object.
+            </summary>
+            <returns>A string representing the object.</returns>
         </member>
     </members>
 </doc>
