@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based mini framework allowing you to execute all your declared smoke tests whenever one call the /smoke ressource on your own API.</Description>
