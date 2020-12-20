@@ -50,7 +50,7 @@ public interface ICheckSmoke
 
 ### While deploying or supporting your production
 
-1. You just GET the (automatically added) **/smoke** ressource on your API.
+You just GET the (automatically added) **/smoke** ressource on your API.
 
 e.g.:
 
@@ -95,21 +95,25 @@ Yes
 2. Does SmokeMe have a global timeout for all smoke tests to be ran?
 
 ```
-Yes. It's 5 second by default (5000 milliseconds). But you can override this default value by 
-setting the **Smoke:GlobalTimeoutInMsec** configuration key of your Web API project.
+Yes. It's 5 second by default (5000 milliseconds). But you can override this 
+default value by setting the **Smoke:GlobalTimeoutInMsec** configuration key 
+of your Web API project.
+
 ```
 
 3. How to make SmokeMe being able to execute all my smoke tests?
 
 ```
-More than easy. All you have to do is to add a reference to the **SmokeMe** lib in your API project. That's it!
+More than easy. All you have to do is to add a reference to the **SmokeMe** lib 
+in your API project. That's it!
 ```
 
 4. How to code and declare a smoke test?
 
 ```
-Easy, all you have to do is to add a reference to the **SmokeMe** lib in your code and to code a smoke test
-by implementing a type implementing SmokeMe.ICheckSmoke interface.
+Easy, all you have to do is to add a reference to the **SmokeMe** lib in your 
+code and to code a smoke test by implementing a type implementing 
+SmokeMe.ICheckSmoke interface.
 
 e.g.: 
 ```
