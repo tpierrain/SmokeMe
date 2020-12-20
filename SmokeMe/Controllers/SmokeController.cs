@@ -13,8 +13,7 @@ namespace SmokeMe.Controllers
     /// Smoke tests are a set of short functional tests checking that the minimum viable prerequisites for this API is fine.
     /// </summary>
     [ApiController]
-    [ApiVersion("1.0")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("smoke")]
     public class SmokeController : ControllerBase
     {
         private readonly IFindSmokeTests _smokeTestProvider;

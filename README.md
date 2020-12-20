@@ -1,4 +1,4 @@
-# SmokeMe! ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
+# SmokeMe! (a.k.a.  /smoke ) ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
 A convention-based tiny framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** resource that will automatically appear in your own API.
 
@@ -54,13 +54,13 @@ public interface ICheckSmoke
 
 e.g.:
 
-## https://(your-own-api-url):(portnumber)/api/v1/Smoke
+## https://(your-own-api-url):(portnumber)/smoke
 
 or via curl for instance:
 
 ```
 
-curl -X GET "https://localhost:5001/api/v1/Smoke" -H  "accept: */*"
+curl -X GET "https://localhost:5001/smoke" -H  "accept: */*"
 
 ```
 
@@ -88,23 +88,31 @@ at least one failing smoke test.
 
 1. Does SmokeMe execute all your founded smoke tests in parallel?
 
+```
 Yes
+```
 
 2. Does SmokeMe have a global timeout for all smoke tests to be ran?
 
+```
 Yes. It's 5 second by default (5000 milliseconds). But you can override this default value by 
 setting the **Smoke:GlobalTimeoutInMsec** configuration key of your Web API project.
+```
 
 3. How to make SmokeMe being able to execute all my smoke tests?
 
+```
 More than easy. All you have to do is to add a reference to the **SmokeMe** lib in your API project. That's it!
+```
 
 4. How to code and declare a smoke test?
 
+```
 Easy, all you have to do is to add a reference to the **SmokeMe** lib in your code and to code a smoke test
 by implementing a type implementing SmokeMe.ICheckSmoke interface.
 
 e.g.: 
+```
 
 ```csharp
 
