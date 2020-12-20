@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch.Adapters;
@@ -47,6 +48,11 @@ namespace SmokeMe.Controllers
         {
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun();
+
+            if (!smokeTests.Any())
+            {
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestSessionResultDto(new ApiRuntimeDescription()));
+            }
 
             var globalTimeout = TimeSpan.FromMilliseconds(Constants.GlobalTimeoutInMsecDefaultValue);
             if(int.TryParse(_configuration[Constants.GlobaltimeoutinmsecConfigurationKey], out var globalTimeoutInMsec))

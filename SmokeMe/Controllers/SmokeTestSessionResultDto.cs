@@ -48,6 +48,12 @@ namespace SmokeMe.Controllers
         public string NbOfProcessors => _apiRuntimeDescription.NbOfProcessors;
 
 
+        /// <summary>
+        /// Instantiates a <see cref="SmokeTestSessionResultDto"/>.
+        /// </summary>
+        /// <param name="results">The <see cref="SmokeTestSessionResult"/> to be adapted.</param>
+        /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
+        /// <param name="smokeTestResultWithMetaDataDtos">The <see cref="IEnumerable&lt;SmokeTestResultWithMetaDataDto&gt;"/> containing all the smoke tests results.</param>
         public SmokeTestSessionResultDto(SmokeTestSessionResult results, ApiRuntimeDescription apiRuntimeDescription, IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos)
         {
             _results = results;
@@ -55,6 +61,18 @@ namespace SmokeMe.Controllers
             Results = smokeTestResultWithMetaDataDtos.ToArray();
 
             _apiRuntimeDescription = apiRuntimeDescription;
+        }
+
+        /// <summary>
+        /// Instantiates a <see cref="SmokeTestSessionResultDto"/>.
+        /// </summary>
+        /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
+        public SmokeTestSessionResultDto(ApiRuntimeDescription apiRuntimeDescription)
+        {
+            _results = SmokeTestSessionResult.Null;
+
+            _apiRuntimeDescription = apiRuntimeDescription;
+            Results = new SmokeTestResultWithMetaDataDto[0];
         }
     }
 }

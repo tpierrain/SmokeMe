@@ -19,6 +19,11 @@ namespace SmokeMe
         public bool IsSuccess { get; }
 
         /// <summary>
+        /// Null object for by default initializations.
+        /// </summary>
+        public static SmokeTestSessionResult Null => new SmokeTestSessionResult(new SmokeTestResultWithMetaData[0], false);
+
+        /// <summary>
         /// Instantiates a <see cref="SmokeTestSessionResult"/>.
         /// </summary>
         /// <param name="results">The results of this Smoke test session.</param>

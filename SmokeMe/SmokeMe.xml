@@ -74,6 +74,67 @@
             Result of a <see cref="T:SmokeMe.ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Duration"/>).
             </summary>
         </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.SmokeTestName">
+            <summary>
+            The name of the <see cref="T:SmokeMe.ICheckSmoke"/> smoke test (as declared by it).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.SmokeTestDescription">
+            <summary>
+            The description of what this <see cref="T:SmokeMe.ICheckSmoke"/> smoke test is about (as declared by it).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Outcome">
+            <summary>
+            Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Error">
+            <summary>
+            Gets the <see cref="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Error"/> associated to this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Duration">
+            <summary>
+            Gets the human-readable duration of this smoke test execution.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.DurationInMsec">
+            <summary>
+            Gets the duration in milliseconds of this smoke test execution (useful for scripting).
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.TimeSpan,System.String)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto"/>.
+            </summary>
+            <param name="smokeTestName"></param>
+            <param name="smokeTestDescription"></param>
+            <param name="outcome"></param>
+            <param name="error"></param>
+            <param name="durationTimespan"></param>
+            <param name="duration"></param>
+        </member>
+        <member name="T:SmokeMe.Controllers.SmokeTestSessionResultAdapter">
+            <summary>
+            Adapter from SmokeMe internal model to SmokeMe external DTOs.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestSessionResult,SmokeMe.Controllers.ApiRuntimeDescription)">
+            <summary>
+            Adapts a <see cref="T:SmokeMe.SmokeTestSessionResult"/> instance to a <see cref="T:SmokeMe.Controllers.SmokeTestSessionResultDto"/> one.
+            </summary>
+            <param name="results">The <see cref="T:SmokeMe.SmokeTestSessionResult"/> instance to adapt.</param>
+            <param name="runtimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> to associate</param>
+            <returns>The <see cref="T:SmokeMe.Controllers.SmokeTestSessionResultDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestSessionResult"/> instance.</returns>
+        </member>
+        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(System.TimeSpan)">
+            <summary>
+            Adapts <see cref="T:System.TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
+            </summary>
+            <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
+            <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
+        </member>
         <member name="T:SmokeMe.Controllers.SmokeTestSessionResultDto">
             <summary>
             Exposition model of a smoke test session execution.
@@ -114,6 +175,20 @@
             <summary>
             Gets the number of Processors this API instance has.
             </summary>
+        </member>
+        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultDto.#ctor(SmokeMe.SmokeTestSessionResult,SmokeMe.Controllers.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Controllers.SmokeTestResultWithMetaDataDto})">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestSessionResultDto"/>.
+            </summary>
+            <param name="results">The <see cref="T:SmokeMe.SmokeTestSessionResult"/> to be adapted.</param>
+            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
+            <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
+        </member>
+        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultDto.#ctor(SmokeMe.Controllers.ApiRuntimeDescription)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestSessionResultDto"/>.
+            </summary>
+            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         </member>
         <member name="T:SmokeMe.Error">
             <summary>
@@ -324,6 +399,11 @@
         <member name="P:SmokeMe.SmokeTestSessionResult.IsSuccess">
             <summary>
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.SmokeTestSessionResult.Null">
+            <summary>
+            Null object for by default initializations.
             </summary>
         </member>
         <member name="M:SmokeMe.SmokeTestSessionResult.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean})">
