@@ -105,7 +105,7 @@ of your Web API project.
 
 ```
 More than easy. All you have to do is to add a reference to the **SmokeMe** lib 
-in your API project. That's it!
+in your API project for it to be able to find all of them. That's it!
 ```
 
 ### 4. How to code and declare a smoke test?
