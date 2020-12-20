@@ -35,9 +35,9 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Return_false_success_when_smoke_tests_timeout_globally()
         {
-            var globalTimeoutInMsec = 2 * 1000;
+            var globalTimeoutInMsec = 5 * 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(2.5)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(2.0)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(2.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
@@ -48,7 +48,7 @@ namespace SmokeMe.Tests.Acceptance
 
             var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
 
-            var acceptableDeltaInMsec = 900; // delta to make this test less fragile with exotic or lame CI agents
+            var acceptableDeltaInMsec = 1000; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
             Check.That(smokeTestResult.IsSuccess).IsFalse();
         }
