@@ -30,7 +30,7 @@
             Instantiates a <see cref="T:SmokeMe.Controllers.SmokeController"/>.
             </summary>
             <param name="configuration">The configuration of the API.</param>
-            <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:SmokeMe.ISmokeTestAScenario"/> smoke tests.</param>
+            <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:SmokeMe.ICheckSmoke"/> smoke tests.</param>
             <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
         </member>
         <member name="M:SmokeMe.Controllers.SmokeController.RunSmokeTests">
@@ -41,7 +41,7 @@
         </member>
         <member name="T:SmokeMe.Error">
             <summary>
-            Error during a <see cref="T:SmokeMe.ISmokeTestAScenario"/> excecution.
+            Error during a <see cref="T:SmokeMe.ICheckSmoke"/> excecution.
             </summary>
         </member>
         <member name="M:SmokeMe.Error.#ctor(System.String,System.Exception)">
@@ -49,7 +49,7 @@
             Instantiates an <see cref="T:SmokeMe.Error"/>.
             </summary>
             <param name="errorMessage">The error message.</param>
-            <param name="exception">An exception that has been catched during the <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
+            <param name="exception">An exception that has been catched during the <see cref="T:SmokeMe.ICheckSmoke"/> execution.</param>
         </member>
         <member name="P:SmokeMe.Error.Message">
             <summary>
@@ -58,7 +58,7 @@
         </member>
         <member name="P:SmokeMe.Error.Exception">
             <summary>
-            The exception that has been catched during the <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
+            The exception that has been catched during the <see cref="T:SmokeMe.ICheckSmoke"/> execution.
             </summary>
         </member>
         <member name="T:SmokeMe.Helpers.ReflectionExtensions">
@@ -87,11 +87,11 @@
         </member>
         <member name="M:SmokeMe.IFindSmokeTests.FindAllSmokeTestsToRun">
             <summary>
-            Instantiates all the <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances that have been found in the running code.
+            Instantiates all the <see cref="T:SmokeMe.ICheckSmoke"/> instances that have been found in the running code.
             </summary>
-            <returns>A collection of <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances.</returns>
+            <returns>A collection of <see cref="T:SmokeMe.ICheckSmoke"/> instances.</returns>
         </member>
-        <member name="T:SmokeMe.ISmokeTestAScenario">
+        <member name="T:SmokeMe.ICheckSmoke">
             <summary>
             Contains scenario to be executed in order to 'smoke test' something.
             (a Smoke test actually).
@@ -100,7 +100,7 @@
             (classical constructor-based injection).
             </summary>
         </member>
-        <member name="M:SmokeMe.ISmokeTestAScenario.ExecuteScenario">
+        <member name="M:SmokeMe.ICheckSmoke.Scenario">
             <summary>
             Executes the scenario of this Smoke Test.
             </summary>
@@ -115,27 +115,27 @@
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestAutoFinder"/>
             </summary>
-            <param name="serviceProvider">The (IoC) <see cref="T:System.IServiceProvider"/> instance needed to instantiate <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances.</param>
+            <param name="serviceProvider">The (IoC) <see cref="T:System.IServiceProvider"/> instance needed to instantiate <see cref="T:SmokeMe.ICheckSmoke"/> instances.</param>
         </member>
         <member name="M:SmokeMe.SmokeTestAutoFinder.FindAllSmokeTestsToRun">
             <summary>
             Finds all smoke tests scenarii that have to be executed for this API.
             </summary>
-            <returns>The collection of all <see cref="T:SmokeMe.ISmokeTestAScenario"/> instance declared in this API to be executed.</returns>
+            <returns>The collection of all <see cref="T:SmokeMe.ICheckSmoke"/> instance declared in this API to be executed.</returns>
         </member>
         <member name="T:SmokeMe.SmokeTestResult">
             <summary>
-            Result of a <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
+            Result of a <see cref="T:SmokeMe.ICheckSmoke"/> execution.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestResult.Outcome">
             <summary>
-            Indicates whether the outcome of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution is positive or not.
+            Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestResult.ErrorMessage">
             <summary>
-            Gets the <see cref="T:SmokeMe.Error"/> associated to this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
+            Gets the <see cref="T:SmokeMe.Error"/> associated to this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
             </summary>
         </member>
         <member name="M:SmokeMe.SmokeTestResult.#ctor(System.String,System.Exception)">
@@ -149,7 +149,7 @@
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResult"/>.
             </summary>
-            <param name="outcome">The outcome of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
+            <param name="outcome">The outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution.</param>
         </member>
         <member name="M:SmokeMe.SmokeTestResult.ToString">
             <summary>
@@ -159,15 +159,15 @@
         </member>
         <member name="T:SmokeMe.SmokeTestRunner">
             <summary>
-            Runner for <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances.
+            Runner for <see cref="T:SmokeMe.ICheckSmoke"/> instances.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTests(System.Collections.Generic.IEnumerable{SmokeMe.ISmokeTestAScenario},System.TimeSpan)">
+        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTestsInParallel(System.Collections.Generic.IEnumerable{SmokeMe.ICheckSmoke},System.TimeSpan)">
             <summary>
-            Executes <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances that has been found for this API.
+            Executes <see cref="T:SmokeMe.ICheckSmoke"/> instances that has been found for this API.
             </summary>
-            <param name="smokeTests">The <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances to be executed in parallel.</param>
-            <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ISmokeTestAScenario"/> instances to be executed.</param>
+            <param name="smokeTests">The <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed in parallel.</param>
+            <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed.</param>
             <returns>The <see cref="T:SmokeMe.SmokeTestSessionResult"/>.</returns>
         </member>
         <member name="T:SmokeMe.TimeoutSmokeTestSessionResult">
@@ -230,30 +230,30 @@
         </member>
         <member name="T:SmokeMe.SmokeTestResultWithMetaData">
             <summary>
-            Result of a <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution but with its <see cref="P:SmokeMe.SmokeTestResultWithMetaData.Duration"/>.
+            Result of a <see cref="T:SmokeMe.ICheckSmoke"/> execution but with its <see cref="P:SmokeMe.SmokeTestResultWithMetaData.Duration"/>.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestResultWithMetaData.Outcome">
             <summary>
-            Indicates whether the outcome of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution is positive or not.
+            Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestResultWithMetaData.ErrorMessage">
             <summary>
-            Gets the <see cref="T:SmokeMe.Error"/> associated to this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
+            Gets the <see cref="T:SmokeMe.Error"/> associated to this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestResultWithMetaData.Duration">
             <summary>
-            Gets the duration of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
+            Gets the duration of this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
             </summary>
         </member>
         <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.TimeSpan)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
-            <param name="smokeTestResult">The <see cref="P:SmokeMe.SmokeTestResultWithMetaData.SmokeTestResult"/> associated with this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
-            <param name="duration">The duration of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
+            <param name="smokeTestResult">The <see cref="P:SmokeMe.SmokeTestResultWithMetaData.SmokeTestResult"/> associated with this <see cref="T:SmokeMe.ICheckSmoke"/> execution.</param>
+            <param name="duration">The duration of this <see cref="T:SmokeMe.ICheckSmoke"/> execution.</param>
         </member>
         <member name="M:SmokeMe.SmokeTestResultWithMetaData.ToString">
             <summary>

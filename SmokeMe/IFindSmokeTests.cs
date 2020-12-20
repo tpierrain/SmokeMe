@@ -8,9 +8,9 @@ namespace SmokeMe
     public interface IFindSmokeTests
     {
         /// <summary>
-        /// Instantiates all the <see cref="ISmokeTestAScenario"/> instances that have been found in the running code.
+        /// Instantiates all the <see cref="ICheckSmoke"/> instances that have been found in the running code.
         /// </summary>
-        /// <returns>A collection of <see cref="ISmokeTestAScenario"/> instances.</returns>
-        IEnumerable<ISmokeTestAScenario> FindAllSmokeTestsToRun();
+        /// <returns>A collection of <see cref="ICheckSmoke"/> instances.</returns>
+        IEnumerable<ICheckSmoke> FindAllSmokeTestsToRun();
     }
 }

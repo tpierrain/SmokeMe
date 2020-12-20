@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SmokeMe.Tests.Helpers
 {
-    internal class SmokeTestThrowingAnAccessViolationException : ISmokeTestAScenario
+    internal class SmokeTestThrowingAnAccessViolationException : ICheckSmoke
     {
         private readonly TimeSpan _delay;
 
@@ -16,10 +16,13 @@ namespace SmokeMe.Tests.Helpers
             _delay = delay;
         }
 
-        public Task<SmokeTestResult> ExecuteScenario()
+        public Task<SmokeTestResult> Scenario()
         {
-            Thread.Sleep(_delay);
-            throw new AccessViolationException("oh la la... ah oui oui");
+            var continuationTask = Task.Delay(_delay)
+                .ContinueWith(task => throw new AccessViolationException("oh la la... ah oui oui"))
+                .ContinueWith(task => new SmokeTestResult(false));
+
+            return continuationTask;
         }
     }
 }

@@ -10,16 +10,22 @@ namespace SmokeMe
     /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
     /// (classical constructor-based injection). Can't be that easy, right? ;-)
     /// </summary>
-    public interface ISmokeTestAScenario
+    public interface ICheckSmoke
     {
         /// <summary>
-        /// Executes the scenario of this Smoke Test.
+        /// The code of this smoke test scenario.
         /// </summary>
         /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-        Task<SmokeTestResult> ExecuteScenario();
+        Task<SmokeTestResult> Scenario();
 
+        /// <summary>
+        /// Name of the smoke test scenario.
+        /// </summary>
         string SmokeTestName { get; }
 
+        /// <summary>
+        /// Description of the smoke test scenario.
+        /// </summary>
         string Description { get; }
     }
 }

@@ -6,10 +6,10 @@ using SmokeMe;
 namespace Sample.ExternalSmokeTests
 {
     /// <summary>
-    /// Smoke test only to check that SmokeMe is able to detect and run all <see cref="ISmokeTestAScenario"/>
+    /// Smoke test only to check that SmokeMe is able to detect and run all <see cref="ICheckSmoke"/>
     /// types wherever they are located (i.e. in other assemblies than the API).
     /// </summary>
-    public class SmokeTestLocatedInAnotherAssembly : ISmokeTestAScenario
+    public class SmokeTestLocatedInAnotherAssembly : ICheckSmoke
     {
         private readonly IRestClient _restClient;
 
@@ -21,7 +21,7 @@ namespace Sample.ExternalSmokeTests
             _restClient = restClient;
         }
 
-        public async Task<SmokeTestResult> ExecuteScenario()
+        public async Task<SmokeTestResult> Scenario()
         {
             // check if Google is still here ;-)
 

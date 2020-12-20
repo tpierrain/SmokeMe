@@ -3,32 +3,32 @@
 namespace SmokeMe
 {
     /// <summary>
-    /// Result of a <see cref="ISmokeTestAScenario"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).
+    /// Result of a <see cref="ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).
     /// </summary>
     public class SmokeTestResultWithMetaData
     {
         /// <summary>
-        /// Indicates whether the outcome of this <see cref="ISmokeTestAScenario"/> execution is positive or not.
+        /// Indicates whether the outcome of this <see cref="ICheckSmoke"/> execution is positive or not.
         /// </summary>
         public bool Outcome => SmokeTestResult.Outcome;
         
         /// <summary>
-        /// Gets the <see cref="Error"/> associated to this <see cref="ISmokeTestAScenario"/> execution.
+        /// Gets the <see cref="Error"/> associated to this <see cref="ICheckSmoke"/> execution.
         /// </summary>
         public Error ErrorMessage => SmokeTestResult.ErrorMessage;
 
         /// <summary>
-        /// Gets the duration of this <see cref="ISmokeTestAScenario"/> execution.
+        /// Gets the duration of this <see cref="ICheckSmoke"/> execution.
         /// </summary>
         public TimeSpan Duration { get; }
 
         /// <summary>
-        /// Gets the name of the executed <see cref="ISmokeTestAScenario"/> instance.
+        /// Gets the name of the executed <see cref="ICheckSmoke"/> instance.
         /// </summary>
         public string SmokeTestName { get; }
 
         /// <summary>
-        /// Gets the description of the executed <see cref="ISmokeTestAScenario"/> instance.
+        /// Gets the description of the executed <see cref="ICheckSmoke"/> instance.
         /// </summary>
         public string SmokeTestDescription { get; }
 
@@ -37,8 +37,8 @@ namespace SmokeMe
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
-        /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="ISmokeTestAScenario"/> execution.</param>
-        /// <param name="duration">The duration of this <see cref="ISmokeTestAScenario"/> execution.</param>
+        /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="ICheckSmoke"/> execution.</param>
+        /// <param name="duration">The duration of this <see cref="ICheckSmoke"/> execution.</param>
         public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan duration, string smokeTestName, string smokeTestDescription)
         {
             SmokeTestResult = smokeTestResult;

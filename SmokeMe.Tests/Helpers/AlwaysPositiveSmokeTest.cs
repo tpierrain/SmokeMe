@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SmokeMe.Tests.Helpers
 {
-    internal class AlwaysPositiveSmokeTest : ISmokeTestAScenario
+    internal class AlwaysPositiveSmokeTest : ICheckSmoke
     {
         private readonly TimeSpan _delay;
 
@@ -16,11 +16,15 @@ namespace SmokeMe.Tests.Helpers
             _delay = delay;
         }
 
-        public Task<SmokeTestResult> ExecuteScenario()
+        public Task<SmokeTestResult> Scenario()
         {
-            Thread.Sleep(_delay);
-
+            Thread.Sleep(Convert.ToInt32(_delay.TotalMilliseconds));
             return Task.FromResult(new SmokeTestResult(true));
+
+            // The TPL version relies too much on the overall health/availability of the CI agent running the tests.
+            //var continuationTask = Task.Delay(_delay)
+            //    .ContinueWith(task => new SmokeTestResult(true));
+            //return continuationTask;
         }
     }
 }

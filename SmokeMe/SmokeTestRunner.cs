@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 namespace SmokeMe
 {
     /// <summary>
-    /// Runner for <see cref="ISmokeTestAScenario"/> instances.
+    /// Runner for <see cref="ICheckSmoke"/> instances.
     /// </summary>
     public class SmokeTestRunner
     {
         /// <summary>
-        /// Executes <see cref="ISmokeTestAScenario"/> instances that has been found for this API.
+        /// Executes <see cref="ICheckSmoke"/> instances that has been found for this API.
         /// </summary>
-        /// <param name="smokeTests">The <see cref="ISmokeTestAScenario"/> instances to be executed in parallel.</param>
-        /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ISmokeTestAScenario"/> instances to be executed.</param>
+        /// <param name="smokeTests">The <see cref="ICheckSmoke"/> instances to be executed in parallel.</param>
+        /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ICheckSmoke"/> instances to be executed.</param>
         /// <returns>The <see cref="SmokeTestSessionResult"/>.</returns>
-        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ISmokeTestAScenario> smokeTests, TimeSpan globalTimeout)
+        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTestsInParallel(IEnumerable<ICheckSmoke> smokeTests, TimeSpan globalTimeout)
         {
             var tasks = new List<Task<SmokeTestResultWithMetaData>>();
             foreach (var smokeTest in smokeTests)
@@ -45,14 +45,15 @@ namespace SmokeMe
             return !allSmokeTasks.IsCompletedSuccessfully;
         }
 
-        private static async Task<SmokeTestResultWithMetaData> StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
+        private static async Task<SmokeTestResultWithMetaData> StopWatchSafeSmokeTestExecution(ICheckSmoke smokeTest)
         {
             var stopwatch = new Stopwatch();
+            stopwatch.Start();
             try
             {
-                var smokeTestResult = await smokeTest.ExecuteScenario();
+                var smokeTestResult = await smokeTest.Scenario();
                 stopwatch.Stop();
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch, smokeTest);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
 
                 return smokeTestExecution;
             }
@@ -60,15 +61,14 @@ namespace SmokeMe
             {
                 stopwatch.Stop();
                 var smokeTestResult = new SmokeTestResult("", ex);
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch, smokeTest);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
                 return smokeTestExecution;
             }
         }
 
-        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult,
-            Stopwatch stopwatch, ISmokeTestAScenario smokeTest)
+        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, ICheckSmoke smokeTest)
         {
-            return new SmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest.SmokeTestName, smokeTest.Description);
+            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTest.SmokeTestName, smokeTest.Description);
         }
     }
 

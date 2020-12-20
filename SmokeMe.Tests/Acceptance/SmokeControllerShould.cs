@@ -8,12 +8,15 @@ using NSubstitute;
 using NUnit.Framework;
 using SmokeMe.Controllers;
 using SmokeMe.Tests.Helpers;
+using SmokeMe.Tests.Unit;
 
-namespace SmokeMe.Tests
+namespace SmokeMe.Tests.Acceptance
 {
     [TestFixture]
     public class SmokeControllerShould
     {
+        private readonly SomeSmokeTestsForTestingPurposeShould _someSmokeTestsForTestingPurposeShould = new SomeSmokeTestsForTestingPurposeShould();
+
         [Test]
         [Repeat(10)]
         public async Task Run_all_smoke_tests()
@@ -22,31 +25,9 @@ namespace SmokeMe.Tests
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
-            var smokeTestResult = await controller.RunSmokeTests();
+            var smokeTestResult = await controller.ExecuteSmokeTests();
 
-            Check.That(smokeTestResult.Results.Select(x => x.Outcome)).ContainsExactly(true, false);
-        }
-
-        [Test]
-        [Ignore("Because NFluent LastLessThan seems not accurate enough")]
-        public void Return_false_success_when_smoke_tests_timeout_globally_NFluent_sucks_here()
-        {
-            var globalTimeoutInMsec = 1000;
-            var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.1)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(3.0)));
-
-            var controller = new SmokeController(configuration, null, smokeTestProvider);
-
-            SmokeTestSessionResult smokeTestResult = null;
-
-            var acceptableDeltaInMsec = 200;
-
-            Check.ThatCode(async () =>
-            {
-                smokeTestResult = await controller.RunSmokeTests();
-            }).LastsLessThan(globalTimeoutInMsec + acceptableDeltaInMsec, TimeUnit.Milliseconds);
-
-            Check.That(smokeTestResult.IsSuccess).IsFalse();
+            Check.That(smokeTestResult.Results.Select(x => x.Outcome)).Contains(true, false);
         }
 
         [Test]
@@ -59,10 +40,11 @@ namespace SmokeMe.Tests
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
             var stopwatch = new Stopwatch();
-            var smokeTestResult = await controller.RunSmokeTests();
+            stopwatch.Start();
+            var smokeTestResult = await controller.ExecuteSmokeTests();
             stopwatch.Stop();
 
-            var acceptableDeltaInMsec = 200;
+            var acceptableDeltaInMsec = 700; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
             Check.That(smokeTestResult.IsSuccess).IsFalse();
         }
@@ -76,6 +58,19 @@ namespace SmokeMe.Tests
             {
                 var smokeControllerForRealUsage = new SmokeController(Substitute.For<IConfiguration>(), null, null);
             }).Throws<ArgumentNullException>().WithMessage("Must provide a non-null serviceProvider when smokeTestProvider is not provided. (Parameter 'serviceProvider')");
+        }
+
+        [Test]
+        public async Task Return_execution_durations_in_readable_and_adjusted_string_format()
+        {
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1)), new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(30)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.2)));
+            var smokeController = new SmokeController(Substitute.For<IConfiguration>(), null, smokeTestProvider);
+
+            var results = await smokeController.ExecuteSmokeTests();
+
+            Check.That(results.Results[0].Duration).IsEqualTo("1 second");
+            Check.That(results.Results[1].Duration).Contains(" milliseconds");
+            Check.That(results.Results[2].Duration).Contains(" seconds");
         }
     }
 }

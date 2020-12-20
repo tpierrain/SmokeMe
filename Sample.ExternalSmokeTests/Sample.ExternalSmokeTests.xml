@@ -6,7 +6,7 @@
     <members>
         <member name="T:Sample.ExternalSmokeTests.SmokeTestLocatedInAnotherAssembly">
             <summary>
-            Smoke test only to check that SmokeMe is able to detect and run all <see cref="T:SmokeMe.ISmokeTestAScenario"/>
+            Smoke test only to check that SmokeMe is able to detect and run all <see cref="T:SmokeMe.ICheckSmoke"/>
             types wherever they are located (i.e. in other assemblies than the API).
             </summary>
         </member>

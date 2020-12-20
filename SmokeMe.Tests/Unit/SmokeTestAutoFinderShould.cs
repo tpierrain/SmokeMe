@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Sample.Api.SmokeTests;
 using SmokeMe.Tests.Helpers;
 
-namespace SmokeMe.Tests
+namespace SmokeMe.Tests.Unit
 {
     [TestFixture]
     public class SmokeTestAutoFinderShould
@@ -21,7 +21,7 @@ namespace SmokeMe.Tests
             Check.That(smokeTests.Select(x => x.GetType()))
                 .Contains(typeof(AlwaysPositiveSmokeTest), 
                                                 typeof(SmokeTestThrowingAnAccessViolationException), 
-                                                typeof(WeCanGenerateNumbersSmokeTests));
+                                                typeof(WeCanGenerateNumbersWithRandomDelaySmokeTests));
         }
     }
 }
