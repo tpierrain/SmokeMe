@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.JsonPatch.Adapters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
