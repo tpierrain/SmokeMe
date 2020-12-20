@@ -19,36 +19,6 @@
             Gets the default value for the global timeout in milliseconds if the (<see cref="F:SmokeMe.Constants.GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
             </summary>
         </member>
-        <member name="T:SmokeMe.Controllers.ApiRuntimeDescription">
-            <summary>
-            A few information about an API and its execution runtime.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.ApiRuntimeDescription.InstanceIdentifier">
-            <summary>
-            Gets the API instance identifier.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.ApiRuntimeDescription.ApiVersion">
-            <summary>
-            Gets the API version.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.ApiRuntimeDescription.OsName">
-            <summary>
-            Gets the OS name of this API instance.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.ApiRuntimeDescription.AzureRegionName">
-            <summary>
-            Gets the region name where this API instance is running (for API running on Azure only).
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.ApiRuntimeDescription.NbOfProcessors">
-            <summary>
-            Gets the number of Processors this API instance has.
-            </summary>
-        </member>
         <member name="T:SmokeMe.Controllers.SmokeController">
             <summary>
             Executes smoke test declared for this API.
@@ -68,127 +38,6 @@
             Execute all registered Smoke Tests for this API.
             </summary>
             <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
-        </member>
-        <member name="T:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto">
-            <summary>
-            Result of a <see cref="T:SmokeMe.ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Duration"/>).
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.SmokeTestName">
-            <summary>
-            The name of the <see cref="T:SmokeMe.ICheckSmoke"/> smoke test (as declared by it).
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.SmokeTestDescription">
-            <summary>
-            The description of what this <see cref="T:SmokeMe.ICheckSmoke"/> smoke test is about (as declared by it).
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Outcome">
-            <summary>
-            Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Error">
-            <summary>
-            Gets the <see cref="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Error"/> associated to this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.Duration">
-            <summary>
-            Gets the human-readable duration of this smoke test execution.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.DurationInMsec">
-            <summary>
-            Gets the duration in milliseconds of this smoke test execution (useful for scripting).
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.TimeSpan,System.String)">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestResultWithMetaDataDto"/>.
-            </summary>
-            <param name="smokeTestName"></param>
-            <param name="smokeTestDescription"></param>
-            <param name="outcome"></param>
-            <param name="error"></param>
-            <param name="durationTimespan"></param>
-            <param name="duration"></param>
-        </member>
-        <member name="T:SmokeMe.Controllers.SmokeTestSessionResultAdapter">
-            <summary>
-            Adapter from SmokeMe internal model to SmokeMe external DTOs.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Controllers.ApiRuntimeDescription)">
-            <summary>
-            Adapts a <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to a <see cref="T:SmokeMe.Controllers.SmokeTestsSessionReportDto"/> one.
-            </summary>
-            <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to adapt.</param>
-            <param name="runtimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> to associate</param>
-            <returns>The <see cref="T:SmokeMe.Controllers.SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance.</returns>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(System.TimeSpan)">
-            <summary>
-            Adapts <see cref="T:System.TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
-            </summary>
-            <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
-            <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
-        </member>
-        <member name="T:SmokeMe.Controllers.SmokeTestsSessionReportDto">
-            <summary>
-            Exposition model of a smoke test session execution.
-            Contains extra data about the technical execution context too (e.g.: the instance identifier of the API, its number of cores).
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.IsSuccess">
-            <summary>
-            Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.Results">
-            <summary>
-            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.InstanceIdentifier">
-            <summary>
-            Gets the API instance identifier.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.ApiVersion">
-            <summary>
-            Gets the API version.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.OsName">
-            <summary>
-            Gets the OS name of this API instance.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.AzureRegionName">
-            <summary>
-            Gets the Azure region name where this API instance is running.
-            </summary>
-        </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestsSessionReportDto.NbOfProcessors">
-            <summary>
-            Gets the number of Processors this API instance has.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Controllers.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Controllers.SmokeTestResultWithMetaDataDto})">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestsSessionReportDto"/>.
-            </summary>
-            <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> to be adapted.</param>
-            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
-            <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeTestsSessionReportDto.#ctor(SmokeMe.Controllers.ApiRuntimeDescription)">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeTestsSessionReportDto"/>.
-            </summary>
-            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Controllers.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         </member>
         <member name="T:SmokeMe.Error">
             <summary>
@@ -267,6 +116,157 @@
             Instantiates all the <see cref="T:SmokeMe.ICheckSmoke"/> instances that have been found in the running code.
             </summary>
             <returns>A collection of <see cref="T:SmokeMe.ICheckSmoke"/> instances.</returns>
+        </member>
+        <member name="T:SmokeMe.Infra.ApiRuntimeDescription">
+            <summary>
+            A few information about an API and its execution runtime.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.InstanceIdentifier">
+            <summary>
+            Gets the API instance identifier.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.ApiVersion">
+            <summary>
+            Gets the API version.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.OsName">
+            <summary>
+            Gets the OS name of this API instance.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.AzureRegionName">
+            <summary>
+            Gets the region name where this API instance is running (for API running on Azure only).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.NbOfProcessors">
+            <summary>
+            Gets the number of Processors this API instance has.
+            </summary>
+        </member>
+        <member name="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto">
+            <summary>
+            Result of a <see cref="T:SmokeMe.ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Duration"/>).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.SmokeTestName">
+            <summary>
+            The name of the <see cref="T:SmokeMe.ICheckSmoke"/> smoke test (as declared by it).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.SmokeTestDescription">
+            <summary>
+            The description of what this <see cref="T:SmokeMe.ICheckSmoke"/> smoke test is about (as declared by it).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Outcome">
+            <summary>
+            Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Error">
+            <summary>
+            Gets the <see cref="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Error"/> associated to this <see cref="T:SmokeMe.ICheckSmoke"/> execution.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Duration">
+            <summary>
+            Gets the human-readable duration of this smoke test execution.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.DurationInMsec">
+            <summary>
+            Gets the duration in milliseconds of this smoke test execution (useful for scripting).
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.TimeSpan,System.String)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto"/>.
+            </summary>
+            <param name="smokeTestName"></param>
+            <param name="smokeTestDescription"></param>
+            <param name="outcome"></param>
+            <param name="error"></param>
+            <param name="durationTimespan"></param>
+            <param name="duration"></param>
+        </member>
+        <member name="T:SmokeMe.Infra.SmokeTestSessionResultAdapter">
+            <summary>
+            Adapter from SmokeMe internal model to SmokeMe external DTOs.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription)">
+            <summary>
+            Adapts a <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> one.
+            </summary>
+            <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to adapt.</param>
+            <param name="runtimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> to associate</param>
+            <returns>The <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance.</returns>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(System.TimeSpan)">
+            <summary>
+            Adapts <see cref="T:System.TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
+            </summary>
+            <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
+            <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
+        </member>
+        <member name="T:SmokeMe.Infra.SmokeTestsSessionReportDto">
+            <summary>
+            Exposition model of a smoke test session execution.
+            Contains extra data about the technical execution context too (e.g.: the instance identifier of the API, its number of cores).
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.IsSuccess">
+            <summary>
+            Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Results">
+            <summary>
+            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.InstanceIdentifier">
+            <summary>
+            Gets the API instance identifier.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.ApiVersion">
+            <summary>
+            Gets the API version.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.OsName">
+            <summary>
+            Gets the OS name of this API instance.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.AzureRegionName">
+            <summary>
+            Gets the Azure region name where this API instance is running.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.NbOfProcessors">
+            <summary>
+            Gets the number of Processors this API instance has.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto})">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
+            </summary>
+            <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> to be adapted.</param>
+            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
+            <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
+            </summary>
+            <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         </member>
         <member name="T:SmokeMe.SmokeTestAutoFinder">
             <summary>
