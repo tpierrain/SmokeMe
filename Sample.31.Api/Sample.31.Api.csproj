@@ -4,11 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Sample.31.Api</AssemblyName>
     <RootNamespace>Sample.Api</RootNamespace>
+    <Version>2.7.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>.\Sample.31.Api.xml</DocumentationFile>
-    <WarningLevel>2</WarningLevel>
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

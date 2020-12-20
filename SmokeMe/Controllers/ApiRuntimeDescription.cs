@@ -1,4 +1,7 @@
-﻿namespace SmokeMe.Controllers
+﻿using System;
+using System.Reflection;
+
+namespace SmokeMe.Controllers
 {
     /// <summary>
     /// A few information about an API and its execution runtime.
@@ -29,5 +32,13 @@
         /// Gets the number of Processors this API instance has.
         /// </summary>
         public string NbOfProcessors { get; }
+
+        public ApiRuntimeDescription()
+        {
+            ApiVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            OsName = Environment.GetEnvironmentVariable("OS");
+            AzureRegionName = Environment.GetEnvironmentVariable("REGION_NAME");
+            NbOfProcessors = Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS");
+        }
     }
 }

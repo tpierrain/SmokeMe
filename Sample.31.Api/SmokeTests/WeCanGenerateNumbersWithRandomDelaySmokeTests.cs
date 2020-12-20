@@ -9,7 +9,7 @@ namespace Sample.Api.SmokeTests
     {
         private readonly IProviderNumbers _numbersProvider;
         private readonly IFuzz _fuzzer;
-        public string SmokeTestName => "Check Number provider availability.";
+        public string SmokeTestName => "Check Number provider with random failures.";
         public string Description => $"For unit testing purpose. Check that an external service (here {nameof(IProviderNumbers)}) is properly injected during a smoke test execution.";
 
         public WeCanGenerateNumbersWithRandomDelaySmokeTests(IProviderNumbers numbersProvider, IFuzz fuzzer)
@@ -18,17 +18,22 @@ namespace Sample.Api.SmokeTests
             _fuzzer = fuzzer;
         }
 
-        public Task<SmokeTestResult> Scenario()
+        public async Task<SmokeTestResult> Scenario()
         {
             var delayInMsec = _fuzzer.GenerateInteger(100, 1700);
 
-            var continuation = Task.Delay(delayInMsec).ContinueWith(t =>
-            {
-                _numbersProvider.GiveMeANumber();
-                return new SmokeTestResult(true);
-            });
+            await Task.Delay(delayInMsec);
+           
+            _numbersProvider.GiveMeANumber();
 
-            return continuation;
+            if (_fuzzer.HeadsOrTails())
+            {
+                return new SmokeTestResult(true);
+            }
+            else
+            {
+                return new SmokeTestResult(false);
+            }
         }
     }
 }
