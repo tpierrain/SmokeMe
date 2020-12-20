@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch.Adapters;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,7 @@ namespace SmokeMe.Controllers
         /// </summary>
         /// <returns>The <see cref="SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
         [HttpGet]
-        public async Task<SmokeTestSessionResultDto> ExecuteSmokeTests()
+        public async Task<IActionResult> ExecuteSmokeTests()
         {
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun();
@@ -58,7 +59,12 @@ namespace SmokeMe.Controllers
             // Adapt from business to DTO with extra information
             var resultDto = SmokeTestSessionResultAdapter.Adapt(results, new ApiRuntimeDescription());
 
-            return resultDto;
+            if (resultDto.IsSuccess)
+            {
+                return Ok(resultDto);
+            }
+
+            return StatusCode((int)HttpStatusCode.InternalServerError, resultDto);
         }
     }
 }

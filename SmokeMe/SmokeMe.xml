@@ -80,14 +80,14 @@
             Contains extra data about the technical execution context too (e.g.: the instance identifier of the API, its number of cores).
             </summary>
         </member>
-        <member name="P:SmokeMe.Controllers.SmokeTestSessionResultDto.Results">
-            <summary>
-            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
-            </summary>
-        </member>
         <member name="P:SmokeMe.Controllers.SmokeTestSessionResultDto.IsSuccess">
             <summary>
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Controllers.SmokeTestSessionResultDto.Results">
+            <summary>
+            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
             </summary>
         </member>
         <member name="P:SmokeMe.Controllers.SmokeTestSessionResultDto.InstanceIdentifier">

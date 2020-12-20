@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NFluent;
@@ -25,8 +26,9 @@ namespace SmokeMe.Tests.Acceptance
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
-            var smokeTestResult = await controller.ExecuteSmokeTests();
+            var response = await controller.ExecuteSmokeTests();
 
+            var smokeTestResult = response.CheckIsError<SmokeTestSessionResultDto>(HttpStatusCode.InternalServerError);
             Check.That(smokeTestResult.Results.Select(x => x.Outcome)).Contains(true, false);
         }
 
@@ -41,8 +43,10 @@ namespace SmokeMe.Tests.Acceptance
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var smokeTestResult = await controller.ExecuteSmokeTests();
+            var response = await controller.ExecuteSmokeTests();
             stopwatch.Stop();
+
+            var smokeTestResult = response.CheckIsError<SmokeTestSessionResultDto>(HttpStatusCode.InternalServerError);
 
             var acceptableDeltaInMsec = 700; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
@@ -66,11 +70,14 @@ namespace SmokeMe.Tests.Acceptance
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1)), new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(30)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.2)));
             var smokeController = new SmokeController(Substitute.For<IConfiguration>(), null, smokeTestProvider);
 
-            var results = await smokeController.ExecuteSmokeTests();
+            var response = await smokeController.ExecuteSmokeTests();
 
-            Check.That(results.Results[0].Duration).IsEqualTo("1 second");
-            Check.That(results.Results[1].Duration).Contains(" milliseconds");
-            Check.That(results.Results[2].Duration).Contains(" seconds");
+            response.CheckIsOk200();
+            var smokeTestResult = response.ExtractValue<SmokeTestSessionResultDto>();
+
+            Check.That(smokeTestResult.Results[0].Duration).IsEqualTo("1 second");
+            Check.That(smokeTestResult.Results[1].Duration).Contains(" milliseconds");
+            Check.That(smokeTestResult.Results[2].Duration).Contains(" seconds");
         }
     }
 }
