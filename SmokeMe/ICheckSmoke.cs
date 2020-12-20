@@ -13,12 +13,6 @@ namespace SmokeMe
     public interface ICheckSmoke
     {
         /// <summary>
-        /// The code of this smoke test scenario.
-        /// </summary>
-        /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-        Task<SmokeTestResult> Scenario();
-
-        /// <summary>
         /// Name of the smoke test scenario.
         /// </summary>
         string SmokeTestName { get; }
@@ -27,5 +21,11 @@ namespace SmokeMe
         /// Description of the smoke test scenario.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// The code of this smoke test scenario.
+        /// </summary>
+        /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
+        Task<SmokeTestResult> Scenario();
     }
 }

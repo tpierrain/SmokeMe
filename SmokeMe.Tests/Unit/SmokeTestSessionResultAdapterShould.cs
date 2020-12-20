@@ -55,5 +55,13 @@ namespace SmokeMe.Tests.Unit
             var adaptation = SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(TimeSpan.FromMilliseconds(500.999));
             Check.That(adaptation).IsEqualTo("501 milliseconds");
         }
+
+        [Test]
+        public void Adapt_rounding_microseconds_when_needed()
+        {
+            var adaptation = SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(TimeSpan.FromMilliseconds(0.392));
+            Check.That(adaptation).IsEqualTo("392 microseconds");
+            // 0.392 ms
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace SmokeMe.Tests.Acceptance
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestSessionResultDto>(HttpStatusCode.InternalServerError);
+            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             Check.That(smokeTestResult.Results.Select(x => x.Outcome)).Contains(true, false);
         }
 
@@ -46,7 +46,7 @@ namespace SmokeMe.Tests.Acceptance
             var response = await controller.ExecuteSmokeTests();
             stopwatch.Stop();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestSessionResultDto>(HttpStatusCode.InternalServerError);
+            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
 
             var acceptableDeltaInMsec = 900; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
@@ -73,7 +73,7 @@ namespace SmokeMe.Tests.Acceptance
             var response = await smokeController.ExecuteSmokeTests();
 
             response.CheckIsOk200();
-            var smokeTestResult = response.ExtractValue<SmokeTestSessionResultDto>();
+            var smokeTestResult = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(smokeTestResult.Results[0].Duration).IsEqualTo("1 second");
             Check.That(smokeTestResult.Results[1].Duration).Contains(" milliseconds");
@@ -88,7 +88,7 @@ namespace SmokeMe.Tests.Acceptance
 
             var response = await smokeController.ExecuteSmokeTests();
 
-            var resultDto = response.CheckIsError<SmokeTestSessionResultDto>(HttpStatusCode.NotImplemented);
+            var resultDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
 
             Check.That(resultDto.IsSuccess).IsFalse();
             Check.That(resultDto.Results).IsEmpty();

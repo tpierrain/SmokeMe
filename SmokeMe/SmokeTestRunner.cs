@@ -16,8 +16,8 @@ namespace SmokeMe
         /// </summary>
         /// <param name="smokeTests">The <see cref="ICheckSmoke"/> instances to be executed in parallel.</param>
         /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ICheckSmoke"/> instances to be executed.</param>
-        /// <returns>The <see cref="SmokeTestSessionResult"/>.</returns>
-        public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTestsInParallel(IEnumerable<ICheckSmoke> smokeTests, TimeSpan globalTimeout)
+        /// <returns>The <see cref="SmokeTestsSessionReport"/>.</returns>
+        public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<ICheckSmoke> smokeTests, TimeSpan globalTimeout)
         {
             var tasks = new List<Task<SmokeTestResultWithMetaData>>();
             foreach (var smokeTest in smokeTests)
@@ -33,11 +33,11 @@ namespace SmokeMe
             {
                 if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
                 {
-                    return new TimeoutSmokeTestSessionResult(globalTimeout);
+                    return new TimeoutSmokeTestsSessionReport(globalTimeout);
                 }
             }
 
-            return new SmokeTestSessionResult(await allSmokeTasks);
+            return new SmokeTestsSessionReport(await allSmokeTasks);
         }
 
         private static bool IsNotAFalsePositive(Task<SmokeTestResultWithMetaData[]> allSmokeTasks)
@@ -75,15 +75,15 @@ namespace SmokeMe
     /// <summary>
     /// Represents a failed (due to timeout) smoke test session.
     /// </summary>
-    public class TimeoutSmokeTestSessionResult : SmokeTestSessionResult
+    public class TimeoutSmokeTestsSessionReport : SmokeTestsSessionReport
     {
         private readonly TimeSpan _globalTimeout;
 
         /// <summary>
-        /// Instantiates a <see cref="TimeoutSmokeTestSessionResult"/>.
+        /// Instantiates a <see cref="TimeoutSmokeTestsSessionReport"/>.
         /// </summary>
         /// <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
-        public TimeoutSmokeTestSessionResult(TimeSpan globalTimeout) : base(new SmokeTestResultWithMetaData[0], false)
+        public TimeoutSmokeTestsSessionReport(TimeSpan globalTimeout) : base(new SmokeTestResultWithMetaData[0], false)
         {
             _globalTimeout = globalTimeout;
         }

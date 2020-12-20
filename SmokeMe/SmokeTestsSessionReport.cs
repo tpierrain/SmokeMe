@@ -6,7 +6,7 @@ namespace SmokeMe
     /// <summary>
     /// Result of a smoke test session.
     /// </summary>
-    public class SmokeTestSessionResult
+    public class SmokeTestsSessionReport
     {
         /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
@@ -21,14 +21,14 @@ namespace SmokeMe
         /// <summary>
         /// Null object for by default initializations.
         /// </summary>
-        public static SmokeTestSessionResult Null => new SmokeTestSessionResult(new SmokeTestResultWithMetaData[0], false);
+        public static SmokeTestsSessionReport Null => new SmokeTestsSessionReport(new SmokeTestResultWithMetaData[0], false);
 
         /// <summary>
-        /// Instantiates a <see cref="SmokeTestSessionResult"/>.
+        /// Instantiates a <see cref="SmokeTestsSessionReport"/>.
         /// </summary>
         /// <param name="results">The results of this Smoke test session.</param>
-        /// <param name="isSuccess">Whether or not the <see cref="SmokeTestSessionResult"/> is successful or not.</param>
-        public SmokeTestSessionResult(SmokeTestResultWithMetaData[] results, bool? isSuccess = null)
+        /// <param name="isSuccess">Whether or not the <see cref="SmokeTestsSessionReport"/> is successful or not.</param>
+        public SmokeTestsSessionReport(SmokeTestResultWithMetaData[] results, bool? isSuccess = null)
         {
             if (results == null)
             {

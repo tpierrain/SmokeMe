@@ -42,7 +42,7 @@ namespace SmokeMe.Controllers
         /// <summary>
         /// Execute all registered Smoke Tests for this API.
         /// </summary>
-        /// <returns>The <see cref="SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
+        /// <returns>The <see cref="SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
         [HttpGet]
         public async Task<IActionResult> ExecuteSmokeTests()
         {
@@ -51,7 +51,7 @@ namespace SmokeMe.Controllers
 
             if (!smokeTests.Any())
             {
-                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestSessionResultDto(new ApiRuntimeDescription()));
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription()));
             }
 
             var globalTimeout = TimeSpan.FromMilliseconds(Constants.GlobalTimeoutInMsecDefaultValue);

@@ -37,7 +37,7 @@
             <summary>
             Execute all registered Smoke Tests for this API.
             </summary>
-            <returns>The <see cref="T:SmokeMe.SmokeTestSessionResult"/> of the Smoke tests execution.</returns>
+            <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
         </member>
         <member name="T:SmokeMe.Error">
             <summary>
@@ -168,62 +168,62 @@
             </summary>
             <param name="smokeTests">The <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed in parallel.</param>
             <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed.</param>
-            <returns>The <see cref="T:SmokeMe.SmokeTestSessionResult"/>.</returns>
+            <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.</returns>
         </member>
-        <member name="T:SmokeMe.TimeoutSmokeTestSessionResult">
+        <member name="T:SmokeMe.TimeoutSmokeTestsSessionReport">
             <summary>
             Represents a failed (due to timeout) smoke test session.
             </summary>
         </member>
-        <member name="M:SmokeMe.TimeoutSmokeTestSessionResult.#ctor(System.TimeSpan)">
+        <member name="M:SmokeMe.TimeoutSmokeTestsSessionReport.#ctor(System.TimeSpan)">
             <summary>
-            Instantiates a <see cref="T:SmokeMe.TimeoutSmokeTestSessionResult"/>.
+            Instantiates a <see cref="T:SmokeMe.TimeoutSmokeTestsSessionReport"/>.
             </summary>
             <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
         </member>
-        <member name="T:SmokeMe.SmokeTestSessionResult">
+        <member name="T:SmokeMe.SmokeTestsSessionReport">
             <summary>
             Result of a smoke test session.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.Results">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.Results">
             <summary>
-            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
+            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> reports of this Smoke test session.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.IsSuccess">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.IsSuccess">
             <summary>
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestSessionResult.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean})">
+        <member name="M:SmokeMe.SmokeTestsSessionReport.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean})">
             <summary>
-            Instantiates a <see cref="T:SmokeMe.SmokeTestSessionResult"/>.
+            Instantiates a <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.
             </summary>
-            <param name="results">The results of this Smoke test session.</param>
-            <param name="isSuccess">Whether or not the <see cref="T:SmokeMe.SmokeTestSessionResult"/> is successful or not.</param>
+            <param name="reports">The reports of this Smoke test session.</param>
+            <param name="isSuccess">Whether or not the <see cref="T:SmokeMe.SmokeTestsSessionReport"/> is successful or not.</param>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.InstanceIdentifier">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.InstanceIdentifier">
             <summary>
             Gets the API instance identifier.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.ApiVersion">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.ApiVersion">
             <summary>
             Gets the API version.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.OsName">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.OsName">
             <summary>
             Gets the OS name of this API instance.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.AzureRegionName">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.AzureRegionName">
             <summary>
             Gets the Azure region name where this API instance is running.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestSessionResult.NbOfProcessors">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.NbOfProcessors">
             <summary>
             Gets the number of Processors this API instance has.
             </summary>

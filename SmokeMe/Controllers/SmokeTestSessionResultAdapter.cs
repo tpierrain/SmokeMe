@@ -10,19 +10,19 @@ namespace SmokeMe.Controllers
     public static class SmokeTestSessionResultAdapter
     {
         /// <summary>
-        /// Adapts a <see cref="SmokeTestSessionResult"/> instance to a <see cref="SmokeTestSessionResultDto"/> one.
+        /// Adapts a <see cref="SmokeTestsSessionReport"/> instance to a <see cref="SmokeTestsSessionReportDto"/> one.
         /// </summary>
-        /// <param name="results">The <see cref="SmokeTestSessionResult"/> instance to adapt.</param>
+        /// <param name="reports">The <see cref="SmokeTestsSessionReport"/> instance to adapt.</param>
         /// <param name="runtimeDescription">The <see cref="ApiRuntimeDescription"/> to associate</param>
-        /// <returns>The <see cref="SmokeTestSessionResultDto"/> corresponding to the external exposition model of the provided <see cref="SmokeTestSessionResult"/> instance.</returns>
-        public static SmokeTestSessionResultDto Adapt(SmokeTestSessionResult results, ApiRuntimeDescription runtimeDescription)
+        /// <returns>The <see cref="SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="SmokeTestsSessionReport"/> instance.</returns>
+        public static SmokeTestsSessionReportDto Adapt(SmokeTestsSessionReport reports, ApiRuntimeDescription runtimeDescription)
         {
             // Adapt the array of results 
-            var resultsDto = results.Results
+            var resultsDto = reports.Results
                 .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, AdaptDurationToMakeItReadable(r.Duration)));
 
             // Adapt the overall wrapper (with runtime description information too)
-            var result = new SmokeTestSessionResultDto(results, runtimeDescription, resultsDto);
+            var result = new SmokeTestsSessionReportDto(reports, runtimeDescription, resultsDto);
 
             return result;
         }
@@ -35,6 +35,14 @@ namespace SmokeMe.Controllers
         public static string AdaptDurationToMakeItReadable(TimeSpan duration)
         {
             var usCultureInfo = CultureInfo.GetCultureInfo("en-us");
+
+            if (duration < TimeSpan.FromMilliseconds(1))
+            {
+                var totalDurationInMicroseconds = duration.TotalMilliseconds*1000;
+                var roundedMicroseconds = Convert.ToInt32(totalDurationInMicroseconds);
+                return $"{roundedMicroseconds.ToString(usCultureInfo)} microseconds";
+            }
+
             if (duration < TimeSpan.FromSeconds(1))
             {
                 var roundedMilliseconds = Convert.ToInt32(duration.TotalMilliseconds);

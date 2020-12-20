@@ -7,15 +7,15 @@ namespace SmokeMe.Controllers
     /// Exposition model of a smoke test session execution.
     /// Contains extra data about the technical execution context too (e.g.: the instance identifier of the API, its number of cores).
     /// </summary>
-    public class SmokeTestSessionResultDto
+    public class SmokeTestsSessionReportDto
     {
-        private readonly SmokeTestSessionResult _results;
+        private readonly SmokeTestsSessionReport _reports;
         private readonly ApiRuntimeDescription _apiRuntimeDescription;
 
         /// <summary>
         /// Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
         /// </summary>
-        public bool IsSuccess => _results.IsSuccess;
+        public bool IsSuccess => _reports.IsSuccess;
 
         /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
@@ -49,14 +49,14 @@ namespace SmokeMe.Controllers
 
 
         /// <summary>
-        /// Instantiates a <see cref="SmokeTestSessionResultDto"/>.
+        /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
-        /// <param name="results">The <see cref="SmokeTestSessionResult"/> to be adapted.</param>
+        /// <param name="reports">The <see cref="SmokeTestsSessionReport"/> to be adapted.</param>
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         /// <param name="smokeTestResultWithMetaDataDtos">The <see cref="IEnumerable&lt;SmokeTestResultWithMetaDataDto&gt;"/> containing all the smoke tests results.</param>
-        public SmokeTestSessionResultDto(SmokeTestSessionResult results, ApiRuntimeDescription apiRuntimeDescription, IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos)
+        public SmokeTestsSessionReportDto(SmokeTestsSessionReport reports, ApiRuntimeDescription apiRuntimeDescription, IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos)
         {
-            _results = results;
+            _reports = reports;
 
             Results = smokeTestResultWithMetaDataDtos.ToArray();
 
@@ -64,12 +64,12 @@ namespace SmokeMe.Controllers
         }
 
         /// <summary>
-        /// Instantiates a <see cref="SmokeTestSessionResultDto"/>.
+        /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
-        public SmokeTestSessionResultDto(ApiRuntimeDescription apiRuntimeDescription)
+        public SmokeTestsSessionReportDto(ApiRuntimeDescription apiRuntimeDescription)
         {
-            _results = SmokeTestSessionResult.Null;
+            _reports = SmokeTestsSessionReport.Null;
 
             _apiRuntimeDescription = apiRuntimeDescription;
             Results = new SmokeTestResultWithMetaDataDto[0];
