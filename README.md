@@ -10,6 +10,8 @@ A convention-based tiny framework allowing you to execute all your declared smok
 
 ## Can't be more easy!
 
+### While coding
+
 1. You add the reference to the **SmokeMe** library in your API project
 2. You code all the smoke tests scenario you want in your code base
     - A Smoke test scenario is just a class implementing the **ISmokeTestAScenario** interface
@@ -46,21 +48,23 @@ public interface ICheckSmoke
 
 ```
 
-3. You start your API and just call the /smoke ressource on it. 
-    - If all your smoke tests were successfully executed, you get an HTTP 200 code ;-)
+### While deploying or supporting your production
 
+1. You just GET the (automatically added) **/smoke** ressource on your API.
 
-4. Check the HTTP response code (and consult the published report)
+e.g.:
 
-To do so, call:
+## https://(your-own-api-url):(portnumber)/api/v1/Smoke
+
+or via curl for instance:
 
 ```
-https://(your-own-api-url):(portnumber)/api/v1/Smoke
+
+curl -X GET "https://localhost:5001/api/v1/Smoke" -H  "accept: */*"
 
 ```
 
-
-And check the HTTP response type you get:
+And you check the HTTP response type you get:
 
 ### HTTP 200 (OK)
 
