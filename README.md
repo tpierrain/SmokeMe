@@ -86,13 +86,13 @@ at least one failing smoke test.
 
 ## FAQ
 
-1. Does SmokeMe execute all your founded smoke tests in parallel?
+### 1. Does SmokeMe execute all your founded smoke tests in parallel?
 
 ```
 Yes
 ```
 
-2. Does SmokeMe have a global timeout for all smoke tests to be ran?
+### 2. Does SmokeMe have a global timeout for all smoke tests to be ran?
 
 ```
 Yes. It's 5 second by default (5000 milliseconds). But you can override this 
@@ -101,22 +101,23 @@ of your Web API project.
 
 ```
 
-3. How to make SmokeMe being able to execute all my smoke tests?
+### 3. How to make SmokeMe being able to execute all my smoke tests?
 
 ```
 More than easy. All you have to do is to add a reference to the **SmokeMe** lib 
 in your API project. That's it!
 ```
 
-4. How to code and declare a smoke test?
+### 4. How to code and declare a smoke test?
 
 ```
 Easy, all you have to do is to add a reference to the **SmokeMe** lib in your 
 code and to code a smoke test by implementing a type implementing 
 SmokeMe.ICheckSmoke interface.
 
-e.g.: 
 ```
+
+e.g.: 
 
 ```csharp
 
@@ -156,6 +157,41 @@ public class AvailabilitiesSmokeTest : ICheckSmoke
 }
 
 ```
+
+### 5. How can I avoid the issue of having error: '"code": "ApiVersionUnspecified" ' when calling /smoke?
+
+```
+This issue is due to the fact that your API requires an explicit version for every Controller 
+whereas the SmokeMe.SmokeController does not have one on purpose (to avoid crashing 
+when one does not have an explicit versioning configuration nor references 
+to Microsoft.AspNetCore.Mvc.Versioning & Co in its API).
+
+As a consequence, the /smoke route for your smoke test won't be coupled to any version 
+like /api/v1/ etc. but will be available instead from the root of your API /smoke.
+
+Fortunately the error that may occurs when calling /smoke in those cases may be fixed by a simple option within your API Startup type:
+
+options.AssumeDefaultVersionWhenUnspecified = true;
+
+at the services.AddApiVersioning(...) method invocation level.
+
+
+```
+e.g.: 
+
+```csharp
+
+services.AddApiVersioning(
+    options =>
+    {
+        options.ReportApiVersions = true;
+        options.DefaultApiVersion = new ApiVersion(0,0);
+        options.AssumeDefaultVersionWhenUnspecified = true; // the line you should add in case of problem
+    } );
+
+```
+
+---
 
 ## Hope you will enjoy it!
 
