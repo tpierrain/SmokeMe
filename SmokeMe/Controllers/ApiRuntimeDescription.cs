@@ -35,7 +35,12 @@ namespace SmokeMe.Controllers
 
         public ApiRuntimeDescription()
         {
-            ApiVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            try
+            {
+                ApiVersion = Assembly.GetEntryAssembly().GetName().Version.ToString();
+            }
+            catch { }
+
             OsName = Environment.GetEnvironmentVariable("OS");
             AzureRegionName = Environment.GetEnvironmentVariable("REGION_NAME");
             NbOfProcessors = Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS");
