@@ -6,16 +6,19 @@ namespace SmokeMe.Tests.Helpers
 {
     internal class AlwaysPositiveSmokeTest : ISmokeTestAScenario
     {
-        private readonly TimeSpan _duration;
+        private readonly TimeSpan _delay;
 
-        public AlwaysPositiveSmokeTest(TimeSpan duration)
+        public string SmokeTestName => "Always positive smoke test after a delay";
+        public string Description => $"For unit testing purpose. Return positively after a delay of {_delay.TotalMilliseconds} milliseconds";
+
+        public AlwaysPositiveSmokeTest(TimeSpan delay)
         {
-            _duration = duration;
+            _delay = delay;
         }
 
         public Task<SmokeTestResult> ExecuteScenario()
         {
-            Thread.Sleep(_duration);
+            Thread.Sleep(_delay);
 
             return Task.FromResult(new SmokeTestResult(true));
         }

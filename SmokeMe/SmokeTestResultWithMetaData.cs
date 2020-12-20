@@ -3,9 +3,9 @@
 namespace SmokeMe
 {
     /// <summary>
-    /// Result of a <see cref="ISmokeTestAScenario"/> execution but with its <see cref="Duration"/>.
+    /// Result of a <see cref="ISmokeTestAScenario"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).
     /// </summary>
-    public class StopWatchedSmokeTestExecution
+    public class SmokeTestResultWithMetaData
     {
         /// <summary>
         /// Indicates whether the outcome of this <see cref="ISmokeTestAScenario"/> execution is positive or not.
@@ -22,17 +22,29 @@ namespace SmokeMe
         /// </summary>
         public TimeSpan Duration { get; }
 
+        /// <summary>
+        /// Gets the name of the executed <see cref="ISmokeTestAScenario"/> instance.
+        /// </summary>
+        public string SmokeTestName { get; }
+
+        /// <summary>
+        /// Gets the description of the executed <see cref="ISmokeTestAScenario"/> instance.
+        /// </summary>
+        public string SmokeTestDescription { get; }
+
         private SmokeTestResult SmokeTestResult { get; }
         
         /// <summary>
-        /// Instantiates a <see cref="StopWatchedSmokeTestExecution"/>.
+        /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
         /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="ISmokeTestAScenario"/> execution.</param>
         /// <param name="duration">The duration of this <see cref="ISmokeTestAScenario"/> execution.</param>
-        public StopWatchedSmokeTestExecution(SmokeTestResult smokeTestResult, TimeSpan duration)
+        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan duration, string smokeTestName, string smokeTestDescription)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
+            SmokeTestName = smokeTestName;
+            SmokeTestDescription = smokeTestDescription;
         }
 
         /// <summary>

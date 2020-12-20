@@ -93,11 +93,12 @@
         </member>
         <member name="T:SmokeMe.ISmokeTestAScenario">
             <summary>
-            Contains scenario to be executed in order to 'smoke test' something.
-            (a Smoke test actually).
+            Smoke test/scenario/code to be executed in order to check that a minimum
+            viable capability of your system is working.
+            
             Note: all the services and dependencies you need for it will be automatically
-            injected by the lib via the ASP.NET IServiceProvider of your API
-            (classical constructor-based injection).
+            injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
+            (classical constructor-based injection). Can't be that easy, right? ;-)
             </summary>
         </member>
         <member name="M:SmokeMe.ISmokeTestAScenario.ExecuteScenario">
@@ -188,7 +189,7 @@
         </member>
         <member name="P:SmokeMe.SmokeTestSessionResult.Results">
             <summary>
-            Gets all the <see cref="T:SmokeMe.StopWatchedSmokeTestExecution"/> results of this Smoke test session.
+            Gets all the <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/> results of this Smoke test session.
             </summary>
         </member>
         <member name="P:SmokeMe.SmokeTestSessionResult.IsSuccess">
@@ -196,7 +197,7 @@
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestSessionResult.#ctor(SmokeMe.StopWatchedSmokeTestExecution[],System.Nullable{System.Boolean})">
+        <member name="M:SmokeMe.SmokeTestSessionResult.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean})">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestSessionResult"/>.
             </summary>
@@ -228,34 +229,34 @@
             Gets the number of Processors this API instance has.
             </summary>
         </member>
-        <member name="T:SmokeMe.StopWatchedSmokeTestExecution">
+        <member name="T:SmokeMe.SmokeTestResultWithMetaData">
             <summary>
-            Result of a <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution but with its <see cref="P:SmokeMe.StopWatchedSmokeTestExecution.Duration"/>.
+            Result of a <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution but with its <see cref="P:SmokeMe.SmokeTestResultWithMetaData.Duration"/>.
             </summary>
         </member>
-        <member name="P:SmokeMe.StopWatchedSmokeTestExecution.Outcome">
+        <member name="P:SmokeMe.SmokeTestResultWithMetaData.Outcome">
             <summary>
             Indicates whether the outcome of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution is positive or not.
             </summary>
         </member>
-        <member name="P:SmokeMe.StopWatchedSmokeTestExecution.ErrorMessage">
+        <member name="P:SmokeMe.SmokeTestResultWithMetaData.ErrorMessage">
             <summary>
             Gets the <see cref="T:SmokeMe.Error"/> associated to this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
             </summary>
         </member>
-        <member name="P:SmokeMe.StopWatchedSmokeTestExecution.Duration">
+        <member name="P:SmokeMe.SmokeTestResultWithMetaData.Duration">
             <summary>
             Gets the duration of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.
             </summary>
         </member>
-        <member name="M:SmokeMe.StopWatchedSmokeTestExecution.#ctor(SmokeMe.SmokeTestResult,System.TimeSpan)">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.TimeSpan)">
             <summary>
-            Instantiates a <see cref="T:SmokeMe.StopWatchedSmokeTestExecution"/>.
+            Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
-            <param name="smokeTestResult">The <see cref="P:SmokeMe.StopWatchedSmokeTestExecution.SmokeTestResult"/> associated with this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
+            <param name="smokeTestResult">The <see cref="P:SmokeMe.SmokeTestResultWithMetaData.SmokeTestResult"/> associated with this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
             <param name="duration">The duration of this <see cref="T:SmokeMe.ISmokeTestAScenario"/> execution.</param>
         </member>
-        <member name="M:SmokeMe.StopWatchedSmokeTestExecution.ToString">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.ToString">
             <summary>
             Returns a string representing the object.
             </summary>

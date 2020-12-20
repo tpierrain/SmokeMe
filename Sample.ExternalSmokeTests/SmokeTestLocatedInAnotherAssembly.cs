@@ -13,6 +13,9 @@ namespace Sample.ExternalSmokeTests
     {
         private readonly IRestClient _restClient;
 
+        public string SmokeTestName => "Check connectivity towards Google search engine.";
+        public string Description => "Check that the Google search engine is reachable";
+
         public SmokeTestLocatedInAnotherAssembly(IRestClient restClient)
         {
             _restClient = restClient;

@@ -9,9 +9,9 @@ namespace SmokeMe
     public class SmokeTestSessionResult
     {
         /// <summary>
-        /// Gets all the <see cref="StopWatchedSmokeTestExecution"/> results of this Smoke test session.
+        /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
         /// </summary>
-        public StopWatchedSmokeTestExecution[] Results { get; }
+        public SmokeTestResultWithMetaData[] Results { get; }
 
         /// <summary>
         /// Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
@@ -23,7 +23,7 @@ namespace SmokeMe
         /// </summary>
         /// <param name="results">The results of this Smoke test session.</param>
         /// <param name="isSuccess">Whether or not the <see cref="SmokeTestSessionResult"/> is successful or not.</param>
-        public SmokeTestSessionResult(StopWatchedSmokeTestExecution[] results, bool? isSuccess = null)
+        public SmokeTestSessionResult(SmokeTestResultWithMetaData[] results, bool? isSuccess = null)
         {
             if (results == null)
             {

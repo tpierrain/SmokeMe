@@ -19,7 +19,7 @@ namespace SmokeMe
         /// <returns>The <see cref="SmokeTestSessionResult"/>.</returns>
         public static async Task<SmokeTestSessionResult> ExecuteAllSmokeTests(IEnumerable<ISmokeTestAScenario> smokeTests, TimeSpan globalTimeout)
         {
-            var tasks = new List<Task<StopWatchedSmokeTestExecution>>();
+            var tasks = new List<Task<SmokeTestResultWithMetaData>>();
             foreach (var smokeTest in smokeTests)
             {
                 var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTest));
@@ -40,19 +40,19 @@ namespace SmokeMe
             return new SmokeTestSessionResult(await allSmokeTasks);
         }
 
-        private static bool IsNotAFalsePositive(Task<StopWatchedSmokeTestExecution[]> allSmokeTasks)
+        private static bool IsNotAFalsePositive(Task<SmokeTestResultWithMetaData[]> allSmokeTasks)
         {
             return !allSmokeTasks.IsCompletedSuccessfully;
         }
 
-        private static async Task<StopWatchedSmokeTestExecution> StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
+        private static async Task<SmokeTestResultWithMetaData> StopWatchSafeSmokeTestExecution(ISmokeTestAScenario smokeTest)
         {
             var stopwatch = new Stopwatch();
             try
             {
                 var smokeTestResult = await smokeTest.ExecuteScenario();
                 stopwatch.Stop();
-                var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch, smokeTest);
 
                 return smokeTestExecution;
             }
@@ -60,9 +60,15 @@ namespace SmokeMe
             {
                 stopwatch.Stop();
                 var smokeTestResult = new SmokeTestResult("", ex);
-                var smokeTestExecution = new StopWatchedSmokeTestExecution(smokeTestResult, stopwatch.Elapsed);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch, smokeTest);
                 return smokeTestExecution;
             }
+        }
+
+        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult,
+            Stopwatch stopwatch, ISmokeTestAScenario smokeTest)
+        {
+            return new SmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest.SmokeTestName, smokeTest.Description);
         }
     }
 
@@ -77,7 +83,7 @@ namespace SmokeMe
         /// Instantiates a <see cref="TimeoutSmokeTestSessionResult"/>.
         /// </summary>
         /// <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
-        public TimeoutSmokeTestSessionResult(TimeSpan globalTimeout) : base(new StopWatchedSmokeTestExecution[0], false)
+        public TimeoutSmokeTestSessionResult(TimeSpan globalTimeout) : base(new SmokeTestResultWithMetaData[0], false)
         {
             _globalTimeout = globalTimeout;
         }
