@@ -22,8 +22,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.ExternalSmokeTests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.31.Api", "Samples\Sample.31.Api\Sample.31.Api.csproj", "{38964A45-116E-4354-AF3E-0EF623B01748}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.dotnet5.Api", "Samples\Sample.dotnet5.Api\Sample.dotnet5.Api.csproj", "{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,10 +44,6 @@ Global
 		{38964A45-116E-4354-AF3E-0EF623B01748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38964A45-116E-4354-AF3E-0EF623B01748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38964A45-116E-4354-AF3E-0EF623B01748}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,7 +51,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{94D582B1-490D-477F-BE25-53982B942889} = {2C93DF71-7730-49AA-8013-BAB917EEFF15}
 		{38964A45-116E-4354-AF3E-0EF623B01748} = {2C93DF71-7730-49AA-8013-BAB917EEFF15}
-		{C3FFD208-E3C3-48B8-B3C3-E69ADC2B52F0} = {2C93DF71-7730-49AA-8013-BAB917EEFF15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4FC3D105-496A-4BA9-85CA-B24A886BBDF8}
