@@ -21,8 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sample.31.Api\Sample.31.Api.csproj" />
-    <ProjectReference Include="..\Sample.ExternalSmokeTests\Sample.ExternalSmokeTests.csproj" />
     <ProjectReference Include="..\SmokeMe\SmokeMe.csproj" />
   </ItemGroup>
 

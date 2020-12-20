@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\SmokeMe\SmokeMe.csproj" />
     <ProjectReference Include="..\Sample.ExternalSmokeTests\Sample.ExternalSmokeTests.csproj" />
-    <ProjectReference Include="..\SmokeMe\SmokeMe.csproj" />
   </ItemGroup>
 
 
