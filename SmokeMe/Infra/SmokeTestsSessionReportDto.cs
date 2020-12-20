@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace SmokeMe.Controllers
+namespace SmokeMe.Infra
 {
     /// <summary>
     /// Exposition model of a smoke test session execution.

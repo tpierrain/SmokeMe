@@ -8,6 +8,7 @@ using NFluent;
 using NSubstitute;
 using NUnit.Framework;
 using SmokeMe.Controllers;
+using SmokeMe.Infra;
 using SmokeMe.Tests.Helpers;
 using SmokeMe.Tests.Unit;
 
@@ -33,11 +34,24 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Return_false_success_when_smoke_tests_timeout_globally()
+        public async Task Return_InternalServerError_500_when_smoke_tests_fails()
+        {
+            var configuration = Substitute.For<IConfiguration>();
+            var smokeTestProvider = Stub.ASmokeTestProvider(new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
+
+            var controller = new SmokeController(configuration, null, smokeTestProvider);
+            var response = await controller.ExecuteSmokeTests();
+
+            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            Check.That(smokeTestResult.Results.Select(x => x.Outcome)).ContainsExactly(false);
+        }
+
+        [Test]
+        public async Task Return_InternalServerError_500_when_smoke_tests_timeout()
         {
             var globalTimeoutInMsec = 5 * 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)), new SmokeTestThrowingAnAccessViolationException(TimeSpan.FromSeconds(2.0)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(2.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 

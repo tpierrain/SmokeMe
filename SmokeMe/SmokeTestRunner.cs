@@ -27,7 +27,8 @@ namespace SmokeMe
             }
 
             var allSmokeTasks = Task.WhenAll(tasks);
-            var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout));
+            var timeoutTask = Task.Delay(globalTimeout);
+            //var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout));
 
             if (timeoutTask == await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false))
             {
@@ -52,6 +53,7 @@ namespace SmokeMe
             try
             {
                 var smokeTestResult = await smokeTest.Scenario();
+
                 stopwatch.Stop();
                 var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
 

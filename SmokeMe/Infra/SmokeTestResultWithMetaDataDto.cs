@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SmokeMe.Controllers
+namespace SmokeMe.Infra
 {
     /// <summary>
     /// Result of a <see cref="ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).

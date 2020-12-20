@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace SmokeMe.Controllers
+namespace SmokeMe.Infra
 {
     /// <summary>
     /// Adapter from SmokeMe internal model to SmokeMe external DTOs.

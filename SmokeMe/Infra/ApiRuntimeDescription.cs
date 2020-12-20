@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace SmokeMe.Controllers
+namespace SmokeMe.Infra
 {
     /// <summary>
     /// A few information about an API and its execution runtime.

@@ -2,6 +2,7 @@ using System;
 using NFluent;
 using NUnit.Framework;
 using SmokeMe.Controllers;
+using SmokeMe.Infra;
 
 namespace SmokeMe.Tests.Unit
 {
