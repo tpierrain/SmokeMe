@@ -100,6 +100,8 @@ Means that all your smoke tests have been executed nicely and before the global 
 
 Means that one or more smoke tests have timeout (configurable global timeout is 10 seconds by default)
 
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-504.JPG?raw=true)   
+
 
 ### HTTP 501 (Not implemented)
 

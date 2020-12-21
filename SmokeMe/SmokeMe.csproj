@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
