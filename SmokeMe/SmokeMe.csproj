@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.1.3</Version>
+    <Version>1.2.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
@@ -12,7 +12,9 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>First version of the Smoke library.</PackageReleaseNotes>
+    <PackageReleaseNotes>Make timeout more explicit (and return a HTTP 504 GatewayTimeout)
+
+Set default value for global timeout to 10 seconds (instead of 5 seconds)</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
   </PropertyGroup>
 
