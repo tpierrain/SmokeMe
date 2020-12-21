@@ -33,6 +33,9 @@ namespace SmokeMe.Infra
         /// </summary>
         public string NbOfProcessors { get; }
 
+        /// <summary>
+        /// Instantiates an <see cref="ApiRuntimeDescription"/>.
+        /// </summary>
         public ApiRuntimeDescription()
         {
             try

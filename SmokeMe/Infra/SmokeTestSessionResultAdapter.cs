@@ -1,6 +1,5 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
+using SmokeMe.Helpers;
 
 namespace SmokeMe.Infra
 {
@@ -19,58 +18,12 @@ namespace SmokeMe.Infra
         {
             // Adapt the array of results 
             var resultsDto = reports.Results
-                .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, AdaptDurationToMakeItReadable(r.Duration)));
+                .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, r.Duration.GetHumanReadableVersion()));
 
             // Adapt the overall wrapper (with runtime description information too)
             var result = new SmokeTestsSessionReportDto(reports, runtimeDescription, resultsDto);
 
             return result;
-        }
-
-        /// <summary>
-        /// Adapts <see cref="TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
-        /// </summary>
-        /// <param name="duration">The <see cref="TimeSpan"/> to be adapted.</param>
-        /// <returns>The human readable string version (with "en-us" culture format) of the <see cref="TimeSpan"/> provided.</returns>
-        public static string AdaptDurationToMakeItReadable(TimeSpan duration)
-        {
-            var usCultureInfo = CultureInfo.GetCultureInfo("en-us");
-
-            if (duration < TimeSpan.FromMilliseconds(1))
-            {
-                var totalDurationInMicroseconds = duration.TotalMilliseconds*1000;
-                var roundedMicroseconds = Convert.ToInt32(totalDurationInMicroseconds);
-                return $"{roundedMicroseconds.ToString(usCultureInfo)} microseconds";
-            }
-
-            if (duration < TimeSpan.FromSeconds(1))
-            {
-                var roundedMilliseconds = Convert.ToInt32(duration.TotalMilliseconds);
-                if (roundedMilliseconds <= 1)
-                {
-                    return $"{roundedMilliseconds.ToString(usCultureInfo)} millisecond";
-                }
-
-                return $"{roundedMilliseconds.ToString(usCultureInfo)} milliseconds";
-            }
-
-            if (duration == TimeSpan.FromSeconds(1))
-            {
-                return $"1 second";
-            }
-
-            if (duration < TimeSpan.FromMinutes(1))
-            {
-                if (duration.TotalSeconds < 1.1)
-                {
-                    return "1 second";
-                }
-
-                var roundedSeconds = Math.Round(duration.TotalSeconds, 1);
-                return $"{roundedSeconds.ToString(usCultureInfo)} seconds";
-            }
-
-            return duration.ToString("c");
         }
     }
 }

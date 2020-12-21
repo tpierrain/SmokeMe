@@ -24,11 +24,17 @@ namespace SmokeMe
         public static SmokeTestsSessionReport Null => new SmokeTestsSessionReport(new SmokeTestResultWithMetaData[0], false);
 
         /// <summary>
+        /// Gets the status of the smoke tests session report.
+        /// </summary>
+        public string Status { get; }
+
+        /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReport"/>.
         /// </summary>
         /// <param name="results">The results of this Smoke test session.</param>
         /// <param name="isSuccess">Whether or not the <see cref="SmokeTestsSessionReport"/> is successful or not.</param>
-        public SmokeTestsSessionReport(SmokeTestResultWithMetaData[] results, bool? isSuccess = null)
+        /// <param name="status">The status of the report.</param>
+        public SmokeTestsSessionReport(SmokeTestResultWithMetaData[] results, bool? isSuccess = null, string status = null)
         {
             if (results == null)
             {
@@ -45,6 +51,9 @@ namespace SmokeMe
             }
 
             Results = results;
+
+            status ??= string.Empty;
+            Status = status;
         }
     }
 }

@@ -80,6 +80,18 @@
             <param name="type">The considered <see cref="T:System.Type"/>.</param>
             <returns>All the constructors of a <see cref="T:System.Type"/> ordered by their number of parameters desc.</returns>
         </member>
+        <member name="T:SmokeMe.Helpers.TimespanExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.TimeSpan"/>.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Helpers.TimespanExtensions.GetHumanReadableVersion(System.TimeSpan)">
+            <summary>
+            Adapts <see cref="T:System.TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
+            </summary>
+            <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
+            <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
+        </member>
         <member name="T:SmokeMe.ICheckSmoke">
             <summary>
             Smoke test/scenario/code to be executed in order to check that a minimum
@@ -206,13 +218,6 @@
             <param name="runtimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> to associate</param>
             <returns>The <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance.</returns>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.AdaptDurationToMakeItReadable(System.TimeSpan)">
-            <summary>
-            Adapts <see cref="T:System.TimeSpan"/> duration to a human readable string version (with "en-us" culture format).
-            </summary>
-            <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
-            <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
-        </member>
         <member name="T:SmokeMe.Infra.SmokeTestsSessionReportDto">
             <summary>
             Exposition model of a smoke test session execution.
@@ -222,6 +227,11 @@
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.IsSuccess">
             <summary>
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Status">
+            <summary>
+            Gets the status of the smoke tests session report.
             </summary>
         </member>
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Results">
@@ -375,17 +385,6 @@
             <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed.</param>
             <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.</returns>
         </member>
-        <member name="T:SmokeMe.TimeoutSmokeTestsSessionReport">
-            <summary>
-            Represents a failed (due to timeout) smoke test session.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.TimeoutSmokeTestsSessionReport.#ctor(System.TimeSpan)">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.TimeoutSmokeTestsSessionReport"/>.
-            </summary>
-            <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
-        </member>
         <member name="T:SmokeMe.SmokeTestsSessionReport">
             <summary>
             Result of a smoke test session.
@@ -406,12 +405,30 @@
             Null object for by default initializations.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestsSessionReport.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean})">
+        <member name="P:SmokeMe.SmokeTestsSessionReport.Status">
+            <summary>
+            Gets the status of the smoke tests session report.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.SmokeTestsSessionReport.#ctor(SmokeMe.SmokeTestResultWithMetaData[],System.Nullable{System.Boolean},System.String)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.
             </summary>
             <param name="results">The results of this Smoke test session.</param>
             <param name="isSuccess">Whether or not the <see cref="T:SmokeMe.SmokeTestsSessionReport"/> is successful or not.</param>
+            <param name="status">The status of the report.</param>
+        </member>
+        <member name="T:SmokeMe.TimeoutSmokeTestsSessionReport">
+            <summary>
+            Represents a failed (due to timeout) smoke test session.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.TimeoutSmokeTestsSessionReport.#ctor(System.TimeSpan,System.String)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.TimeoutSmokeTestsSessionReport"/>.
+            </summary>
+            <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
+            <param name="status">The status of the report.</param>
         </member>
     </members>
 </doc>

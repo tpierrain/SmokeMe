@@ -18,6 +18,11 @@ namespace SmokeMe.Infra
         public bool IsSuccess => _reports.IsSuccess;
 
         /// <summary>
+        /// Gets the status of the smoke tests session report.
+        /// </summary>
+        public string Status => _reports.Status;
+
+        /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
         /// </summary>
         public SmokeTestResultWithMetaDataDto[] Results { get; }
@@ -46,7 +51,6 @@ namespace SmokeMe.Infra
         /// Gets the number of Processors this API instance has.
         /// </summary>
         public string NbOfProcessors => _apiRuntimeDescription.NbOfProcessors;
-
 
         /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.

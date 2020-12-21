@@ -69,6 +69,11 @@ namespace SmokeMe.Controllers
                 return Ok(resultDto);
             }
 
+            if (results is TimeoutSmokeTestsSessionReport)
+            {
+                return StatusCode((int) HttpStatusCode.GatewayTimeout, resultDto);
+            }
+
             return StatusCode((int)HttpStatusCode.InternalServerError, resultDto);
         }
     }

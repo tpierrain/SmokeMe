@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
+using SmokeMe.Helpers;
 
 namespace SmokeMe
 {
@@ -34,7 +34,7 @@ namespace SmokeMe
             {
                 if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
                 {
-                    return new TimeoutSmokeTestsSessionReport(globalTimeout);
+                    return new TimeoutSmokeTestsSessionReport(globalTimeout, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
                 }
             }
 
@@ -72,23 +72,5 @@ namespace SmokeMe
         {
             return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTest.SmokeTestName, smokeTest.Description);
         }
-    }
-
-    /// <summary>
-    /// Represents a failed (due to timeout) smoke test session.
-    /// </summary>
-    public class TimeoutSmokeTestsSessionReport : SmokeTestsSessionReport
-    {
-        private readonly TimeSpan _globalTimeout;
-
-        /// <summary>
-        /// Instantiates a <see cref="TimeoutSmokeTestsSessionReport"/>.
-        /// </summary>
-        /// <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
-        public TimeoutSmokeTestsSessionReport(TimeSpan globalTimeout) : base(new SmokeTestResultWithMetaData[0], false)
-        {
-            _globalTimeout = globalTimeout;
-        }
-
     }
 }

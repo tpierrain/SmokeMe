@@ -65,7 +65,7 @@ namespace SmokeMe
             return null;
         }
 
-        private static object?[]? PrepareParametersForThisConstructor(ConstructorInfo constructor, IServiceProvider serviceProvider)
+        private static object[] PrepareParametersForThisConstructor(ConstructorInfo constructor, IServiceProvider serviceProvider)
         {
             var parameters = new List<object>();
             var parameterInfos = constructor.GetParameters();
@@ -94,7 +94,7 @@ namespace SmokeMe
                                                 .ToArray();
                     smokeTesTypes.AddRange(types);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // something went wrong during the reflection phase
                 }

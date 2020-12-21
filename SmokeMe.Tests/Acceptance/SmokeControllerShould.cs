@@ -47,7 +47,7 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Return_InternalServerError_500_when_smoke_tests_timeout()
+        public async Task Return_GatewayTimeout_504_when_smoke_tests_timeout()
         {
             var globalTimeoutInMsec = 5 * 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
@@ -60,11 +60,14 @@ namespace SmokeMe.Tests.Acceptance
             var response = await controller.ExecuteSmokeTests();
             stopwatch.Stop();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.GatewayTimeout);
 
             var acceptableDeltaInMsec = 1000; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
             Check.That(smokeTestResult.IsSuccess).IsFalse();
+            Check.That(smokeTestResult.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
+            //Check.That(smokeTestResult.Results[0].Outcome).IsFalse();
+            //Check.That(smokeTestResult.Results[1].Outcome).IsTrue();
         }
 
         [Test]

@@ -33,12 +33,14 @@ namespace SmokeMe
         public string SmokeTestDescription { get; }
 
         private SmokeTestResult SmokeTestResult { get; }
-        
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
         /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="ICheckSmoke"/> execution.</param>
         /// <param name="duration">The duration of this <see cref="ICheckSmoke"/> execution.</param>
+        /// <param name="smokeTestName">Name of the smoke test.</param>
+        /// <param name="smokeTestDescription">Description of the smoke test.</param>
         public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan duration, string smokeTestName, string smokeTestDescription)
         {
             SmokeTestResult = smokeTestResult;
