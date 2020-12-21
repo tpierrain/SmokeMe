@@ -19,7 +19,7 @@ Smoke test is preliminary integration testing to reveal simple failures severe e
     - This can take more time than a classical health check
 
 
-## *"Smoke tests can save your bacon when doing Continuous Delivery!"*
+### *"Smoke tests can save your bacon when doing Continuous Delivery!"*
 
 The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
 All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
