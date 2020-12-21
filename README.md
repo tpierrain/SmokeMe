@@ -11,12 +11,12 @@ A *convention-based* dotnet plugin that will automatically expose all your decla
 ## Smoke tests anyone?
 Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. This may differ from classical health checks:
 
- - **health checks** are low latency requests made by Load balancers or infrastructure components to your APIs. 
+ - **health checks** are low latency requests made by Load balancers or infrastructure components to your APIs
     - You often just check connectivity with external dependency systems
 
  - **smoke checks** are integration tests made just after a deployment
     - You often check *"high-value uses"* of your API to see if it is globally OK
-    - This can take more time than a health check
+    - This can take more time than a classical health check
 
 
 ## *"Smoke tests can save your bacon when doing Continuous Delivery!"*
@@ -26,11 +26,11 @@ All the auto-discovery, infrastructure and plumbering things are done for you by
 
 ## Can't be more easy!
 
-### While coding
+### A. While coding
 
 1. You add the reference to the **SmokeMe** library in your API project
 2. You code all the smoke tests scenario you want in your code base
-    - A Smoke test scenario is just a class implementing the **ICheckSmoke** interface
+    - A Smoke test scenario is just a class implementing the **ICheckSmoke** interface with 3 members
 
 ```csharp
 
@@ -64,7 +64,7 @@ public interface ICheckSmoke
 
 ```
 
-### While deploying or supporting your production
+### B. While deploying or supporting your production
 
 You just GET the (automatically added) **/smoke** ressource on your API.
 
