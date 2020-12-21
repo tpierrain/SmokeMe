@@ -147,14 +147,19 @@ public class AvailabilitiesSmokeTest : ICheckSmoke
 {
     private readonly IAvailabilityService _availabilityService;
     public string SmokeTestName => "Check Availabilities";
-    public string Description => "TBD: will check something like checking that one can find some availabilities around Marseille city next month.";
+    public string Description 
+        => "TBD: will check something like checking that one can find some availabilities around Marseille city next month.";
 
     /// <summary>
     /// Instantiates a <see cref="AvailabilitiesSmokeTest"/>
     /// </summary>
-    /// <param name="availabilityService">The <see cref="IAvailabilityService"/> we need (will be automatically injected par the SmokeMe library)</param>
+    /// <param name="availabilityService">The <see cref="IAvailabilityService"/> we need (will be 
+    /// automatically injected par the SmokeMe library)</param>
     public AvailabilitiesSmokeTest(IAvailabilityService availabilityService)
     {
+        // availability service here is just an example of 
+        // on of your own API-level registered service automatically
+        // injected to your smoke test instance by the SmokeMe lib
         _availabilityService = availabilityService;
     }
         
