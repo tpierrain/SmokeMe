@@ -11,6 +11,8 @@ A *convention-based* dotnet plugin that will automatically expose all your decla
 ## Smoke tests anyone?
 Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. 
 
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered-crop.jpg?raw=true)   
+
 This may differ from classical health checks:
 
  - **health checks** are sub-second requests made by Load balancers or infrastructure components to your APIs
@@ -27,8 +29,6 @@ This may differ from classical health checks:
 The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
 All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
 
-
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered.JPG?raw=true)   
 
 ## Can't be more easy!
 
