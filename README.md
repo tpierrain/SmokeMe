@@ -27,10 +27,11 @@ This may differ from classical health checks:
 ### *"Smoke tests can save your bacon when doing Continuous Delivery!"*
 
 The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
+
 All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
 
 
-## Can't be more easy!
+## It couldn't be easier!
 
 ### A. While coding
 
