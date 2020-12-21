@@ -15,11 +15,14 @@ Smoke test is preliminary integration testing to reveal simple failures severe e
     - You often just check connectivity with external dependency systems
 
  - **smoke checks** are integration tests made just after a deployment
-    - You often check *"high-value uses"* of your API to see if it is globally ok
+    - You often check *"high-value uses"* of your API to see if it is globally OK
+    - This can take more time than a health check
+
 
 ## *"Smoke tests can save your bacon when doing Continuous Delivery!"*
 
-The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests.
+The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
+All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
 
 ## Can't be more easy!
 
