@@ -9,7 +9,9 @@ A *convention-based* dotnet plugin that will automatically expose all your decla
 
 
 ## Smoke tests anyone?
-Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. This may differ from classical health checks:
+Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. 
+
+This may differ from classical health checks:
 
  - **health checks** are low latency requests made by Load balancers or infrastructure components to your APIs
     - You often just check connectivity with external dependency systems
