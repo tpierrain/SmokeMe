@@ -14,7 +14,7 @@ A convention-based tiny framework allowing you to execute all your declared smok
 
 1. You add the reference to the **SmokeMe** library in your API project
 2. You code all the smoke tests scenario you want in your code base
-    - A Smoke test scenario is just a class implementing the **ISmokeTestAScenario** interface
+    - A Smoke test scenario is just a class implementing the **ICheckSmoke** interface
 
 ```csharp
 
