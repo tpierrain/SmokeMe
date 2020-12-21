@@ -230,6 +230,12 @@ services.AddApiVersioning(
 ## Next steps
 
  - **Security:** with a nice way for you to plug your own ACL and rights mechanism to the /smoke resource (so that not everyone is able to execute your smoke tests in production)
+ - Some tooling so that I can easily reuse/run all my smoke tests in classical acceptance testing sessions
+ - A way to easily declare that you want to prevent 2 or more smoke tests to be ran in // if needed (something like a [Mutex("idOfIDoNotWantToHaveMoreOfThoseSmokeTestsToBeRanInParallel")] attribute for some of our Smoke tests)
+ - Some *maximum number of smoke tests to be run in parallel* optional and configurable limitation mechanism
+
+ More on this [here](./Backlog.md)
+
 
 ---
 
