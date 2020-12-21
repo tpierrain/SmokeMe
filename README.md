@@ -13,7 +13,7 @@ Smoke test is preliminary integration testing to reveal simple failures severe e
 
 This may differ from classical health checks:
 
- - **health checks** are low latency requests made by Load balancers or infrastructure components to your APIs
+ - **health checks** are sub-second requests made by Load balancers or infrastructure components to your APIs
     - You often just check connectivity with external dependency systems
 
  - **smoke checks** are integration tests made by you or your CI scripts just after a deployment
