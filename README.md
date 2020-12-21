@@ -27,6 +27,9 @@ This may differ from classical health checks:
 The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
 All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
 
+
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered.JPG?raw=true)   
+
 ## Can't be more easy!
 
 ### A. While coding
@@ -89,17 +92,23 @@ And you check the HTTP response type you get:
 
 Means that all your smoketests have been executed nicely and before the global timeout allowed by **SmokeMe**
 
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-200.JPG?raw=true)   
 
-### HTTP 502 (Not implemented)
+
+### HTTP 501 (Not implemented)
 
 Means that **SmokeMe** could not find any **ITestSmoke** type within all the assemblies 
 that have been loaded into the execution context of this API.
+
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-501.JPG?raw=true)   
 
 
 ### HTTP 500 (Internal Server Error)
 
 Means that **SmokeMe** has executed all your declared **ITestSmoke** type instances but there have been 
 at least one failing smoke test.
+
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-500.JPG?raw=true)   
 
 ---
 
