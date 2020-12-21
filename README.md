@@ -90,7 +90,7 @@ And you check the HTTP response type you get:
 
 ### HTTP 200 (OK)
 
-Means that all your smoketests have been executed nicely and before the global timeout allowed by **SmokeMe**
+Means that all your smoke tests have been executed nicely and before the global timeout allowed by **SmokeMe**
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-200.JPG?raw=true)   
 
@@ -226,9 +226,15 @@ services.AddApiVersioning(
 
 ---
 
+## Next steps
+
+ - **Security:** with a nice way for you to plug your own ACL and rights mechanism to the /smoke resource (so that not everyone is able to execute your smoke tests in production)
+
+---
+
 ## Hope you will enjoy it!
 
-Don't hesitate to leave feedbacks on the github issues of the project.
+We value your input and appreciate your feedback. Thus, don't hesitate to leave them on the [**github issues of the project**](https://github.com/42skillz/SmokeMe/issues).
 
 
 
