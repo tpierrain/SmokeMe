@@ -5,7 +5,7 @@
     <Version>1.1.3</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
-    <Description>A convention-based tiny framework allowing you to execute all your declared smoke tests whenever one call the  /smoke   resource that will automatically appear in your own API.</Description>
+    <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
     <Copyright>Copyright © Thomas PIERRAIN 2020</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>

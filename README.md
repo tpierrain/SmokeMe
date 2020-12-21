@@ -1,12 +1,25 @@
 # SmokeMe! (a.k.a.  /smoke ) ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
-A convention-based tiny framework allowing you to execute all your declared smoke tests whenever one call the **/smoke** resource that will automatically appear in your own API.
+A *convention-based* dotnet plugin that will automatically expose all your declared smoke tests behind a  **/smoke** resource in your API.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)   
   
 # 
 ![twitter icon](https://github.com/42skillz/Smoke/blob/main/Images/Twitter_icon.gif?raw=true) [use case driven on twitter](https://twitter.com/tpierrain) - (thomas@42skillz.com)
 
+
+## Smoke tests anyone?
+Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. This may differ from classical health checks:
+
+ - **health checks** are low latency requests made by Load balancers or infrastructure components to your APIs. 
+    - You often just check connectivity with external dependency systems
+
+ - **smoke checks** are integration tests made just after a deployment
+    - You often check *"high-value uses"* of your API to see if it is globally ok
+
+## *"Smoke tests can save your bacon when doing Continuous Delivery!"*
+
+The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests.
 
 ## Can't be more easy!
 
