@@ -18,7 +18,7 @@ This may differ from classical health checks:
  - **health checks** are sub-second requests made by Load balancers or infrastructure components to your APIs
     - You often just check connectivity with external dependency systems
 
- - **smoke checks** are integration tests made by you or your CI scripts just after a deployment
+ - **smoke checks** are (*sub-ten of seconds*) integration tests made by you or your CI scripts just after a deployment
     - You often check *"high-value uses"* of your API to see if it is globally OK
     - This can take more time than a classical health check
     - Note: you can also use them in order to monitor your API overall health
