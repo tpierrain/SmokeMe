@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading.Tasks;
 using SmokeMe.Helpers;
 
@@ -19,7 +21,7 @@ namespace SmokeMe
         /// <returns>The <see cref="SmokeTestsSessionReport"/>.</returns>
         public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<ICheckSmoke> smokeTests, TimeSpan globalTimeout)
         {
-            var tasks = new List<Task<SmokeTestResultWithMetaData>>();
+            var tasks = new List<Task<SmokeTestWithItsResultWithMetaData>>();
             foreach (var smokeTest in smokeTests)
             {
                 var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTest));
@@ -34,19 +36,52 @@ namespace SmokeMe
             {
                 if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
                 {
-                    return new TimeoutSmokeTestsSessionReport(globalTimeout, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
+                    var timeoutAndCompletedResultsWithMetadata = await ConcatInferedTimeoutTestsResultsWithCompletedTestsResults(smokeTests, tasks);
+
+                    return new TimeoutSmokeTestsSessionReport(globalTimeout, timeoutAndCompletedResultsWithMetadata, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
                 }
             }
 
-            return new SmokeTestsSessionReport(await allSmokeTasks);
+            var smokeTestWithItsResultWithMetaDatas = await allSmokeTasks;
+
+            return new SmokeTestsSessionReport(smokeTestWithItsResultWithMetaDatas.Select(x => x.SmokeTestResultWithMetaData).ToArray());
         }
 
-        private static bool IsNotAFalsePositive(Task<SmokeTestResultWithMetaData[]> allSmokeTasks)
+        private static async Task<SmokeTestResultWithMetaData[]> ConcatInferedTimeoutTestsResultsWithCompletedTestsResults(IEnumerable<ICheckSmoke> smokeTests, IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> tasks)
+        {
+            var completedTasks = tasks.Where(s => s.IsCompleted).ToArray();
+            var completedResults = await GetSmokeTestsResultsThatHaveCompleted(completedTasks);
+            var completedTestsResultWithMetaDatas = completedResults.Select(x => x.SmokeTestResultWithMetaData).ToArray();
+
+            var timeoutSmokeTests = smokeTests.Except(completedResults.Select(x => x.SmokeTest));
+            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x =>
+                new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x.SmokeTestName, x.Description));
+
+            var timeoutAndCompletedResultsWithMetadata =
+                timeoutResultWithSomeMetaData.Concat(completedTestsResultWithMetaDatas).ToArray();
+            return timeoutAndCompletedResultsWithMetadata;
+        }
+
+        private static async Task<List<SmokeTestWithItsResultWithMetaData>> GetSmokeTestsResultsThatHaveCompleted(IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> completedTasks)
+        {
+            var completedResults = new List<SmokeTestWithItsResultWithMetaData>();
+            try
+            {
+                completedResults.AddRange(await Task.WhenAll(completedTasks));
+            }
+            catch
+            {
+            }
+
+            return completedResults;
+        }
+
+        private static bool IsNotAFalsePositive(Task<SmokeTestWithItsResultWithMetaData[]> allSmokeTasks)
         {
             return !allSmokeTasks.IsCompletedSuccessfully;
         }
 
-        private static async Task<SmokeTestResultWithMetaData> StopWatchSafeSmokeTestExecution(ICheckSmoke smokeTest)
+        private static async Task<SmokeTestWithItsResultWithMetaData> StopWatchSafeSmokeTestExecution(ICheckSmoke smokeTest)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -57,20 +92,32 @@ namespace SmokeMe
                 stopwatch.Stop();
                 var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
 
-                return smokeTestExecution;
+                return new SmokeTestWithItsResultWithMetaData(smokeTest , smokeTestExecution);
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
                 var smokeTestResult = new SmokeTestResult("", ex);
                 var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
-                return smokeTestExecution;
+                return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestExecution);
             }
         }
 
         private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, ICheckSmoke smokeTest)
         {
             return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTest.SmokeTestName, smokeTest.Description);
+        }
+
+        private class SmokeTestWithItsResultWithMetaData
+        {
+            public ICheckSmoke SmokeTest { get; }
+            public SmokeTestResultWithMetaData SmokeTestResultWithMetaData { get; }
+
+            public SmokeTestWithItsResultWithMetaData(ICheckSmoke smokeTest, SmokeTestResultWithMetaData smokeTestResultWithMetaData)
+            {
+                SmokeTest = smokeTest;
+                SmokeTestResultWithMetaData = smokeTestResultWithMetaData;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace SmokeMe.Tests.Unit
             Check.That(smokeTests.Select(x => x.GetType()))
                 .Contains(typeof(AlwaysPositiveSmokeTest), 
                                                 typeof(SmokeTestThrowingAnAccessViolationException), 
-                                                typeof(WeCanGenerateNumbersWithRandomDelaySmokeTests));
+                                                typeof(FlippingSmokeTest));
         }
     }
 }

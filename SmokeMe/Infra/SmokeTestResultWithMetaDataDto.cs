@@ -35,7 +35,7 @@ namespace SmokeMe.Infra
         /// <summary>
         /// Gets the duration in milliseconds of this smoke test execution (useful for scripting).
         /// </summary>
-        public double DurationInMsec { get; }
+        public double? DurationInMsec { get; }
 
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
@@ -46,14 +46,20 @@ namespace SmokeMe.Infra
         /// <param name="error"></param>
         /// <param name="durationTimespan"></param>
         /// <param name="duration"></param>
-        public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan durationTimespan, string duration)
+        public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan, string duration)
         {
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
             Outcome = outcome;
             Error = error;
+            
+            duration ??= "timeout";
+
             Duration = duration;
-            DurationInMsec = durationTimespan.TotalMilliseconds;
+            if (durationTimespan.HasValue)
+            {
+                DurationInMsec = durationTimespan.Value.TotalMilliseconds;
+            }
         }
     }
 }

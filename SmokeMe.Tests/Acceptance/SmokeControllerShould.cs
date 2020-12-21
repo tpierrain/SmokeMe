@@ -47,7 +47,7 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Return_GatewayTimeout_504_when_smoke_tests_timeout()
+        public async Task Return_GatewayTimeout_504_when_smoke_tests_timeout_but_provide_details()
         {
             var globalTimeoutInMsec = 5 * 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec);
@@ -66,8 +66,14 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
             Check.That(smokeTestResult.IsSuccess).IsFalse();
             Check.That(smokeTestResult.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
-            //Check.That(smokeTestResult.Results[0].Outcome).IsFalse();
-            //Check.That(smokeTestResult.Results[1].Outcome).IsTrue();
+            Check.That(smokeTestResult.Results).HasSize(2);
+
+            Check.That(smokeTestResult.Results[0].Outcome).IsFalse();
+            Check.That(smokeTestResult.Results[0].Duration).IsEqualTo("timeout");
+            Check.That(smokeTestResult.Results[0].DurationInMsec).IsNull();
+
+            Check.That(smokeTestResult.Results[1].Outcome).IsTrue();
+            Check.That(smokeTestResult.Results[1].DurationInMsec.Value).IsLessThan(TimeSpan.FromSeconds(2.0).TotalMilliseconds + acceptableDeltaInMsec);
         }
 
         [Test]

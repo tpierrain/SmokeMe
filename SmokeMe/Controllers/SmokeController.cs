@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using SmokeMe.Helpers;
 using SmokeMe.Infra;
 
 namespace SmokeMe.Controllers
@@ -53,11 +54,7 @@ namespace SmokeMe.Controllers
                 return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription()));
             }
 
-            var globalTimeout = TimeSpan.FromMilliseconds(Constants.GlobalTimeoutInMsecDefaultValue);
-            if(int.TryParse(_configuration[Constants.GlobaltimeoutinmsecConfigurationKey], out var globalTimeoutInMsec))
-            {
-                globalTimeout = TimeSpan.FromMilliseconds(globalTimeoutInMsec);
-            }
+            var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();
 
             var results = await SmokeTestRunner.ExecuteAllSmokeTestsInParallel(smokeTests, globalTimeout);
 

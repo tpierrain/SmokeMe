@@ -13,8 +13,9 @@ namespace SmokeMe
         /// Instantiates a <see cref="TimeoutSmokeTestsSessionReport"/>.
         /// </summary>
         /// <param name="globalTimeout">The global timeout expiration that led to his failure.</param>
+        /// <param name="completedResults">The results we could get before the smoke test execution session timeouts.</param>
         /// <param name="status">The status of the report.</param>
-        public TimeoutSmokeTestsSessionReport(TimeSpan globalTimeout, string status) : base(new SmokeTestResultWithMetaData[0], false, status)
+        public TimeoutSmokeTestsSessionReport(TimeSpan globalTimeout, SmokeTestResultWithMetaData[] completedResults,  string status) : base(completedResults, false, status)
         {
             _globalTimeout = globalTimeout;
         }

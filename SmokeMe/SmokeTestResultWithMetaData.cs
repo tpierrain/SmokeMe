@@ -20,7 +20,7 @@ namespace SmokeMe
         /// <summary>
         /// Gets the duration of this <see cref="ICheckSmoke"/> execution.
         /// </summary>
-        public TimeSpan Duration { get; }
+        public TimeSpan? Duration { get; }
 
         /// <summary>
         /// Gets the name of the executed <see cref="ICheckSmoke"/> instance.
@@ -41,7 +41,7 @@ namespace SmokeMe
         /// <param name="duration">The duration of this <see cref="ICheckSmoke"/> execution.</param>
         /// <param name="smokeTestName">Name of the smoke test.</param>
         /// <param name="smokeTestDescription">Description of the smoke test.</param>
-        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan duration, string smokeTestName, string smokeTestDescription)
+        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
@@ -55,7 +55,11 @@ namespace SmokeMe
         /// <returns>A string representing the object.</returns>
         public override string ToString()
         {
-            return $"Outcome:{SmokeTestResult.Outcome}({Duration.TotalMilliseconds} msec)";
+            if (Duration.HasValue)
+            {
+                return $"Outcome:{SmokeTestResult.Outcome}({Duration.Value.TotalMilliseconds} msec)";
+            }
+            return $"Outcome:{SmokeTestResult.Outcome}(no defined Duration)";
         }
     }
 }
