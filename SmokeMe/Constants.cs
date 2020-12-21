@@ -13,6 +13,6 @@
         /// <summary>
         /// Gets the default value for the global timeout in milliseconds if the (<see cref="GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
         /// </summary>
-        public static int GlobalTimeoutInMsecDefaultValue = 5* 1000;
+        public static int GlobalTimeoutInMsecDefaultValue = 10* 1000;
     }
 }
