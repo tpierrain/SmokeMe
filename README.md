@@ -118,6 +118,14 @@ at least one failing smoke test.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-500.JPG?raw=true)   
 
+
+### HTTP 503 (Service Unavailable)
+
+Means that smoke test execution has been disabled via configuration.
+
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-503.JPG?raw=true)   
+
+
 ---
 
 ## FAQ
@@ -229,6 +237,32 @@ services.AddApiVersioning(
         options.DefaultApiVersion = new ApiVersion(0,0);
         options.AssumeDefaultVersionWhenUnspecified = true; // the line you should add in case of problem
     } );
+
+```
+
+
+### 6. How can I disable the execution of smoke test?
+
+```
+Just set false to the "Smoke:IsSmokeTestExecutionEnabled" configuration key (default value is true).
+
+e.g.:
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "Smoke": {
+    "GlobalTimeoutInMsec": 1500,
+    "IsSmokeTestExecutionEnabled": false
+  },
+  "AllowedHosts": "*"
+}
+
 
 ```
 

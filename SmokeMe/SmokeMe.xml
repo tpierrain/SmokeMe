@@ -14,6 +14,11 @@
             Gets the name of the configuration key for the smoke test global execution timeout.
             </summary>
         </member>
+        <member name="F:SmokeMe.Constants.IsEnabledConfigurationKey">
+            <summary>
+            Gets the name of the configuration key fo the global enabling of the lib.
+            </summary>
+        </member>
         <member name="F:SmokeMe.Constants.GlobalTimeoutInMsecDefaultValue">
             <summary>
             Gets the default value for the global timeout in milliseconds if the (<see cref="F:SmokeMe.Constants.GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
@@ -72,6 +77,13 @@
             </summary>
             <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance used by the API.</param>
             <returns>The Global timeout value.</returns>
+        </member>
+        <member name="M:SmokeMe.Helpers.ConfigurationExtensions.IsSmokeTestExecutionEnabled(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Gets an indication whether the smoke tests execution is enabled or not (default <b>true</b> value may be overriden through configuration file).
+            </summary>
+            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance used by the API.</param>
+            <returns><b>true</b> if the smoke test execution is enabled or not, <b>false</b> otherwise.</returns>
         </member>
         <member name="T:SmokeMe.Helpers.ReflectionExtensions">
             <summary>
@@ -222,6 +234,11 @@
             <param name="durationTimespan"></param>
             <param name="duration"></param>
         </member>
+        <member name="T:SmokeMe.Infra.SmokeTestsDisabledReportDto">
+            <summary>
+            Report for a smoke test execution that could not happened due to configuration settings.
+            </summary>
+        </member>
         <member name="T:SmokeMe.Infra.SmokeTestSessionResultAdapter">
             <summary>
             Adapter from SmokeMe internal model to SmokeMe external DTOs.
@@ -289,11 +306,12 @@
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
             <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription)">
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription,System.String)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
             </summary>
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
+            <param name="runtimeDescription"></param>
         </member>
         <member name="T:SmokeMe.SmokeTestAutoFinder">
             <summary>
@@ -419,11 +437,6 @@
             Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
             </summary>
         </member>
-        <member name="P:SmokeMe.SmokeTestsSessionReport.Null">
-            <summary>
-            Null object for by default initializations.
-            </summary>
-        </member>
         <member name="P:SmokeMe.SmokeTestsSessionReport.Status">
             <summary>
             Gets the status of the smoke tests session report.
@@ -435,6 +448,12 @@
             </summary>
             <param name="results">The results of this Smoke test session.</param>
             <param name="isSuccess">Whether or not the <see cref="T:SmokeMe.SmokeTestsSessionReport"/> is successful or not.</param>
+            <param name="status">The status of the report.</param>
+        </member>
+        <member name="M:SmokeMe.SmokeTestsSessionReport.#ctor(System.String)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.
+            </summary>
             <param name="status">The status of the report.</param>
         </member>
         <member name="T:SmokeMe.TimeoutSmokeTestsSessionReport">

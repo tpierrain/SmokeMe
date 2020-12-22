@@ -18,10 +18,18 @@ namespace SmokeMe.Tests.Helpers
             return smokeTestProvider;
         }
 
-        public static IConfiguration AConfiguration(int globalTimeoutInMsec)
+        public static IConfiguration AConfiguration(bool? isEnabled = null, int? globalTimeoutInMsec = null)
         {
             var configuration = Substitute.For<IConfiguration>();
-            configuration[Constants.GlobaltimeoutinmsecConfigurationKey].Returns(globalTimeoutInMsec.ToString());
+            if (globalTimeoutInMsec.HasValue)
+            {
+                configuration[Constants.GlobaltimeoutinmsecConfigurationKey].Returns(globalTimeoutInMsec.ToString());
+            }
+
+            if (isEnabled.HasValue)
+            {
+                configuration[Constants.IsEnabledConfigurationKey].Returns(isEnabled.ToString());
+            }
 
             return configuration;
         }

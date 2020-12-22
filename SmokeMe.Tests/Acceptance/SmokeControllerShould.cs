@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NFluent;
@@ -29,8 +30,8 @@ namespace SmokeMe.Tests.Acceptance
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
-            Check.That(smokeTestResult.Results.Select(x => x.Outcome)).Contains(true, false);
+            var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            Check.That(reportDto.Results.Select(x => x.Outcome)).Contains(true, false);
         }
 
         [Test]
@@ -42,15 +43,15 @@ namespace SmokeMe.Tests.Acceptance
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
-            Check.That(smokeTestResult.Results.Select(x => x.Outcome)).ContainsExactly(false);
+            var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            Check.That(reportDto.Results.Select(x => x.Outcome)).ContainsExactly(false);
         }
 
         [Test]
         public async Task Return_GatewayTimeout_504_when_smoke_tests_timeout_but_provide_details()
         {
             var globalTimeoutInMsec = 5 * 1000;
-            var configuration = Stub.AConfiguration(globalTimeoutInMsec);
+            var configuration = Stub.AConfiguration(globalTimeoutInMsec: globalTimeoutInMsec);
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(2.0)));
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
@@ -60,20 +61,20 @@ namespace SmokeMe.Tests.Acceptance
             var response = await controller.ExecuteSmokeTests();
             stopwatch.Stop();
 
-            var smokeTestResult = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.GatewayTimeout);
+            var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.GatewayTimeout);
 
             var acceptableDeltaInMsec = 1000; // delta to make this test less fragile with exotic or lame CI agents
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
-            Check.That(smokeTestResult.IsSuccess).IsFalse();
-            Check.That(smokeTestResult.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
-            Check.That(smokeTestResult.Results).HasSize(2);
+            Check.That(reportDto.IsSuccess).IsFalse();
+            Check.That(reportDto.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
+            Check.That(reportDto.Results).HasSize(2);
 
-            Check.That(smokeTestResult.Results[0].Outcome).IsFalse();
-            Check.That(smokeTestResult.Results[0].Duration).IsEqualTo("timeout");
-            Check.That(smokeTestResult.Results[0].DurationInMsec).IsNull();
+            Check.That(reportDto.Results[0].Outcome).IsFalse();
+            Check.That(reportDto.Results[0].Duration).IsEqualTo("timeout");
+            Check.That(reportDto.Results[0].DurationInMsec).IsNull();
 
-            Check.That(smokeTestResult.Results[1].Outcome).IsTrue();
-            Check.That(smokeTestResult.Results[1].DurationInMsec.Value).IsLessThan(TimeSpan.FromSeconds(2.0).TotalMilliseconds + acceptableDeltaInMsec);
+            Check.That(reportDto.Results[1].Outcome).IsTrue();
+            Check.That(reportDto.Results[1].DurationInMsec.Value).IsLessThan(TimeSpan.FromSeconds(2.0).TotalMilliseconds + acceptableDeltaInMsec);
         }
 
         [Test]
@@ -96,11 +97,11 @@ namespace SmokeMe.Tests.Acceptance
             var response = await smokeController.ExecuteSmokeTests();
 
             response.CheckIsOk200();
-            var smokeTestResult = response.ExtractValue<SmokeTestsSessionReportDto>();
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(smokeTestResult.Results[0].Duration).IsEqualTo("1 second");
-            Check.That(smokeTestResult.Results[1].Duration).Contains(" milliseconds");
-            Check.That(smokeTestResult.Results[2].Duration).Contains(" seconds");
+            Check.That(reportDto.Results[0].Duration).IsEqualTo("1 second");
+            Check.That(reportDto.Results[1].Duration).Contains(" milliseconds");
+            Check.That(reportDto.Results[2].Duration).Contains(" seconds");
         }
 
         [Test]
@@ -111,10 +112,27 @@ namespace SmokeMe.Tests.Acceptance
 
             var response = await smokeController.ExecuteSmokeTests();
 
-            var resultDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
+            var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
 
-            Check.That(resultDto.IsSuccess).IsFalse();
-            Check.That(resultDto.Results).IsEmpty();
+            Check.That(reportDto.IsSuccess).IsFalse();
+            Check.That(reportDto.Results).IsEmpty();
+            Check.That(reportDto.Status).IsEqualTo($"No smoke test have been found in your executing assemblies. Start adding {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them.");
+        }
+
+        [Test]
+        public async Task Return_503_Service_Unavailable_when_SmokeMe_is_disabled_in_configuration()
+        {
+            var configuration = Stub.AConfiguration(false);
+            
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
+
+            var controller = new SmokeController(configuration, null, smokeTestProvider);
+            var response = await controller.ExecuteSmokeTests();
+
+            var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.ServiceUnavailable);
+            Check.That(reportDto.Results).IsEmpty();
+            Check.That(reportDto.IsSuccess).IsFalse();
+            Check.That(reportDto.Status).IsEqualTo($"Smoke tests execution not enabled. Set the '{Constants.IsEnabledConfigurationKey}' configuration key to true if you want to enable it.");
         }
     }
 }

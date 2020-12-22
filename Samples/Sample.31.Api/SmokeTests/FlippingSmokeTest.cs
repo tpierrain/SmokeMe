@@ -34,7 +34,7 @@ namespace Sample.Api.SmokeTests
             }
 
             await Task.Delay(delayInMsec);
-           
+
             _numbersProvider.GiveMeANumber();
 
             if (_fuzzer.HeadsOrTails())

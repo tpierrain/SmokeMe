@@ -19,11 +19,6 @@ namespace SmokeMe
         public bool IsSuccess { get; }
 
         /// <summary>
-        /// Null object for by default initializations.
-        /// </summary>
-        public static SmokeTestsSessionReport Null => new SmokeTestsSessionReport(new SmokeTestResultWithMetaData[0], false);
-
-        /// <summary>
         /// Gets the status of the smoke tests session report.
         /// </summary>
         public string Status { get; }
@@ -54,6 +49,14 @@ namespace SmokeMe
 
             status ??= string.Empty;
             Status = status;
+        }
+
+        /// <summary>
+        /// Instantiates a <see cref="SmokeTestsSessionReport"/>.
+        /// </summary>
+        /// <param name="status">The status of the report.</param>
+        public SmokeTestsSessionReport(string status = null) : this(new SmokeTestResultWithMetaData[0], false, status)
+        {
         }
     }
 }

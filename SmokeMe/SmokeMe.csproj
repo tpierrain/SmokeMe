@@ -12,7 +12,9 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>Make timeout more explicit (and return a HTTP 504 GatewayTimeout)
+    <PackageReleaseNotes>Allows the smoke test execution to be disabled by configuration if needed (with Smoke:IsSmokeTestExecutionEnabled key)
+
+Make timeout more explicit (and return a HTTP 504 GatewayTimeout)
 
 Set default value for global timeout to 10 seconds (instead of 5 seconds)</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>

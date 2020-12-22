@@ -9,14 +9,14 @@ namespace Sample.ExternalSmokeTests
     /// Smoke test only to check that SmokeMe is able to detect and run all <see cref="ICheckSmoke"/>
     /// types wherever they are located (i.e. in other assemblies than the API).
     /// </summary>
-    public class SmokeTestLocatedInAnotherAssembly : ICheckSmoke
+    public class SmokeTestGoogleConnectivityLocatedInAnotherAssembly : ICheckSmoke
     {
         private readonly IRestClient _restClient;
 
         public string SmokeTestName => "Check connectivity towards Google search engine.";
         public string Description => "Check that the Google search engine is reachable";
 
-        public SmokeTestLocatedInAnotherAssembly(IRestClient restClient)
+        public SmokeTestGoogleConnectivityLocatedInAnotherAssembly(IRestClient restClient)
         {
             _restClient = restClient;
         }

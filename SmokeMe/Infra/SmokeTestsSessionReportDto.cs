@@ -71,9 +71,11 @@ namespace SmokeMe.Infra
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
-        public SmokeTestsSessionReportDto(ApiRuntimeDescription apiRuntimeDescription)
+        /// <param name="runtimeDescription"></param>
+        public SmokeTestsSessionReportDto(ApiRuntimeDescription apiRuntimeDescription, string status = null)
         {
-            _reports = SmokeTestsSessionReport.Null;
+            status ??= string.Empty;
+            _reports = new SmokeTestsSessionReport(status);
 
             _apiRuntimeDescription = apiRuntimeDescription;
             Results = new SmokeTestResultWithMetaDataDto[0];

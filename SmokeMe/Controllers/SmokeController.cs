@@ -46,12 +46,17 @@ namespace SmokeMe.Controllers
         [HttpGet]
         public async Task<IActionResult> ExecuteSmokeTests()
         {
+            if (!_configuration.IsSmokeTestExecutionEnabled())
+            {
+                return StatusCode((int) HttpStatusCode.ServiceUnavailable, new SmokeTestsDisabledReportDto(new ApiRuntimeDescription()));
+            }
+
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun();
 
             if (!smokeTests.Any())
             {
-                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription()));
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them."));
             }
 
             var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();

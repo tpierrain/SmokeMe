@@ -23,5 +23,20 @@ namespace SmokeMe.Helpers
 
             return globalTimeout;
         }
+
+        /// <summary>
+        /// Gets an indication whether the smoke tests execution is enabled or not (default <b>true</b> value may be overriden through configuration file).
+        /// </summary>
+        /// <param name="configuration">The <see cref="IConfiguration"/> instance used by the API.</param>
+        /// <returns><b>true</b> if the smoke test execution is enabled or not, <b>false</b> otherwise.</returns>
+        public static bool IsSmokeTestExecutionEnabled(this IConfiguration configuration)
+        {
+            if (!bool.TryParse(configuration[Constants.IsEnabledConfigurationKey], out var isEnabled))
+            {
+                isEnabled = true;
+            }
+
+            return isEnabled;
+        }
     }
 }
