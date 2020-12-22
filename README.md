@@ -11,7 +11,7 @@ A *convention-based* dotnet plugin that will automatically expose all your decla
 ## Smoke tests anyone?
 Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. 
 
-The expression came from plumbing where a *smoke test* is a technique forcing non-toxic, artificially created smoke through waste and drain pipes under a slight pressure to find leaks
+The expression came from plumbing where a *smoke test* is a technique forcing non-toxic, artificially created smoke through waste and drain pipes under a slight pressure **to find leaks**. In software, we use *smoke tests* in order **to find issues in production**.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered-crop.jpg?raw=true)   
 
