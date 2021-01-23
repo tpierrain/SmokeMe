@@ -10,7 +10,7 @@ namespace SmokeMe.Tests.Unit
     public class TimespanExtensionsShould
     {
         [Test]
-        public void Adapt_using_second_unit_when_duration_is_equal_or_more_than_a_second()
+        public void Round_to_Human_Readable_version_of_seconds_related_values()
         {
 
             var adaptation = TimeSpan.FromMilliseconds(1200).GetHumanReadableVersion();
@@ -21,12 +21,8 @@ namespace SmokeMe.Tests.Unit
 
             adaptation = TimeSpan.FromMilliseconds(2000).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("2 seconds");
-        }
 
-        [Test]
-        public void Adapt_rounding_seconds_when_needed()
-        {
-            var adaptation = TimeSpan.FromSeconds(1.002).GetHumanReadableVersion();
+            adaptation = TimeSpan.FromSeconds(1.002).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("1 second");
 
             adaptation = TimeSpan.FromSeconds(1.2006765).GetHumanReadableVersion();
@@ -34,7 +30,7 @@ namespace SmokeMe.Tests.Unit
         }
 
         [Test]
-        public void Adapt_using_millisecond_unit_when_duration_is_strictly_below_a_second()
+        public void Round_to_Human_Readable_version_of_milliseconds_related_values()
         {
             var adaptation = TimeSpan.FromMilliseconds(999).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("999 milliseconds");
@@ -47,17 +43,13 @@ namespace SmokeMe.Tests.Unit
 
             adaptation = TimeSpan.FromMilliseconds(2).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("2 milliseconds");
-        }
 
-        [Test]
-        public void Adapt_rounding_milliseconds_when_needed()
-        {
-            var adaptation = TimeSpan.FromMilliseconds(500.999).GetHumanReadableVersion();
+            adaptation = TimeSpan.FromMilliseconds(500.999).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("501 milliseconds");
         }
 
         [Test]
-        public void Adapt_rounding_microseconds_when_needed()
+        public void Round_to_Human_Readable_version_of_microseconds_related_values()
         {
             var adaptation = TimeSpan.FromMilliseconds(0.392).GetHumanReadableVersion();
             Check.That(adaptation).IsEqualTo("392 microseconds");
