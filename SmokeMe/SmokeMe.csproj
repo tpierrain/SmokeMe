@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
@@ -12,11 +12,7 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>Allows the smoke test execution to be disabled by configuration if needed (with Smoke:IsSmokeTestExecutionEnabled key)
-
-Make timeout more explicit (and return a HTTP 504 GatewayTimeout)
-
-Set default value for global timeout to 10 seconds (instead of 5 seconds)</PackageReleaseNotes>
+    <PackageReleaseNotes>Allow to execute only the smoke tests with specified category names (declared in our code via SmokeTestCategoryAttribute and while querying via query string (e.g.: &lt;api-url&gt;/smoke?categories=categoryNameSpecifiedInTheSmokeTestViaAttribute)</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
   </PropertyGroup>
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using NFluent;
 using NSubstitute;
 using NUnit.Framework;
+using Sample.ExternalSmokeTests;
 using SmokeMe.Controllers;
 using SmokeMe.Infra;
 using SmokeMe.Tests.Helpers;
@@ -18,8 +19,6 @@ namespace SmokeMe.Tests.Acceptance
     [TestFixture]
     public class SmokeControllerShould
     {
-        private readonly SomeSmokeTestsForTestingPurposeShould _someSmokeTestsForTestingPurposeShould = new SomeSmokeTestsForTestingPurposeShould();
-
         [Test]
         [Repeat(10)]
         public async Task Run_all_smoke_tests()
@@ -133,6 +132,61 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results).IsEmpty();
             Check.That(reportDto.IsSuccess).IsFalse();
             Check.That(reportDto.Status).IsEqualTo($"Smoke tests execution not enabled. Set the '{Constants.IsEnabledConfigurationKey}' configuration key to true if you want to enable it.");
+        }
+
+        [Test]
+        public async Task Only_Execute_one_SmokeTest_from_its_Specified_Category()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests("DB");
+
+            response.CheckIsOk200();
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(1);
+
+            // Always positive smoke test after a delay
+            Check.That(reportDto.Results[0].SmokeTestName).IsEqualTo("Always working DB smoke test");
+            Check.That(reportDto.Results[0].Outcome).IsTrue();
+        }
+
+        [Test]
+        public async Task Only_Execute_SmokeTest_with_Specified_Categories()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests("FailingSaMere", "DB");
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(2);
+
+
+            // Always positive smoke test after a delay
+            Check.That(reportDto.Results[0].SmokeTestName).IsEqualTo("Failing on purpose");
+            Check.That(reportDto.Results[0].Outcome).IsFalse();
+
+            Check.That(reportDto.Results[1].SmokeTestName).IsEqualTo("Always working DB smoke test");
+            Check.That(reportDto.Results[1].Outcome).IsTrue();
+        }
+
+        private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
+        {
+            new AlwaysWorkingDBSmokeTest();
         }
     }
 }

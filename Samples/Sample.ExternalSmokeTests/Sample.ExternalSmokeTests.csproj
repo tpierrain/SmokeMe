@@ -12,7 +12,7 @@
     <DocumentationFile>.\Sample.ExternalSmokeTests.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup> 
     <ProjectReference Include="..\..\SmokeMe\SmokeMe.csproj" />
   </ItemGroup>
 

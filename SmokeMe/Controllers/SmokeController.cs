@@ -44,7 +44,7 @@ namespace SmokeMe.Controllers
         /// </summary>
         /// <returns>The <see cref="SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
         [HttpGet]
-        public async Task<IActionResult> ExecuteSmokeTests()
+        public async Task<IActionResult> ExecuteSmokeTests([FromQuery] params string[] categories)
         {
             if (!_configuration.IsSmokeTestExecutionEnabled())
             {
@@ -52,7 +52,7 @@ namespace SmokeMe.Controllers
             }
 
             // Find all smoke tests to run
-            var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun();
+            var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun(categories);
 
             if (!smokeTests.Any())
             {

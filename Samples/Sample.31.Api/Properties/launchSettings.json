@@ -9,10 +9,10 @@
     }
   },
   "profiles": {
-        "Smoke.Api": {
+    "Smoke.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "smoke",
+      "launchUrl": "smoke?categories=DB&categories=FailingSaMere",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

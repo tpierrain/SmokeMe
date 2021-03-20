@@ -38,7 +38,7 @@
             <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:SmokeMe.ICheckSmoke"/> smoke tests.</param>
             <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
         </member>
-        <member name="M:SmokeMe.Controllers.SmokeController.ExecuteSmokeTests">
+        <member name="M:SmokeMe.Controllers.SmokeController.ExecuteSmokeTests(System.String[])">
             <summary>
             Execute all registered Smoke Tests for this API.
             </summary>
@@ -147,7 +147,7 @@
             Responsible to find smoke tests to be run within an executable.
             </summary>
         </member>
-        <member name="M:SmokeMe.IFindSmokeTests.FindAllSmokeTestsToRun">
+        <member name="M:SmokeMe.IFindSmokeTests.FindAllSmokeTestsToRun(System.String[])">
             <summary>
             Instantiates all the <see cref="T:SmokeMe.ICheckSmoke"/> instances that have been found in the running code.
             </summary>
@@ -324,7 +324,7 @@
             </summary>
             <param name="serviceProvider">The (IoC) <see cref="T:System.IServiceProvider"/> instance needed to instantiate <see cref="T:SmokeMe.ICheckSmoke"/> instances.</param>
         </member>
-        <member name="M:SmokeMe.SmokeTestAutoFinder.FindAllSmokeTestsToRun">
+        <member name="M:SmokeMe.SmokeTestAutoFinder.FindAllSmokeTestsToRun(System.String[])">
             <summary>
             Finds all smoke tests scenarii that have to be executed for this API.
             </summary>

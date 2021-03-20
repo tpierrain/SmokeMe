@@ -11,6 +11,6 @@ namespace SmokeMe
         /// Instantiates all the <see cref="ICheckSmoke"/> instances that have been found in the running code.
         /// </summary>
         /// <returns>A collection of <see cref="ICheckSmoke"/> instances.</returns>
-        IEnumerable<ICheckSmoke> FindAllSmokeTestsToRun();
+        IEnumerable<ICheckSmoke> FindAllSmokeTestsToRun(params string[] categories);
     }
 }
