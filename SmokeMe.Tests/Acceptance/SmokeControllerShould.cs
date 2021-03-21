@@ -243,7 +243,7 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Publish_the_executed_SmokeTestCategories_when_specified()
+        public async Task Publish_the_executed_SmokeTestCategories_when_specified_by_the_client()
         {
             ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
 
@@ -260,6 +260,29 @@ namespace SmokeMe.Tests.Acceptance
 
             Check.That(reportDto.Results).HasSize(2);
             Check.That(reportDto.ExecutedCategories).Contains("FailingSaMere", "DB");
+        }
+
+        [Test]
+        public async Task Publish_the_Categories_of_every_executed_SmokeTest_when_existing()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests();
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(5);
+            Check.That(reportDto.ExecutedCategories).IsEmpty();
+
+            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Throwing exception after a delay", "Failing on purpose", "Always working DB smoke test", "Check connectivity towards Google search engine.");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("Tests", "", "FailingSaMere", "DB-Booking", "");
         }
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()

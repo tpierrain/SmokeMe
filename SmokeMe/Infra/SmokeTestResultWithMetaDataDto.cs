@@ -38,6 +38,11 @@ namespace SmokeMe.Infra
         public double? DurationInMsec { get; }
 
         /// <summary>
+        /// Gets the list of <see cref="SmokeTestCategories"/> attributes related to this Smoke test (i.e.: <see cref="ICheckSmoke"/>).
+        /// </summary>
+        public string SmokeTestCategories { get; }
+
+        /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
         /// </summary>
         /// <param name="smokeTestName"></param>
