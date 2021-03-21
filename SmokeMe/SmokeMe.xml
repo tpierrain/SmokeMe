@@ -4,6 +4,16 @@
         <name>SmokeMe</name>
     </assembly>
     <members>
+        <member name="T:SmokeMe.IgnoreAttribute">
+            <summary>
+            Tell SmokeMe lib to ignore a Smoke Test (i.e.: a <see cref="T:SmokeMe.ICheckSmoke"/> type).
+            </summary>
+        </member>
+        <member name="T:SmokeMe.SmokeTestCategoryAttribute">
+            <summary>
+            Allows to associate a Category for a Smoke Test (i.e.: a <see cref="T:SmokeMe.ICheckSmoke"/> type).
+            </summary>
+        </member>
         <member name="T:SmokeMe.Constants">
             <summary>
             Constants for the /smoke library
@@ -244,12 +254,13 @@
             Adapter from SmokeMe internal model to SmokeMe external DTOs.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription)">
+        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.String[])">
             <summary>
             Adapts a <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> one.
             </summary>
             <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to adapt.</param>
             <param name="runtimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> to associate</param>
+            <param name="categories"></param>
             <returns>The <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance.</returns>
         </member>
         <member name="T:SmokeMe.Infra.SmokeTestsSessionReportDto">
@@ -266,6 +277,11 @@
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Status">
             <summary>
             Gets the status of the smoke tests session report.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.ExecutedCategories">
+            <summary>
+            Gets the list of Executed Smoke test categories.
             </summary>
         </member>
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Results">
@@ -298,13 +314,14 @@
             Gets the number of Processors this API instance has.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto})">
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[])">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
             </summary>
             <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> to be adapted.</param>
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
             <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
+            <param name="categories"></param>
         </member>
         <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription,System.String)">
             <summary>

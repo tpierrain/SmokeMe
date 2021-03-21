@@ -23,6 +23,11 @@ namespace SmokeMe.Infra
         public string Status => _reports.Status;
 
         /// <summary>
+        /// Gets the list of Executed Smoke test categories.
+        /// </summary>
+        public string[] ExecutedCategories { get; }
+
+        /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
         /// </summary>
         public SmokeTestResultWithMetaDataDto[] Results { get; }
@@ -51,20 +56,24 @@ namespace SmokeMe.Infra
         /// Gets the number of Processors this API instance has.
         /// </summary>
         public string NbOfProcessors => _apiRuntimeDescription.NbOfProcessors;
-
+        
         /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
         /// <param name="reports">The <see cref="SmokeTestsSessionReport"/> to be adapted.</param>
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         /// <param name="smokeTestResultWithMetaDataDtos">The <see cref="IEnumerable&lt;SmokeTestResultWithMetaDataDto&gt;"/> containing all the smoke tests results.</param>
-        public SmokeTestsSessionReportDto(SmokeTestsSessionReport reports, ApiRuntimeDescription apiRuntimeDescription, IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos)
+        /// <param name="categories"></param>
+        public SmokeTestsSessionReportDto(SmokeTestsSessionReport reports, ApiRuntimeDescription apiRuntimeDescription,
+            IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos, string[] categories)
         {
             _reports = reports;
 
             Results = smokeTestResultWithMetaDataDtos.ToArray();
 
             _apiRuntimeDescription = apiRuntimeDescription;
+
+            ExecutedCategories = categories;
         }
 
         /// <summary>

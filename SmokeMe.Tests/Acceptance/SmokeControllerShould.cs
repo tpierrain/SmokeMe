@@ -242,6 +242,26 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""Awkward"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""Awkward"")] so that the SmokeMe library can detect and run them.");
         }
 
+        [Test]
+        public async Task Publish_the_executed_SmokeTestCategories_when_specified()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests("FailingSaMere", "DB");
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(2);
+            Check.That(reportDto.ExecutedCategories).Contains("FailingSaMere", "DB");
+        }
+
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
         {
             new AlwaysWorkingDBSmokeTest();
