@@ -90,15 +90,14 @@ namespace SmokeMe
             {
                 try
                 {
-                    var types = assembly.GetTypes()
-                                                .Where(p => typeof(T).IsAssignableFrom(p));
+                    var types = assembly.GetTypes().Where(p => typeof(T).IsAssignableFrom(p)).ToArray();
 
-                    if (types.Count() > 0)
+                    if (types.Any())
                     {
                         if (categories.Length > 0)
                         {
                             // must filter types
-                            types = types.Where(t => ContainsAttributes(categories, t.CustomAttributes));
+                            types = types.Where(t => ContainsSmokeTestCategoryAttributes(categories, t.CustomAttributes)).ToArray();
                         }
 
                         smokeTesTypes.AddRange(types.ToArray());
@@ -114,7 +113,7 @@ namespace SmokeMe
             return smokeTesTypes.ToArray();
         }
 
-        private static bool ContainsAttributes(string[] categories, IEnumerable<CustomAttributeData> customAttributes)
+        private static bool ContainsSmokeTestCategoryAttributes(string[] categories, IEnumerable<CustomAttributeData> customAttributes)
         {
             if (customAttributes == null)
             {
