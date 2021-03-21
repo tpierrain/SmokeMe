@@ -51,6 +51,8 @@ All the auto-discovery, infrastructure and plumbering things are done for you by
 /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
 /// (classical constructor-based injection). Can't be that easy, right? ;-)
 /// </summary>
+[SmokeTestCategory("Critical")]
+[SmokeTestCategory("Payment")]
 public interface ICheckSmoke
 {
     /// <summary>
@@ -265,6 +267,39 @@ e.g.:
   "AllowedHosts": "*"
 }
 
+```
+
+### 7. How can I run a subset of my smoke test only?
+
+All you have to do is:
+
+1. To declare some [SmokeTestCategory("myCategoryName")] attributes on the SmokeTest types you want. For instance: 
+
+```csharp
+
+    [SmokeTestCategory("DB")]
+    [SmokeTestCategory("Booking")]
+    public class AlwaysWorkingDBSmokeTest : ICheckSmoke
+    {
+        // My smoke test code here
+    }
+
+```
+
+2. To call the /smoke HTTP route with the category you want to run specifically as Querystring. 
+
+E.g.:
+
+```
+<your-api>/smoke?categories=Booking
+
+```
+
+or if you want to call all smoke tests corresponding to many categories (assuming here you want to run all smoke tests having either "Booking", "Critical" or "Payment" category associated):
+
+```
+
+<your-api>/smoke?categories=Booking&categories=Critical&categories=Payment
 
 ```
 

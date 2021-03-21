@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Runtime;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NFluent;
@@ -12,7 +11,6 @@ using Sample.ExternalSmokeTests;
 using SmokeMe.Controllers;
 using SmokeMe.Infra;
 using SmokeMe.Tests.Helpers;
-using SmokeMe.Tests.Unit;
 
 namespace SmokeMe.Tests.Acceptance
 {
@@ -135,7 +133,7 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Only_Execute_one_SmokeTest_from_its_Specified_Category()
+        public async Task Only_Execute_corresponding_SmokeTest_when_specifying_one_Category()
         {
             ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
 
@@ -175,13 +173,53 @@ namespace SmokeMe.Tests.Acceptance
 
             Check.That(reportDto.Results).HasSize(2);
 
-
             // Always positive smoke test after a delay
             Check.That(reportDto.Results[0].SmokeTestName).IsEqualTo("Failing on purpose");
             Check.That(reportDto.Results[0].Outcome).IsFalse();
 
             Check.That(reportDto.Results[1].SmokeTestName).IsEqualTo("Always working DB smoke test");
             Check.That(reportDto.Results[1].Outcome).IsTrue();
+        }
+
+        [Test]
+        public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_undeclared_Category()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var nonExistingCategoryName = "PortnaouaqThisIsNotAnExistingCategory";
+            var response = await controller.ExecuteSmokeTests(nonExistingCategoryName);
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(0);
+            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""{nonExistingCategoryName}"")] attribute have been found in your executing assemblies. Check that you have one or more ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""{nonExistingCategoryName}"")] so that the SmokeMe library can detect and run them.");
+        }
+
+        [Test]
+        public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_multiple_undeclared_Categories()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests("Cat1", "Cat2", "Cat3");
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(0);
+            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""Cat1"")] or [SmokeTestCategory(""Cat2"")] or [SmokeTestCategory(""Cat3"")] attributes have been found in your executing assemblies. Check that you have one or more ICheckSmoke types in your code base with the expected declared [SmokeTestCategory] attributes so that the SmokeMe library can detect and run them.");
         }
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()

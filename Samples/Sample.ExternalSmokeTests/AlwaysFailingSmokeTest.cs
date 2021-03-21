@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using SmokeMe;
-using SmokeMe.Attributes;
 
 namespace Sample.ExternalSmokeTests
 {

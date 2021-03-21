@@ -30,7 +30,6 @@ namespace SmokeMe
 
             var allSmokeTasks = Task.WhenAll(tasks);
             var timeoutTask = Task.Delay(globalTimeout);
-            //var timeoutTask = Task.Run(() => Thread.Sleep(globalTimeout));
 
             if (timeoutTask == await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false))
             {
@@ -76,7 +75,7 @@ namespace SmokeMe
             return completedResults;
         }
 
-        private static bool IsNotAFalsePositive(Task<SmokeTestWithItsResultWithMetaData[]> allSmokeTasks)
+        private static bool IsNotAFalsePositive(Task allSmokeTasks)
         {
             return !allSmokeTasks.IsCompletedSuccessfully;
         }

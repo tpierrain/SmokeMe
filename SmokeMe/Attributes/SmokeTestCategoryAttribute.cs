@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace SmokeMe.Attributes
+namespace SmokeMe
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class SmokeTestCategoryAttribute : Attribute
     {
         public string CategoryName { get; }
