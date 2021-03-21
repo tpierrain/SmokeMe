@@ -15,15 +15,15 @@ namespace SmokeMe
         /// <summary>
         /// Executes <see cref="ICheckSmoke"/> instances that has been found for this API.
         /// </summary>
-        /// <param name="smokeTests">The <see cref="ICheckSmoke"/> instances to be executed in parallel.</param>
+        /// <param name="smokeTestsWithMetaData">The <see cref="SmokeTestInstanceWithMetaData"/> instances to be executed in parallel.</param>
         /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ICheckSmoke"/> instances to be executed.</param>
         /// <returns>The <see cref="SmokeTestsSessionReport"/>.</returns>
-        public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<ICheckSmoke> smokeTests, TimeSpan globalTimeout)
+        public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<SmokeTestInstanceWithMetaData> smokeTestsWithMetaData, TimeSpan globalTimeout)
         {
             var tasks = new List<Task<SmokeTestWithItsResultWithMetaData>>();
-            foreach (var smokeTest in smokeTests)
+            foreach (var smokeTestWithMetaData in smokeTestsWithMetaData.ToArray())
             {
-                var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTest));
+                var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTestWithMetaData));
                 tasks.Add(task);
             }
 
@@ -34,7 +34,7 @@ namespace SmokeMe
             {
                 if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
                 {
-                    var timeoutAndCompletedResultsWithMetadata = await ConcatInferedTimeoutTestsResultsWithCompletedTestsResults(smokeTests, tasks);
+                    var timeoutAndCompletedResultsWithMetadata = await ConcatDeducedTimeoutTestsResultsWithCompletedTestsResults(smokeTestsWithMetaData, tasks);
 
                     return new TimeoutSmokeTestsSessionReport(globalTimeout, timeoutAndCompletedResultsWithMetadata, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
                 }
@@ -45,18 +45,24 @@ namespace SmokeMe
             return new SmokeTestsSessionReport(smokeTestWithItsResultWithMetaDatas.Select(x => x.SmokeTestResultWithMetaData).ToArray());
         }
 
-        private static async Task<SmokeTestResultWithMetaData[]> ConcatInferedTimeoutTestsResultsWithCompletedTestsResults(IEnumerable<ICheckSmoke> smokeTests, IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> tasks)
+        private static async Task<SmokeTestResultWithMetaData[]> ConcatDeducedTimeoutTestsResultsWithCompletedTestsResults(IEnumerable<SmokeTestInstanceWithMetaData> smokeTestsWithMetaData, IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> tasks)
         {
-            var completedTasks = tasks.Where(s => s.IsCompleted).ToArray();
-            var completedResults = await GetSmokeTestsResultsThatHaveCompleted(completedTasks);
-            var completedTestsResultWithMetaDatas = completedResults.Select(x => x.SmokeTestResultWithMetaData).ToArray();
+            // TODO: refactor this! (keep only one type: SmokeTestWithItsResultWithMetaData or SmokeTestResultWithMetaData)
 
-            var timeoutSmokeTests = smokeTests.Except(completedResults.Select(x => x.SmokeTest));
-            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x =>
-                new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x.SmokeTestName, x.Description));
+            IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> completedTasks = tasks.Where(s => s.IsCompleted).ToArray();
+            
+            List<SmokeTestWithItsResultWithMetaData> completedResults = await GetSmokeTestsResultsThatHaveCompleted(completedTasks);
+            
+            SmokeTestResultWithMetaData[] completedTestsResultWithMetaData = completedResults.Select(x => x.SmokeTestResultWithMetaData).ToArray();
 
-            var timeoutAndCompletedResultsWithMetadata =
-                timeoutResultWithSomeMetaData.Concat(completedTestsResultWithMetaDatas).ToArray();
+            var completedIdentifiers = completedResults.Select(x => x.SmokeTestIdentifier).ToArray();
+
+            var timeoutSmokeTests = smokeTestsWithMetaData.Where(x => !completedIdentifiers.Contains(x.SmokeTestIdentifier.Value));
+
+            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x));
+
+            var timeoutAndCompletedResultsWithMetadata = timeoutResultWithSomeMetaData.Concat(completedTestsResultWithMetaData).ToArray();
+
             return timeoutAndCompletedResultsWithMetadata;
         }
 
@@ -79,8 +85,10 @@ namespace SmokeMe
             return !allSmokeTasks.IsCompletedSuccessfully;
         }
 
-        private static async Task<SmokeTestWithItsResultWithMetaData> StopWatchSafeSmokeTestExecution(ICheckSmoke smokeTest)
+        private static async Task<SmokeTestWithItsResultWithMetaData> StopWatchSafeSmokeTestExecution(SmokeTestInstanceWithMetaData smokeTestWithMetaData)
         {
+            var smokeTest = smokeTestWithMetaData.SmokeTest;
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try
@@ -88,33 +96,37 @@ namespace SmokeMe
                 var smokeTestResult = await smokeTest.Scenario();
 
                 stopwatch.Stop();
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData);
 
-                return new SmokeTestWithItsResultWithMetaData(smokeTest , smokeTestExecution);
+                return new SmokeTestWithItsResultWithMetaData(smokeTest , smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
             }
             catch (Exception ex)
             {
                 stopwatch.Stop();
                 var smokeTestResult = new SmokeTestResult("", ex);
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTest);
-                return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestExecution);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData);
+                return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
             }
         }
 
-        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, ICheckSmoke smokeTest)
+        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData)
         {
-            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTest.SmokeTestName, smokeTest.Description);
+            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTestInstanceWithMetaData);
         }
 
         private class SmokeTestWithItsResultWithMetaData
         {
             public ICheckSmoke SmokeTest { get; }
-            public SmokeTestResultWithMetaData SmokeTestResultWithMetaData { get; }
 
-            public SmokeTestWithItsResultWithMetaData(ICheckSmoke smokeTest, SmokeTestResultWithMetaData smokeTestResultWithMetaData)
+            public SmokeTestResultWithMetaData SmokeTestResultWithMetaData { get; }
+            
+            public int SmokeTestIdentifier { get; }
+
+            public SmokeTestWithItsResultWithMetaData(ICheckSmoke smokeTest, SmokeTestResultWithMetaData smokeTestResultWithMetaData, int smokeTestIdentifier)
             {
                 SmokeTest = smokeTest;
                 SmokeTestResultWithMetaData = smokeTestResultWithMetaData;
+                SmokeTestIdentifier = smokeTestIdentifier;
             }
         }
     }

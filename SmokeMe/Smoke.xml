@@ -166,7 +166,7 @@
             <summary>
             Executes <see cref="T:SmokeMe.ICheckSmoke"/> instances that has been found for this API.
             </summary>
-            <param name="smokeTests">The <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed in parallel.</param>
+            <param name="smokeTestsWithMetaData">The <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed in parallel.</param>
             <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed.</param>
             <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.</returns>
         </member>

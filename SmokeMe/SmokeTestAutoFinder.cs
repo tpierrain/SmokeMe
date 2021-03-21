@@ -25,26 +25,40 @@ namespace SmokeMe
         /// <summary>
         /// Finds all smoke tests scenarii that have to be executed for this API.
         /// </summary>
+        /// <param name="requestedCategories">Categories requested by the client.</param>
         /// <returns>The collection of all <see cref="ICheckSmoke"/> instance declared in this API to be executed.</returns>
-        public IEnumerable<ICheckSmoke> FindAllSmokeTestsToRun(params string[] categories)
+        public IEnumerable<SmokeTestInstanceWithMetaData> FindAllSmokeTestsToRun(params string[] requestedCategories)
         {
-            var smokeTestInstances = new List<ICheckSmoke>();
+            var smokeTestInstances = new List<SmokeTestInstanceWithMetaData>();
 
-            var types = GetTypesImplementing<ICheckSmoke>(categories);
+            var types = GetTypesImplementing<ICheckSmoke>(requestedCategories);
 
             types = RemoveSmokeTestsWithIgnoredAttribute(types);
 
+            int smokeTestIdentifier = 1;
             foreach (var smokeTestType in types)
             {
                 var constructors = smokeTestType.GetConstructorsOrderedByNumberOfParametersDesc();
                 var smokeTest = InstantiateSmokeTest(constructors, _serviceProvider);
+                var smokeTestCategories = GetCategories(smokeTestType);
                 if (smokeTest != null)
                 {
-                    smokeTestInstances.Add(smokeTest);
+                    var smokeTestInstanceWithMetaData = new SmokeTestInstanceWithMetaData(smokeTest, smokeTestCategories) { SmokeTestIdentifier = smokeTestIdentifier };
+
+                    smokeTestInstances.Add(smokeTestInstanceWithMetaData);
                 }
+
+                smokeTestIdentifier++;
             }
             
             return smokeTestInstances;
+        }
+
+        private string[] GetCategories(Type smokeTestType)
+        {
+            var categories = smokeTestType.CustomAttributes.Where(c => c.AttributeType == typeof(SmokeTestCategoryAttribute)).Select(t => t.ConstructorArguments[0].Value).Cast<string>().ToArray();
+            
+            return categories;
         }
 
         private static Type[] RemoveSmokeTestsWithIgnoredAttribute(Type[] types)

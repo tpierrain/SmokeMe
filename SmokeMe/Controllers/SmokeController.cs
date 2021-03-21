@@ -46,19 +46,21 @@ namespace SmokeMe.Controllers
         [HttpGet]
         public async Task<IActionResult> ExecuteSmokeTests([FromQuery] params string[] categories)
         {
+            var requestedCategories = categories; // adapt name to our context
+
             if (!_configuration.IsSmokeTestExecutionEnabled())
             {
                 return StatusCode((int) HttpStatusCode.ServiceUnavailable, new SmokeTestsDisabledReportDto(new ApiRuntimeDescription()));
             }
 
             // Find all smoke tests to run
-            var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun(categories);
+            var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun(requestedCategories);
 
             if (!smokeTests.Any())
             {
-                if (categories.Length > 0)
+                if (requestedCategories.Length > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: GenerateStatusMessageForNoSmokeTestsWithCategories(categories)));
+                    return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: GenerateStatusMessageForNoSmokeTestsWithCategories(requestedCategories)));
                 }
                 
                 return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them."));
@@ -69,7 +71,7 @@ namespace SmokeMe.Controllers
             var results = await SmokeTestRunner.ExecuteAllSmokeTestsInParallel(smokeTests, globalTimeout);
 
             // Adapt from business to DTO with extra information
-            var resultDto = SmokeTestSessionResultAdapter.Adapt(results, new ApiRuntimeDescription(), categories);
+            var resultDto = SmokeTestSessionResultAdapter.Adapt(results, new ApiRuntimeDescription(), requestedCategories);
 
             if (resultDto.IsSuccess)
             {

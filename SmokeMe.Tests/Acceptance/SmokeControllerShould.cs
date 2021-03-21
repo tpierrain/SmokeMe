@@ -22,7 +22,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Run_all_smoke_tests()
         {
             var configuration = Substitute.For<IConfiguration>();
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero).WithoutCategory(), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero).WithoutCategory());
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
@@ -35,7 +35,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Return_InternalServerError_500_when_smoke_tests_fails()
         {
             var configuration = Substitute.For<IConfiguration>();
-            var smokeTestProvider = Stub.ASmokeTestProvider(new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero).WithoutCategory());
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
@@ -49,7 +49,7 @@ namespace SmokeMe.Tests.Acceptance
         {
             var globalTimeoutInMsec = 5 * 1000;
             var configuration = Stub.AConfiguration(globalTimeoutInMsec: globalTimeoutInMsec);
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(2.0)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(6)).WithoutCategory(), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(2.0)).WithoutCategory());
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
 
@@ -88,7 +88,7 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Return_execution_durations_in_readable_and_adjusted_string_format()
         {
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1)), new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(30)), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.2)));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1)).WithoutCategory(), new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(30)).WithoutCategory(), new AlwaysPositiveSmokeTest(TimeSpan.FromSeconds(1.2)).WithoutCategory());
             var smokeController = new SmokeController(Substitute.For<IConfiguration>(), null, smokeTestProvider);
 
             var response = await smokeController.ExecuteSmokeTests();
@@ -121,7 +121,7 @@ namespace SmokeMe.Tests.Acceptance
         {
             var configuration = Stub.AConfiguration(false);
             
-            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero));
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.Zero).WithAssociatedCategories("DB"), new SmokeTestThrowingAnAccessViolationException(TimeSpan.Zero).WithoutCategory());
 
             var controller = new SmokeController(configuration, null, smokeTestProvider);
             var response = await controller.ExecuteSmokeTests();
@@ -259,7 +259,7 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results).HasSize(2);
-            Check.That(reportDto.ExecutedCategories).Contains("FailingSaMere", "DB");
+            Check.That(reportDto.RequestedCategories).Contains("FailingSaMere", "DB");
         }
 
         [Test]
@@ -279,10 +279,10 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results).HasSize(5);
-            Check.That(reportDto.ExecutedCategories).IsEmpty();
+            Check.That(reportDto.RequestedCategories).IsEmpty();
 
-            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Throwing exception after a delay", "Failing on purpose", "Always working DB smoke test", "Check connectivity towards Google search engine.");
-            Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("Tests", "", "FailingSaMere", "DB-Booking", "");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Always positive smoke test after a delay", "Throwing exception after a delay", "Always working DB smoke test", "Check connectivity towards Google search engine.");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "Tests", "", "DB, Booking", "Connectivity");
         }
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()

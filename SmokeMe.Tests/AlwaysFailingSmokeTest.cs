@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using SmokeMe;
 
-namespace Sample.ExternalSmokeTests
+namespace SmokeMe.Tests
 {
     [SmokeTestCategory("FailingSaMere")]
     public class AlwaysFailingSmokeTest : ICheckSmoke

@@ -23,9 +23,9 @@ namespace SmokeMe.Infra
         public string Status => _reports.Status;
 
         /// <summary>
-        /// Gets the list of Executed Smoke test categories.
+        /// Gets the list of the requested Smoke test categories.
         /// </summary>
-        public string[] ExecutedCategories { get; }
+        public string[] RequestedCategories { get; }
 
         /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
@@ -73,7 +73,7 @@ namespace SmokeMe.Infra
 
             _apiRuntimeDescription = apiRuntimeDescription;
 
-            ExecutedCategories = categories;
+            RequestedCategories = categories;
         }
 
         /// <summary>

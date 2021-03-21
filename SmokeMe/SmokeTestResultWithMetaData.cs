@@ -34,6 +34,8 @@ namespace SmokeMe
 
         private SmokeTestResult SmokeTestResult { get; }
 
+        public string[] SmokeTestCategories { get; }
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
@@ -41,12 +43,18 @@ namespace SmokeMe
         /// <param name="duration">The duration of this <see cref="ICheckSmoke"/> execution.</param>
         /// <param name="smokeTestName">Name of the smoke test.</param>
         /// <param name="smokeTestDescription">Description of the smoke test.</param>
-        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription)
+        /// <param name="smokeTestCategories"></param>
+        private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription, string[] smokeTestCategories)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
+            SmokeTestCategories = smokeTestCategories;
+        }
+
+        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories)
+        {
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace SmokeMe.Tests.Unit
 
             var smokeTests = smokeTestAutoFinder.FindAllSmokeTestsToRun();
 
-            Check.That(smokeTests.Select(x => x.GetType()))
+            Check.That(smokeTests.Select(x => x.SmokeTest.GetType()))
                 .Contains(typeof(AlwaysPositiveSmokeTest), 
                                                 typeof(SmokeTestThrowingAnAccessViolationException), 
                                                 typeof(FlippingSmokeTest));

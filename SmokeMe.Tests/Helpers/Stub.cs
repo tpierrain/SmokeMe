@@ -11,9 +11,17 @@ namespace SmokeMe.Tests.Helpers
     /// </summary>
     public class Stub
     {
-        public static IFindSmokeTests ASmokeTestProvider(params ICheckSmoke[] smokeTestsToFind)
+        public static IFindSmokeTests ASmokeTestProvider(params SmokeTestInstanceWithMetaData[] smokeTestsToFind)
         {
             var smokeTestProvider = Substitute.For<IFindSmokeTests>();
+
+            var identifier = 1;
+            foreach (var smokeTestInstanceWithMetaData in smokeTestsToFind)
+            {
+                smokeTestInstanceWithMetaData.SmokeTestIdentifier = identifier;
+                identifier++;
+            }
+
             smokeTestProvider.FindAllSmokeTestsToRun().Returns(smokeTestsToFind);
             return smokeTestProvider;
         }

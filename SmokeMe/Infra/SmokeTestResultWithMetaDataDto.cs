@@ -18,6 +18,11 @@ namespace SmokeMe.Infra
         public string SmokeTestDescription { get; }
 
         /// <summary>
+        /// Gets the list of <see cref="SmokeTestCategories"/> attributes related to this Smoke test (i.e.: <see cref="ICheckSmoke"/>).
+        /// </summary>
+        public string SmokeTestCategories { get; }
+
+        /// <summary>
         /// Indicates whether the outcome of this <see cref="ICheckSmoke"/> execution is positive or not.
         /// </summary>
         public bool Outcome { get; }
@@ -38,11 +43,6 @@ namespace SmokeMe.Infra
         public double? DurationInMsec { get; }
 
         /// <summary>
-        /// Gets the list of <see cref="SmokeTestCategories"/> attributes related to this Smoke test (i.e.: <see cref="ICheckSmoke"/>).
-        /// </summary>
-        public string SmokeTestCategories { get; }
-
-        /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
         /// </summary>
         /// <param name="smokeTestName"></param>
@@ -51,7 +51,9 @@ namespace SmokeMe.Infra
         /// <param name="error"></param>
         /// <param name="durationTimespan"></param>
         /// <param name="duration"></param>
-        public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan, string duration)
+        /// <param name="argSmokeTestCategories"></param>
+        public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan,
+            string duration, string[] smokeTestCategories)
         {
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
@@ -61,6 +63,8 @@ namespace SmokeMe.Infra
             duration ??= "timeout";
 
             Duration = duration;
+            SmokeTestCategories = string.Join(", ", smokeTestCategories);
+
             if (durationTimespan.HasValue)
             {
                 DurationInMsec = durationTimespan.Value.TotalMilliseconds;

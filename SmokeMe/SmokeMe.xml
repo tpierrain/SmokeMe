@@ -213,6 +213,11 @@
             The description of what this <see cref="T:SmokeMe.ICheckSmoke"/> smoke test is about (as declared by it).
             </summary>
         </member>
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.SmokeTestCategories">
+            <summary>
+            Gets the list of <see cref="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.SmokeTestCategories"/> attributes related to this Smoke test (i.e.: <see cref="T:SmokeMe.ICheckSmoke"/>).
+            </summary>
+        </member>
         <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Outcome">
             <summary>
             Indicates whether the outcome of this <see cref="T:SmokeMe.ICheckSmoke"/> execution is positive or not.
@@ -233,7 +238,7 @@
             Gets the duration in milliseconds of this smoke test execution (useful for scripting).
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String)">
+        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,System.String[])">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto"/>.
             </summary>
@@ -243,6 +248,7 @@
             <param name="error"></param>
             <param name="durationTimespan"></param>
             <param name="duration"></param>
+            <param name="argSmokeTestCategories"></param>
         </member>
         <member name="T:SmokeMe.Infra.SmokeTestsDisabledReportDto">
             <summary>
@@ -279,9 +285,9 @@
             Gets the status of the smoke tests session report.
             </summary>
         </member>
-        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.ExecutedCategories">
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.RequestedCategories">
             <summary>
-            Gets the list of Executed Smoke test categories.
+            Gets the list of the requested Smoke test categories.
             </summary>
         </member>
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.Results">
@@ -345,6 +351,7 @@
             <summary>
             Finds all smoke tests scenarii that have to be executed for this API.
             </summary>
+            <param name="requestedCategories">Categories requested by the client.</param>
             <returns>The collection of all <see cref="T:SmokeMe.ICheckSmoke"/> instance declared in this API to be executed.</returns>
         </member>
         <member name="T:SmokeMe.SmokeTestResult">
@@ -411,7 +418,7 @@
             Gets the description of the executed <see cref="T:SmokeMe.ICheckSmoke"/> instance.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String)">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[])">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
@@ -419,6 +426,7 @@
             <param name="duration">The duration of this <see cref="T:SmokeMe.ICheckSmoke"/> execution.</param>
             <param name="smokeTestName">Name of the smoke test.</param>
             <param name="smokeTestDescription">Description of the smoke test.</param>
+            <param name="smokeTestCategories"></param>
         </member>
         <member name="M:SmokeMe.SmokeTestResultWithMetaData.ToString">
             <summary>
@@ -431,11 +439,11 @@
             Runner for <see cref="T:SmokeMe.ICheckSmoke"/> instances.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTestsInParallel(System.Collections.Generic.IEnumerable{SmokeMe.ICheckSmoke},System.TimeSpan)">
+        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTestsInParallel(System.Collections.Generic.IEnumerable{SmokeMe.SmokeTestInstanceWithMetaData},System.TimeSpan)">
             <summary>
             Executes <see cref="T:SmokeMe.ICheckSmoke"/> instances that has been found for this API.
             </summary>
-            <param name="smokeTests">The <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed in parallel.</param>
+            <param name="smokeTestsWithMetaData">The <see cref="T:SmokeMe.SmokeTestInstanceWithMetaData"/> instances to be executed in parallel.</param>
             <param name="globalTimeout">The maximum amount of time allowed for all <see cref="T:SmokeMe.ICheckSmoke"/> instances to be executed.</param>
             <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/>.</returns>
         </member>
