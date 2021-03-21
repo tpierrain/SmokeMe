@@ -5,7 +5,7 @@ namespace Sample.ExternalSmokeTests
 {
     [Category("DB")]
     [Category("Booking")]
-    public class AlwaysWorkingDBSmokeTest : ICheckSmoke
+    public class BookingSmokeTest : ICheckSmoke
     {
         public string SmokeTestName => "Always working DB smoke test";
         public string Description => "Succeeding Smoke test for testing purpose";

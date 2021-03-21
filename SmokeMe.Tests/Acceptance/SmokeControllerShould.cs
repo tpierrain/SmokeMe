@@ -287,7 +287,7 @@ namespace SmokeMe.Tests.Acceptance
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
         {
-            new AlwaysWorkingDBSmokeTest();
+            new BookingSmokeTest();
         }
     }
 }
