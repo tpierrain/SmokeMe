@@ -32,6 +32,8 @@ namespace SmokeMe
 
             var types = GetTypesImplementing<ICheckSmoke>(categories);
 
+            types = RemoveSmokeTestsWithIgnoredAttribute(types);
+
             foreach (var smokeTestType in types)
             {
                 var constructors = smokeTestType.GetConstructorsOrderedByNumberOfParametersDesc();
@@ -43,6 +45,27 @@ namespace SmokeMe
             }
             
             return smokeTestInstances;
+        }
+
+        private static Type[] RemoveSmokeTestsWithIgnoredAttribute(Type[] types)
+        {
+            var ignoredTypes = types.Where(t => HasIgnoredCustomAttribute(t.CustomAttributes)).ToArray();
+
+            types = types.Except(ignoredTypes).ToArray();
+            return types;
+        }
+
+        private static bool HasIgnoredCustomAttribute(IEnumerable<CustomAttributeData> customAttributes)
+        {
+            foreach (var customAttributeData in customAttributes)
+            {
+                if (customAttributeData.AttributeType == typeof(IgnoredAttribute))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static ICheckSmoke InstantiateSmokeTest(IEnumerable<ConstructorInfo> constructors, IServiceProvider serviceProvider)
@@ -108,7 +131,6 @@ namespace SmokeMe
                     // something went wrong during the reflection phase
                 }
             }
-
             
             return smokeTesTypes.ToArray();
         }
