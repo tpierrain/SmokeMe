@@ -4,7 +4,7 @@ using SmokeMe;
 namespace Sample.ExternalSmokeTests
 {
     [SmokeTestCategory("Awkward")]
-    [Ignored]
+    [Ignore]
     public class AlwaysWorkingButIgnoredDBSmokeTest : ICheckSmoke
     {
         public string SmokeTestName => "Always working but ignored DB smoke test";

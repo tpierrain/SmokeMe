@@ -223,7 +223,7 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Not_run_SmokeTests_with_Ignored_Attribute()
+        public async Task Not_run_SmokeTests_with_Ignore_Attribute()
         {
             ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
 

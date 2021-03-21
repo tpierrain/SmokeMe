@@ -59,7 +59,7 @@ namespace SmokeMe
         {
             foreach (var customAttributeData in customAttributes)
             {
-                if (customAttributeData.AttributeType == typeof(IgnoredAttribute))
+                if (customAttributeData.AttributeType == typeof(IgnoreAttribute))
                 {
                     return true;
                 }
