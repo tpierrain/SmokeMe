@@ -51,8 +51,6 @@ All the auto-discovery, infrastructure and plumbering things are done for you by
 /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
 /// (classical constructor-based injection). Can't be that easy, right? ;-)
 /// </summary>
-[SmokeTestCategory("Critical")]
-[SmokeTestCategory("Payment")]
 public interface ICheckSmoke
 {
     /// <summary>
@@ -72,8 +70,35 @@ public interface ICheckSmoke
     Task<SmokeTestResult> Scenario();
 }
 
+```
+
+You can add one or more SmokeMe attributes such as:
+
+__Ignore__
+
+```csharp
+
+    [Ignore]
+    public class SmokeTestDoingStuffs : ICheckSmoke
+    {
+        // smoke test code here
+    }
 
 ```
+
+or __SmokeTestCategory__ to target one of more subset of Smoke tests.
+
+```csharp
+
+    [SmokeTestCategory("Booking")]
+    [SmokeTestCategory("Critical")]
+    public class AnotherSmokeTestDoingStuffs : ICheckSmoke
+    {
+        // smoke test code here
+    }
+
+```
+
 
 ### B. While deploying or supporting your production
 
@@ -281,7 +306,7 @@ All you have to do is:
     [SmokeTestCategory("Booking")]
     public class AlwaysWorkingDBSmokeTest : ICheckSmoke
     {
-        // My smoke test code here
+        // smoke test code here
     }
 
 ```
@@ -300,6 +325,21 @@ or if you want to call all smoke tests corresponding to many categories (assumin
 ```
 
 <your-api>/smoke?categories=Booking&categories=Critical&categories=Payment
+
+```
+
+### 8. How can I Ignore one or more smoke tests?
+
+Just add an [Ignore] attribute on the smoke tests you want to Ignore.
+e.g.:
+
+```csharp
+
+    [Ignore]
+    public class SmokeTestDoingStuffs : ICheckSmoke
+    {
+        // smoke test code here
+    }
 
 ```
 
