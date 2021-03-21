@@ -270,7 +270,7 @@ services.AddApiVersioning(
 ```
 
 
-### 6. How can I disable the execution of smoke test?
+### 6. How can I disable the execution of all smoke test?
 
 ```
 Just set false to the "Smoke:IsSmokeTestExecutionEnabled" configuration key (default value is true).
@@ -294,7 +294,7 @@ e.g.:
 
 ```
 
-### 7. How can I run a subset of my smoke test only?
+### 7. How can I run a subset of my smoke tests only?
 
 All you have to do is:
 
@@ -304,7 +304,7 @@ All you have to do is:
 
     [SmokeTestCategory("DB")]
     [SmokeTestCategory("Booking")]
-    public class AlwaysWorkingDBSmokeTest : ICheckSmoke
+    public class BookADoubleRoomSmokeTest : ICheckSmoke
     {
         // smoke test code here
     }
@@ -320,7 +320,7 @@ E.g.:
 
 ```
 
-or if you want to call all smoke tests corresponding to many categories (assuming here you want to run all smoke tests having either "Booking", "Critical" or "Payment" category associated):
+or if you want to call all smoke tests corresponding to many categories only (assuming here you want to run only smoke tests having either "Booking", "Critical" or "Payment" category associated):
 
 ```
 
