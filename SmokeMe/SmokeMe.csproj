@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
     <PackageReleaseNotes>
-      - Allow to execute only the smoke tests with specified category names (declared in our code via SmokeTestCategoryAttribute and while querying via query string (e.g.: &lt;api-url&gt;/smoke?categories=categoryNameSpecifiedInTheSmokeTestViaAttribute)
+      - Allow to execute only the smoke tests with specified category names (declared in our code via CategoryAttribute and while querying via query string (e.g.: &lt;api-url&gt;/smoke?categories=categoryNameSpecifiedInTheSmokeTestViaAttribute)
       - Add an [Ignore] attribute to ignore one or more smoke test (useful to keep it in our code base whereas we don't want to run them now)
     </PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>

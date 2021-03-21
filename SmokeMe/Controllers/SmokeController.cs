@@ -90,12 +90,12 @@ namespace SmokeMe.Controllers
         {
             if (categories.Length == 1)
             {
-                return @$"No smoke test with [SmokeTestCategory(""{categories[0]}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""{categories[0]}"")] so that the SmokeMe library can detect and run them.";
+                return @$"No smoke test with [Category(""{categories[0]}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [Category(""{categories[0]}"")] so that the SmokeMe library can detect and run them.";
             }
 
-            var expectedAttributes = categories.Select(s => @$"[SmokeTestCategory(""{s}"")]");
+            var expectedAttributes = categories.Select(s => @$"[Category(""{s}"")]");
             
-            return @$"No smoke test with {string.Join(" or ", expectedAttributes)} attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [SmokeTestCategory] attributes so that the SmokeMe library can detect and run them.";
+            return @$"No smoke test with {string.Join(" or ", expectedAttributes)} attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [Category] attributes so that the SmokeMe library can detect and run them.";
         }
     }
 }

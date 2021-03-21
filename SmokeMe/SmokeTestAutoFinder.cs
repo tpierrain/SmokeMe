@@ -56,7 +56,7 @@ namespace SmokeMe
 
         private string[] GetCategories(Type smokeTestType)
         {
-            var categories = smokeTestType.CustomAttributes.Where(c => c.AttributeType == typeof(SmokeTestCategoryAttribute)).Select(t => t.ConstructorArguments[0].Value).Cast<string>().ToArray();
+            var categories = smokeTestType.CustomAttributes.Where(c => c.AttributeType == typeof(CategoryAttribute)).Select(t => t.ConstructorArguments[0].Value).Cast<string>().ToArray();
             
             return categories;
         }
@@ -134,7 +134,7 @@ namespace SmokeMe
                         if (categories.Length > 0)
                         {
                             // must filter types
-                            types = types.Where(t => ContainsSmokeTestCategoryAttributes(categories, t.CustomAttributes)).ToArray();
+                            types = types.Where(t => ContainsCategoryAttributes(categories, t.CustomAttributes)).ToArray();
                         }
 
                         smokeTesTypes.AddRange(types.ToArray());
@@ -149,7 +149,7 @@ namespace SmokeMe
             return smokeTesTypes.ToArray();
         }
 
-        private static bool ContainsSmokeTestCategoryAttributes(string[] categories, IEnumerable<CustomAttributeData> customAttributes)
+        private static bool ContainsCategoryAttributes(string[] categories, IEnumerable<CustomAttributeData> customAttributes)
         {
             if (customAttributes == null)
             {
@@ -158,7 +158,7 @@ namespace SmokeMe
 
             foreach (var customAttributeData in customAttributes)
             {
-                if (customAttributeData.AttributeType == typeof(SmokeTestCategoryAttribute))
+                if (customAttributeData.AttributeType == typeof(CategoryAttribute))
                 {
                     foreach (var category in categories)
                     {

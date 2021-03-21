@@ -3,8 +3,8 @@ using SmokeMe;
 
 namespace Sample.ExternalSmokeTests
 {
-    [SmokeTestCategory("DB")]
-    [SmokeTestCategory("Booking")]
+    [Category("DB")]
+    [Category("Booking")]
     public class AlwaysWorkingDBSmokeTest : ICheckSmoke
     {
         public string SmokeTestName => "Always working DB smoke test";

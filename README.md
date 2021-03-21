@@ -86,12 +86,12 @@ __Ignore__
 
 ```
 
-or __SmokeTestCategory__ to target one of more subset of Smoke tests.
+or __Category__ to target one of more subset of Smoke tests.
 
 ```csharp
 
-    [SmokeTestCategory("Booking")]
-    [SmokeTestCategory("Critical")]
+    [Category("Booking")]
+    [Category("Critical")]
     public class AnotherSmokeTestDoingStuffs : ICheckSmoke
     {
         // smoke test code here
@@ -298,12 +298,12 @@ e.g.:
 
 All you have to do is:
 
-1. To declare some [SmokeTestCategory("myCategoryName")] attributes on the SmokeTest types you want. For instance: 
+1. To declare some [Category("myCategoryName")] attributes on the SmokeTest types you want. For instance: 
 
 ```csharp
 
-    [SmokeTestCategory("DB")]
-    [SmokeTestCategory("Booking")]
+    [Category("DB")]
+    [Category("Booking")]
     public class BookADoubleRoomSmokeTest : ICheckSmoke
     {
         // smoke test code here

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SmokeMe.Tests.Helpers
 {
-    [SmokeTestCategory("Tests")]
+    [Category("Tests")]
     internal class AlwaysPositiveSmokeTest : ICheckSmoke
     {
         private readonly TimeSpan _delay;

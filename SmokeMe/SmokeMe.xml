@@ -4,14 +4,14 @@
         <name>SmokeMe</name>
     </assembly>
     <members>
+        <member name="T:SmokeMe.CategoryAttribute">
+            <summary>
+            Allows to associate a Category for a Smoke Test (i.e.: a <see cref="T:SmokeMe.ICheckSmoke"/> type).
+            </summary>
+        </member>
         <member name="T:SmokeMe.IgnoreAttribute">
             <summary>
             Tell SmokeMe lib to ignore a Smoke Test (i.e.: a <see cref="T:SmokeMe.ICheckSmoke"/> type).
-            </summary>
-        </member>
-        <member name="T:SmokeMe.SmokeTestCategoryAttribute">
-            <summary>
-            Allows to associate a Category for a Smoke Test (i.e.: a <see cref="T:SmokeMe.ICheckSmoke"/> type).
             </summary>
         </member>
         <member name="T:SmokeMe.Constants">

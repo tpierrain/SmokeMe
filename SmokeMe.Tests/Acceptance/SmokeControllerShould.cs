@@ -199,7 +199,7 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results).HasSize(0);
-            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""{nonExistingCategoryName}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""{nonExistingCategoryName}"")] so that the SmokeMe library can detect and run them.");
+            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""{nonExistingCategoryName}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [Category(""{nonExistingCategoryName}"")] so that the SmokeMe library can detect and run them.");
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results).HasSize(0);
-            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""Cat1"")] or [SmokeTestCategory(""Cat2"")] or [SmokeTestCategory(""Cat3"")] attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [SmokeTestCategory] attributes so that the SmokeMe library can detect and run them.");
+            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""Cat1"")] or [Category(""Cat2"")] or [Category(""Cat3"")] attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [Category] attributes so that the SmokeMe library can detect and run them.");
         }
 
         [Test]
@@ -239,7 +239,7 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results).HasSize(0);
-            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [SmokeTestCategory(""Awkward"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""Awkward"")] so that the SmokeMe library can detect and run them.");
+            Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""Awkward"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [Category(""Awkward"")] so that the SmokeMe library can detect and run them.");
         }
 
         [Test]

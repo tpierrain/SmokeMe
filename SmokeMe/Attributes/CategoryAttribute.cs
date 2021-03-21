@@ -6,11 +6,11 @@ namespace SmokeMe
     /// Allows to associate a Category for a Smoke Test (i.e.: a <see cref="ICheckSmoke"/> type).
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class SmokeTestCategoryAttribute : Attribute
+    public class CategoryAttribute : Attribute
     {
         public string CategoryName { get; }
 
-        public SmokeTestCategoryAttribute(string categoryName)
+        public CategoryAttribute(string categoryName)
         {
             CategoryName = categoryName;
         }

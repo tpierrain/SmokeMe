@@ -3,7 +3,7 @@ using SmokeMe;
 
 namespace Sample.ExternalSmokeTests
 {
-    [SmokeTestCategory("Awkward")]
+    [Category("Awkward")]
     [Ignore]
     public class AlwaysWorkingButIgnoredDBSmokeTest : ICheckSmoke
     {

@@ -2,7 +2,7 @@
 
 namespace SmokeMe.Tests
 {
-    [SmokeTestCategory("FailingSaMere")]
+    [Category("FailingSaMere")]
     public class AlwaysFailingSmokeTest : ICheckSmoke
     {
         public string SmokeTestName => "Failing on purpose";
