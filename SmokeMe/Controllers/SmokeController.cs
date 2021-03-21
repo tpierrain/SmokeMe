@@ -61,7 +61,7 @@ namespace SmokeMe.Controllers
                     return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: GenerateStatusMessageForNoSmokeTestsWithCategories(categories)));
                 }
                 
-                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them."));
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them."));
             }
 
             var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();
@@ -88,12 +88,12 @@ namespace SmokeMe.Controllers
         {
             if (categories.Length == 1)
             {
-                return @$"No smoke test with [SmokeTestCategory(""{categories[0]}"")] attribute have been found in your executing assemblies. Check that you have one or more ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""{categories[0]}"")] so that the SmokeMe library can detect and run them.";
+                return @$"No smoke test with [SmokeTestCategory(""{categories[0]}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [SmokeTestCategory(""{categories[0]}"")] so that the SmokeMe library can detect and run them.";
             }
 
             var expectedAttributes = categories.Select(s => @$"[SmokeTestCategory(""{s}"")]");
             
-            return @$"No smoke test with {string.Join(" or ", expectedAttributes)} attributes have been found in your executing assemblies. Check that you have one or more ICheckSmoke types in your code base with the expected declared [SmokeTestCategory] attributes so that the SmokeMe library can detect and run them.";
+            return @$"No smoke test with {string.Join(" or ", expectedAttributes)} attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [SmokeTestCategory] attributes so that the SmokeMe library can detect and run them.";
         }
     }
 }

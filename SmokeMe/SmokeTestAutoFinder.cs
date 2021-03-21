@@ -123,11 +123,14 @@ namespace SmokeMe
 
             foreach (var customAttributeData in customAttributes)
             {
-                foreach (var category in categories)
+                if (customAttributeData.AttributeType == typeof(SmokeTestCategoryAttribute))
                 {
-                    if (string.Compare(customAttributeData.ConstructorArguments[0].Value.ToString(), category, StringComparison.InvariantCultureIgnoreCase) == 0)
+                    foreach (var category in categories)
                     {
-                        return true;
+                        if (string.Compare(customAttributeData.ConstructorArguments[0].Value.ToString(), category, StringComparison.InvariantCultureIgnoreCase) == 0)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
