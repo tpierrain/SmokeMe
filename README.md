@@ -127,7 +127,7 @@ Means that all your smoke tests have been executed nicely and before the global 
 
 ### HTTP 504 (GatewayTimeout)
 
-Means that one or more smoke tests have timeout (configurable global timeout is 10 seconds by default)
+Means that one or more smoke tests have timeout (configurable global timeout is 20 seconds by default)
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-504.JPG?raw=true)   
 
@@ -168,7 +168,7 @@ Yes
 ### 2. Does SmokeMe have a global timeout for all smoke tests to be ran?
 
 ```
-Yes. It's 10 seconds by default (10 *1000 milliseconds). But you can override this 
+Yes. It's 20 seconds by default (20 *1000 milliseconds). But you can override this 
 default value by setting the **Smoke:GlobalTimeoutInMsec** configuration key 
 of your Web API project.
 
