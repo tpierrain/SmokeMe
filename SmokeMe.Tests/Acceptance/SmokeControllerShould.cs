@@ -76,7 +76,7 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromMilliseconds(globalTimeoutInMsec + acceptableDeltaInMsec));
             Check.That(reportDto.IsSuccess).IsFalse();
             Check.That(reportDto.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfFailures).IsEqualTo(1);
 
@@ -126,7 +126,7 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
 
             Check.That(reportDto.IsSuccess).IsFalse();
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(0);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(0);
             Check.That(reportDto.Status).IsEqualTo($"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(SmokeTest)} types in your code base so that the SmokeMe library can detect and run them.");
         }
 
@@ -141,7 +141,7 @@ namespace SmokeMe.Tests.Acceptance
             var response = await controller.ExecuteSmokeTests();
 
             var reportDto = response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.ServiceUnavailable);
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(0);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(0);
             Check.That(reportDto.IsSuccess).IsFalse();
             Check.That(reportDto.Status).IsEqualTo($"Smoke tests execution not enabled. Set the '{Constants.IsEnabledConfigurationKey}' configuration key to true if you want to enable it.");
         }
@@ -160,7 +160,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsOk200();
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(1);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(1);
 
             // Always positive smoke test after a delay
             Check.That(reportDto.Results.Successes[0].SmokeTestName).IsEqualTo("Always working DB smoke test");
@@ -181,7 +181,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
 
             // Always positive smoke test after a delay
             Check.That(reportDto.Results.Failures[0].SmokeTestName).IsEqualTo("Failing on purpose");
@@ -206,7 +206,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(0);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(0);
             Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""{nonExistingCategoryName}"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [Category(""{nonExistingCategoryName}"")] so that the SmokeMe library can detect and run them.");
         }
 
@@ -224,7 +224,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(0);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(0);
             Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""Cat1"")] or [Category(""Cat2"")] or [Category(""Cat3"")] attributes have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the expected declared [Category] attributes so that the SmokeMe library can detect and run them.");
         }
 
@@ -242,7 +242,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.NotImplemented);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(0);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(0);
             Check.That(reportDto.Status).IsEqualTo(@$"No smoke test with [Category(""Awkward"")] attribute have been found in your executing assemblies. Check that you have one or more (not ignored) ICheckSmoke types in your code base with the declared attribute [Category(""Awkward"")] so that the SmokeMe library can detect and run them.");
         }
 
@@ -260,7 +260,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
             Check.That(reportDto.RequestedCategories).Contains("FailingSaMere", "DB");
         }
 
@@ -278,7 +278,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(6);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
             Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Feature toggled test", "Throwing exception after a delay", "Check connectivity towards Google search engine.");
@@ -302,7 +302,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(6);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
             Check.That(reportDto.Results.NbOfFailures).IsEqualTo(3);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(2);
             Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
@@ -327,7 +327,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsOk200();
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
             Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay");

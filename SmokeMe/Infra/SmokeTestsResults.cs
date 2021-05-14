@@ -6,7 +6,7 @@ namespace SmokeMe.Infra
     {
         private readonly SmokeTestResultWithMetaDataDto[] _allResults;
 
-        public int NbOfTestsRan => _allResults.Length;
+        public int TotalOfTestsRan => _allResults.Length;
 
         public int NbOfFailures => Failures.Length;
 
