@@ -39,7 +39,7 @@ All the auto-discovery, infrastructure and plumbering things are done for you by
 
 1. You add the reference to the **SmokeMe** library in your API project
 2. You code all the smoke tests scenario you want in your code base
-    - A Smoke test scenario is just a class implementing the **ICheckSmoke** interface with 3 members
+    - A Smoke test scenario is just a class deriving from the **SmokeTest** abstract class with 3 abstract members to be overidden and a few others that you can optionally override.
 
 ```csharp
 
@@ -51,23 +51,34 @@ All the auto-discovery, infrastructure and plumbering things are done for you by
 /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
 /// (classical constructor-based injection). Can't be that easy, right? ;-)
 /// </summary>
-public interface ICheckSmoke
+
+[Category("Connectivity")]
+public class SmokeTestGoogleConnectivityLocatedInAnotherAssembly : SmokeTest
 {
-    /// <summary>
-    /// Name of the smoke test scenario.
-    /// </summary>
-    string SmokeTestName { get; }
+    private readonly IRestClient _restClient;
 
-    /// <summary>
-    /// Description of the smoke test scenario.
-    /// </summary>
-    string Description { get; }
+    public override string SmokeTestName => "Check connectivity towards Google search engine.";
+    public override string Description => "Check that the Google search engine is reachable";
 
-    /// <summary>
-    /// The code of this smoke test scenario.
-    /// </summary>
-    /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-    Task<SmokeTestResult> Scenario();
+    public SmokeTestGoogleConnectivityLocatedInAnotherAssembly(IRestClient restClient)
+    {
+        // SmokeMe! will inject you any dependency you need (and already registered in your ASP.NET API IoC)
+        // (here, we receive an instance of a IRestClient)
+        _restClient = restClient;
+    }
+
+    public override async Task<SmokeTestResult> Scenario()
+    {
+        // check if Google is still here ;-)
+        var response = await _restClient.GetAsync("https://www.google.com/");
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            return new SmokeTestResult(true);
+        }
+
+        return new SmokeTestResult(false);
+    }
 }
 
 ```
@@ -79,7 +90,7 @@ __Ignore__
 ```csharp
 
     [Ignore]
-    public class SmokeTestDoingStuffs : ICheckSmoke
+    public class SmokeTestDoingStuffs : SmokeTest
     {
         // smoke test code here
     }
@@ -92,7 +103,7 @@ or __Category__ to target one of more subset of Smoke tests.
 
     [Category("Booking")]
     [Category("Critical")]
-    public class AnotherSmokeTestDoingStuffs : ICheckSmoke
+    public class AnotherSmokeTestDoingStuffs : SmokeTest
     {
         // smoke test code here
     }
@@ -185,8 +196,8 @@ in your API project for it to be able to find all of them. That's it!
 
 ```
 Easy, all you have to do is to add a reference to the **SmokeMe** lib in your 
-code and to code a smoke test by implementing a type implementing 
-SmokeMe.ICheckSmoke interface.
+code and to code a smoke test by implementing a type deriving from the 
+SmokeMe.SmokeTest abstract class.
 
 ```
 
@@ -197,11 +208,12 @@ e.g.:
 /// <summary>
 /// Smoke test to check that room availabilities works and is accessible.
 /// </summary>
-public class AvailabilitiesSmokeTest : ICheckSmoke
+public class AvailabilitiesSmokeTest : SmokeTest
 {
     private readonly IAvailabilityService _availabilityService;
-    public string SmokeTestName => "Check Availabilities";
-    public string Description 
+
+    public override string SmokeTestName => "Check Availabilities";
+    public override string Description 
         => "TBD: will check something like checking that one can find some availabilities around Marseille city next month.";
 
     /// <summary>
@@ -221,7 +233,7 @@ public class AvailabilitiesSmokeTest : ICheckSmoke
     /// The implementation of this smoke test scenario.
     /// </summary>
     /// <returns>The result of the Smoke test.</returns>
-    public Task<SmokeTestResult> Scenario()
+    public override Task<SmokeTestResult> Scenario()
     {
         if (_availabilityService != null)
         {
@@ -304,7 +316,7 @@ All you have to do is:
 
     [Category("DB")]
     [Category("Booking")]
-    public class BookADoubleRoomSmokeTest : ICheckSmoke
+    public class BookADoubleRoomSmokeTest : SmokeTest
     {
         // smoke test code here
     }
@@ -336,7 +348,7 @@ e.g.:
 ```csharp
 
     [Ignore]
-    public class SmokeTestDoingStuffs : ICheckSmoke
+    public class SmokeTestDoingStuffs : SmokeTest
     {
         // smoke test code here
     }

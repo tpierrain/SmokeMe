@@ -25,10 +25,7 @@ namespace Sample.ExternalSmokeTests
         public override async Task<SmokeTestResult> Scenario()
         {
             // check if Google is still here ;-)
-
-            const string url = "https://www.google.com/";
-
-            var response = await _restClient.GetAsync(url);
+            var response = await _restClient.GetAsync("https://www.google.com/");
 
             if (response.StatusCode == HttpStatusCode.OK)
             {

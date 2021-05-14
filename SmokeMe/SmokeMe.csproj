@@ -12,13 +12,16 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>
-      Breaking change:
-      - Replace ICheckSmoke interface with SmokeTest abstract class. This will help us to add new behaviours with default values without breaking changes in the future. But this time, all your smoke tests will have to inherits from SmokeTest instead of ICheckSmoke + to add override keyword for "SmokeTestName" and "Description" Properties, and the "Screnario()" method.
-      - The payload of the report has been changed in order to quickly and easily detect failing smoke tests first (they were mixed with other successful smoke tests before).
+    <PackageReleaseNotes>Breaking changes:
+- Replace ICheckSmoke interface with SmokeTest abstract class. This will help us to add new behaviours with default values without breaking changes in the future. But for this time, all your smoke tests will have to inherits from SmokeTest instead of ICheckSmoke + to add override keyword for "SmokeTestName" and "Description" Properties, and the "Screnario()" method.
 
-      New features:
-      - Introcuction of the overridable "MustBeDiscarded" propery on SmokeTest type in order to be able to discard the execution of any smoke test (based on your own feature toggle mechanism for instance).</PackageReleaseNotes>
+- The payload of the report has been changed in order to split Failures from Successes in order to quickly and easily detect failing smoke tests (they were previously mixed with other successful smoke tests before).
+
+- Set GlobalTimeoutInMsecDefaultValue defaut value to 30 seconds.
+
+New features:
+- Introcuction of the overridable "MustBeDiscarded" propery on SmokeTest type in order to be able to discard the execution of any smoke test (based on your own feature toggle mechanism for instance).
+</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>

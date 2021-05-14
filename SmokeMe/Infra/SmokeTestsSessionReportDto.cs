@@ -30,7 +30,7 @@ namespace SmokeMe.Infra
         /// <summary>
         /// Gets all the <see cref="SmokeTestResultWithMetaData"/> results of this Smoke test session.
         /// </summary>
-        public SmokeTestResultWithMetaDataDto[] Results { get; }
+        public SmokeTestsResults Results { get; }
 
         /// <summary>
         /// Gets the API instance identifier.
@@ -69,7 +69,7 @@ namespace SmokeMe.Infra
         {
             _reports = reports;
 
-            Results = smokeTestResultWithMetaDataDtos.ToArray();
+            Results = new SmokeTestsResults(smokeTestResultWithMetaDataDtos.ToArray());
 
             _apiRuntimeDescription = apiRuntimeDescription;
 
@@ -87,7 +87,7 @@ namespace SmokeMe.Infra
             _reports = new SmokeTestsSessionReport(status);
 
             _apiRuntimeDescription = apiRuntimeDescription;
-            Results = new SmokeTestResultWithMetaDataDto[0];
+            Results = new SmokeTestsResults(new SmokeTestResultWithMetaDataDto[0]);
         }
     }
 }
