@@ -1,4 +1,4 @@
-namespace SmokeMe.Tests.Helpers
+namespace Sample.ExternalSmokeTests.Utilities
 {
     public interface IToggleFeatures
     {

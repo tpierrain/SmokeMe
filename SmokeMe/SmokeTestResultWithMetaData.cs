@@ -49,8 +49,10 @@ namespace SmokeMe
         /// <param name="smokeTestDescription">Description of the smoke test.</param>
         /// <param name="smokeTestCategories"></param>
         /// <param name="discarded"></param>
+        /// <param name="smokeTestType"></param>
+        /// <param name="status"></param>
         private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription,
-            string[] smokeTestCategories, bool? discarded, string smokeTestType)
+            string[] smokeTestCategories, bool? discarded, string smokeTestType, Status? status)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
@@ -59,18 +61,25 @@ namespace SmokeMe
             SmokeTestCategories = smokeTestCategories;
             SmokeTestType = smokeTestType;
 
-            if (discarded.HasValue && discarded.Value == true)
+            if (status.HasValue && status== Status.Timeout)
             {
-                Status = Status.Discarded;
+                Status = Status.Timeout;
             }
             else
             {
-                Status = Status.Executed;
+                if (discarded.HasValue && discarded.Value == true)
+                {
+                    Status = Status.Discarded;
+                }
+                else
+                {
+                    Status = Status.Executed;
+                }
             }
         }
 
         public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestType,
-            bool? discarded = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded, smokeTestType)
+            bool? discarded = null, Status? status = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded, smokeTestType, status)
         {
         }
 

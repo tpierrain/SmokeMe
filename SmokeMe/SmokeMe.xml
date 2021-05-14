@@ -425,7 +425,7 @@
             Gets the description of the executed <see cref="T:SmokeMe.SmokeTest"/> instance.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean},System.String)">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean},System.String,System.Nullable{SmokeMe.Status})">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
@@ -435,6 +435,8 @@
             <param name="smokeTestDescription">Description of the smoke test.</param>
             <param name="smokeTestCategories"></param>
             <param name="discarded"></param>
+            <param name="smokeTestType"></param>
+            <param name="status"></param>
         </member>
         <member name="M:SmokeMe.SmokeTestResultWithMetaData.ToString">
             <summary>

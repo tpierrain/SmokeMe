@@ -43,6 +43,8 @@ namespace Sample.Api
 
             services.AddVersioning();
 
+            services.AddTransient<IToggleFeatures, AlwaysDisabledToggleFeatureManager>();
+
             Fuzzer.Log +=obj =>
             {
             };

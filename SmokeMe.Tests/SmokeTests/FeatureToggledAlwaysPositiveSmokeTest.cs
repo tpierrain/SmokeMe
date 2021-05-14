@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Sample.ExternalSmokeTests.Utilities;
 using SmokeMe.Tests.Helpers;
 
 namespace SmokeMe.Tests.SmokeTests

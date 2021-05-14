@@ -3,6 +3,7 @@ using Diverse;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Sample.Api.FakeDomain;
+using Sample.ExternalSmokeTests.Utilities;
 using SmokeMe.Tests.Acceptance;
 
 namespace SmokeMe.Tests.Helpers
@@ -51,7 +52,7 @@ namespace SmokeMe.Tests.Helpers
             return serviceProvider;
         }
 
-        public static IServiceProvider FeatureToggles(params FeatureToggle[] featureToggles)
+        private static IServiceProvider FeatureToggles(params FeatureToggle[] featureToggles)
         {
             var serviceProvider = Substitute.For<IServiceProvider>();
             var toggleFeatures = Substitute.For<IToggleFeatures>();
@@ -62,6 +63,15 @@ namespace SmokeMe.Tests.Helpers
             
             serviceProvider.GetService(typeof(IToggleFeatures)).Returns(toggleFeatures);
             return serviceProvider;
+        }
+
+        public static IServiceProvider ACompleteServiceProvider(IConfiguration configuration, params FeatureToggle[] featureToggles)
+        {
+            var aCompleteServiceProvider = Stub.FeatureToggles(featureToggles);
+
+            aCompleteServiceProvider.GetService(typeof(IConfiguration)).Returns(configuration);
+
+            return aCompleteServiceProvider;
         }
     }
 }

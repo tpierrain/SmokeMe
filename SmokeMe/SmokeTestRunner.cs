@@ -59,7 +59,7 @@ namespace SmokeMe
 
             var timeoutSmokeTests = smokeTestsWithMetaData.Where(x => !completedIdentifiers.Contains(x.SmokeTestIdentifier.Value));
 
-            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x, smokeTestType:x.GetType().Name));
+            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x, smokeTestType:x.SmokeTest.GetType().FullName, status: Status.Timeout));
 
             var timeoutAndCompletedResultsWithMetadata = timeoutResultWithSomeMetaData.Concat(completedTestsResultWithMetaData).ToArray();
 

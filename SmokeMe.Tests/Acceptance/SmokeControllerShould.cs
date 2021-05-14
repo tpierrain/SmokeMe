@@ -8,6 +8,7 @@ using NFluent;
 using NSubstitute;
 using NUnit.Framework;
 using Sample.ExternalSmokeTests;
+using Sample.ExternalSmokeTests.Utilities;
 using SmokeMe.Controllers;
 using SmokeMe.Infra;
 using SmokeMe.Tests.Helpers;
@@ -78,11 +79,12 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
             Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
-            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(0);
+            Check.That(reportDto.Results.NbOfTimeouts).IsEqualTo(1);
 
-            Check.That(reportDto.Results.Failures[0].Outcome).IsFalse();
-            Check.That(reportDto.Results.Failures[0].Duration).IsEqualTo("timeout");
-            Check.That(reportDto.Results.Failures[0].DurationInMsec).IsNull();
+            Check.That(reportDto.Results.Timeouts[0].Outcome).IsFalse();
+            Check.That(reportDto.Results.Timeouts[0].Duration).IsEqualTo("timeout");
+            Check.That(reportDto.Results.Timeouts[0].DurationInMsec).IsNull();
 
             Check.That(reportDto.Results.Successes[0].Outcome).IsTrue();
             Check.That(reportDto.Results.Successes[0].DurationInMsec.Value).IsLessThan(TimeSpan.FromSeconds(2.0).TotalMilliseconds + acceptableDeltaInMsec);
@@ -150,7 +152,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Only_Execute_corresponding_SmokeTest_when_specifying_one_Category()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration, new FeatureToggle("featureToggledSmokeTest", false), new FeatureToggle("mustTimeOut", false));
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -163,7 +165,7 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(1);
 
             // Always positive smoke test after a delay
-            Check.That(reportDto.Results.Successes[0].SmokeTestName).IsEqualTo("Always working DB smoke test");
+            Check.That(reportDto.Results.Successes[0].SmokeTestName).IsEqualTo("Booking smoke test");
             Check.That(reportDto.Results.Successes[0].Outcome).IsTrue();
         }
 
@@ -171,7 +173,9 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Only_Execute_SmokeTest_with_Specified_Categories()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
+            serviceProvider.GetService(typeof(IConfiguration)).Returns(configuration);
+
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -187,7 +191,7 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results.Failures[0].SmokeTestName).IsEqualTo("Failing on purpose");
             Check.That(reportDto.Results.Failures[0].Outcome).IsFalse();
 
-            Check.That(reportDto.Results.Successes[0].SmokeTestName).IsEqualTo("Always working DB smoke test");
+            Check.That(reportDto.Results.Successes[0].SmokeTestName).IsEqualTo("Booking smoke test");
             Check.That(reportDto.Results.Successes[0].Outcome).IsTrue();
         }
 
@@ -195,7 +199,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_undeclared_Category()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -214,7 +218,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_multiple_undeclared_Categories()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -232,7 +236,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Not_run_SmokeTests_with_Ignore_Attribute()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -250,7 +254,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Publish_the_executed_SmokeTestCategories_when_specified_by_the_client()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -268,7 +272,9 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Publish_the_Categories_of_every_executed_SmokeTest_when_existing()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Substitute.For<IServiceProvider>();
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration);
+            serviceProvider.GetService(typeof(IConfiguration)).Returns(configuration);
+
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
@@ -281,34 +287,41 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
-            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Feature toggled test", "Throwing exception after a delay", "Check connectivity towards Google search engine.");
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Always working DB smoke test");
-            
-            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "", "", "Connectivity");
+            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Throwing exception after a delay", "Check connectivity towards Google search engine.");
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Booking smoke test");
+            Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestName)).ContainsExactly("Feature toggled test");
+
+            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "", "Connectivity");
             Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestCategories)).ContainsExactly("Tests", "DB, Booking");
+            Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestCategories)).ContainsExactly("");
         }
 
         [Test]
-        public async Task Publish_the_Type_FullName_of_every_SmokeTest()
+        public async Task Publish_the_Type_FullName_of_every_SmokeTest_even_when_timeout()
         {
-            var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Stub.FeatureToggles(new FeatureToggle("featureToggledSmokeTest", false));
+            var configuration = Stub.AConfiguration(true, globalTimeoutInMsec: 500);
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration, new FeatureToggle("featureToggledSmokeTest", false), new FeatureToggle("mustTimeOut", true));
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
             var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
 
             var response = await controller.ExecuteSmokeTests();
 
-            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.GatewayTimeout);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
             Check.That(reportDto.Results.NbOfFailures).IsEqualTo(3);
-            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(2);
+            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfTimeouts).IsEqualTo(1);
+
+            /// Booking smoke test must have timeout
+            Check.That(reportDto.Results.Timeouts[0].SmokeTestType).IsEqualTo(typeof(BookingSmokeTest).FullName);
+            Check.That(reportDto.Results.Timeouts[0].Status).IsEqualTo(Status.Timeout);
 
             Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysFailingSmokeTest).FullName, typeof(SmokeTestThrowingAnAccessViolationException).FullName, typeof(SmokeTestGoogleConnectivityLocatedInAnotherAssembly).FullName);
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysPositiveSmokeTest).FullName, typeof(BookingSmokeTest).FullName);
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysPositiveSmokeTest).FullName);
             Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestType)).ContainsExactly(typeof(FeatureToggledAlwaysPositiveSmokeTest).FullName);
         }
 
@@ -316,7 +329,7 @@ namespace SmokeMe.Tests.Acceptance
         public async Task Be_able_to_discard_Test_execution_when_Indicated_with_MustBeDiscarded_set_to_true()
         {
             var configuration = Stub.AConfiguration(true);
-            var serviceProvider = Stub.FeatureToggles(new FeatureToggle("featureToggledSmokeTest", false));
+            var serviceProvider = Stub.ACompleteServiceProvider(configuration, new FeatureToggle("featureToggledSmokeTest", false), new FeatureToggle("mustTimeOut", false));
 
             var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(50)).WithoutCategory(), new FeatureToggledAlwaysPositiveSmokeTest(serviceProvider.GetService(typeof(IToggleFeatures)) as IToggleFeatures, TimeSpan.FromMilliseconds(50)).WithoutCategory());
 
@@ -339,7 +352,7 @@ namespace SmokeMe.Tests.Acceptance
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
         {
-            new BookingSmokeTest();
+            new BookingSmokeTest(Substitute.For<IToggleFeatures>(), Substitute.For<IConfiguration>());
         }
     }
 }
