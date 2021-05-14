@@ -17,6 +17,12 @@ namespace SmokeMe.Tests.Acceptance
     [TestFixture]
     public class SmokeControllerShould
     {
+        [SetUp]
+        public void SetUp()
+        {
+            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
+        }
+
         [Test]
         [Repeat(10)]
         public async Task Run_all_smoke_tests()
@@ -135,8 +141,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Only_Execute_corresponding_SmokeTest_when_specifying_one_Category()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -158,8 +162,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Only_Execute_SmokeTest_with_Specified_Categories()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -184,8 +186,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_undeclared_Category()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -205,8 +205,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Return_NotImplemented_501_with_proper_didactic_message_when_specifying_multiple_undeclared_Categories()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -225,8 +223,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Not_run_SmokeTests_with_Ignore_Attribute()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -245,8 +241,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Publish_the_executed_SmokeTestCategories_when_specified_by_the_client()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
@@ -265,8 +259,6 @@ namespace SmokeMe.Tests.Acceptance
         [Test]
         public async Task Publish_the_Categories_of_every_executed_SmokeTest_when_existing()
         {
-            ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly();
-
             var configuration = Stub.AConfiguration(true);
             var serviceProvider = Substitute.For<IServiceProvider>();
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
