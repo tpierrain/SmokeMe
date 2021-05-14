@@ -44,6 +44,8 @@ namespace SmokeMe.Infra
 
         public Status Status { get; }
 
+        public string SmokeTestType { get; }
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
         /// </summary>
@@ -57,10 +59,11 @@ namespace SmokeMe.Infra
         /// <param name="smokeTestCategories"></param>
         /// <param name="argSmokeTestCategories"></param>
         public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan,
-            string duration, Status status, string[] smokeTestCategories)
+            string duration, Status status, string[] smokeTestCategories, string smokeTestType)
         {
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
+            SmokeTestType = smokeTestType;
             Outcome = outcome;
             Error = error;
             

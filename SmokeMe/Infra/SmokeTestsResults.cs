@@ -12,8 +12,11 @@ namespace SmokeMe.Infra
 
         public int NbOfSuccesses => Successes.Length;
 
+        public int NbOfDiscards => Discards.Length;
+
         public SmokeTestResultWithMetaDataDto[] Failures => _allResults.Where(x => x.Outcome == false).ToArray();
-        public SmokeTestResultWithMetaDataDto[] Successes => _allResults.Where(x => x.Outcome == true).ToArray();
+        public SmokeTestResultWithMetaDataDto[] Successes => _allResults.Where(x => x.Outcome == true && x.Status != Status.Discarded).ToArray();
+        public SmokeTestResultWithMetaDataDto[] Discards => _allResults.Where(x => x.Outcome == true && x.Status == Status.Discarded).ToArray();
 
         public SmokeTestsResults(SmokeTestResultWithMetaDataDto[] allResults)
         {

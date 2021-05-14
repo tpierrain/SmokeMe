@@ -28,7 +28,7 @@ namespace Sample.Api.SmokeTests
             var delayInMsec = _fuzzer.GenerateInteger(100, 1700);
 
             if (_fuzzer.HeadsOrTails())
-            {
+            {   
                 // force a timeout
                 delayInMsec = Convert.ToInt32(_configuration.GetSmokeMeGlobalTimeout().Add(TimeSpan.FromSeconds(1)).TotalMilliseconds);
             }

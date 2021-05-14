@@ -37,6 +37,8 @@ namespace SmokeMe
         public string[] SmokeTestCategories { get; }
 
         public Status Status { get; } = Status.Executed;
+        
+        public string SmokeTestType { get; }
 
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
@@ -48,13 +50,14 @@ namespace SmokeMe
         /// <param name="smokeTestCategories"></param>
         /// <param name="discarded"></param>
         private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription,
-            string[] smokeTestCategories, bool? discarded)
+            string[] smokeTestCategories, bool? discarded, string smokeTestType)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
             SmokeTestCategories = smokeTestCategories;
+            SmokeTestType = smokeTestType;
 
             if (discarded.HasValue && discarded.Value == true)
             {
@@ -66,8 +69,8 @@ namespace SmokeMe
             }
         }
 
-        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData,
-            bool? discarded = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded)
+        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestType,
+            bool? discarded = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded, smokeTestType)
         {
         }
 

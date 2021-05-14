@@ -77,6 +77,8 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.IsSuccess).IsFalse();
             Check.That(reportDto.Status).IsEqualTo("One or more smoke tests have timeout (global timeout is: 5 seconds)");
             Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(1);
 
             Check.That(reportDto.Results.Failures[0].Outcome).IsFalse();
             Check.That(reportDto.Results.Failures[0].Duration).IsEqualTo("timeout");
@@ -287,6 +289,30 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
+        public async Task Publish_the_Type_FullName_of_every_SmokeTest()
+        {
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Stub.FeatureToggles(new FeatureToggle("featureToggledSmokeTest", false));
+            var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestAutoFinder);
+
+            var response = await controller.ExecuteSmokeTests();
+
+            response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(6);
+            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(3);
+            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(2);
+            Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
+
+            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysFailingSmokeTest).FullName, typeof(SmokeTestThrowingAnAccessViolationException).FullName, typeof(SmokeTestGoogleConnectivityLocatedInAnotherAssembly).FullName);
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysPositiveSmokeTest).FullName, typeof(BookingSmokeTest).FullName);
+            Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestType)).ContainsExactly(typeof(FeatureToggledAlwaysPositiveSmokeTest).FullName);
+        }
+
+        [Test]
         public async Task Be_able_to_discard_Test_execution_when_Indicated_with_MustBeDiscarded_set_to_true()
         {
             var configuration = Stub.AConfiguration(true);
@@ -302,9 +328,13 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results.NbOfTestsRan).IsEqualTo(2);
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Feature toggled test");
+            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay");
+            Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestName)).ContainsExactly("Feature toggled test");
             
-            Check.That(reportDto.Results.Successes.Select(x => x.Status)).ContainsExactly(Status.Executed, Status.Discarded);
+            Check.That(reportDto.Results.Successes.Select(x=> x.Status)).ContainsExactly(Status.Executed);
+            Check.That(reportDto.Results.Discards.Select(x=> x.Status)).ContainsExactly(Status.Discarded);
         }
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()

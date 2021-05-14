@@ -212,7 +212,7 @@
             Gets the duration in milliseconds of this smoke test execution (useful for scripting).
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,SmokeMe.Status,System.String[])">
+        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,SmokeMe.Status,System.String[],System.String)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto"/>.
             </summary>
@@ -425,7 +425,7 @@
             Gets the description of the executed <see cref="T:SmokeMe.SmokeTest"/> instance.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean})">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean},System.String)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>

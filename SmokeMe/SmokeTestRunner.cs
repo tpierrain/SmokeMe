@@ -59,7 +59,7 @@ namespace SmokeMe
 
             var timeoutSmokeTests = smokeTestsWithMetaData.Where(x => !completedIdentifiers.Contains(x.SmokeTestIdentifier.Value));
 
-            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x));
+            var timeoutResultWithSomeMetaData = timeoutSmokeTests.Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(false), null, x, smokeTestType:x.GetType().Name));
 
             var timeoutAndCompletedResultsWithMetadata = timeoutResultWithSomeMetaData.Concat(completedTestsResultWithMetaData).ToArray();
 
@@ -97,14 +97,14 @@ namespace SmokeMe
                 {
                     stopwatch.Stop();
 
-                    var smokeTestNonExecution = new SmokeTestResultWithMetaData(new SmokeTestResult(true), stopwatch.Elapsed, smokeTestWithMetaData, discarded: true);
+                    var smokeTestNonExecution = new SmokeTestResultWithMetaData(new SmokeTestResult(true), stopwatch.Elapsed, smokeTestWithMetaData, smokeTestType: smokeTest.GetType().FullName, discarded: true);
                     return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestNonExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
                 }
 
                 var smokeTestResult = await smokeTest.Scenario();
 
                 stopwatch.Stop();
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData, smokeTestTypeName:smokeTest.GetType().FullName);
 
                 return new SmokeTestWithItsResultWithMetaData(smokeTest , smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
             }
@@ -112,14 +112,14 @@ namespace SmokeMe
             {
                 stopwatch.Stop();
                 var smokeTestResult = new SmokeTestResult("", ex);
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData, smokeTestTypeName: smokeTest.GetType().FullName);
                 return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
             }
         }
 
-        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData)
+        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestTypeName)
         {
-            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTestInstanceWithMetaData);
+            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTestInstanceWithMetaData, smokeTestType: smokeTestTypeName);
         }
 
         private class SmokeTestWithItsResultWithMetaData
