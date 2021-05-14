@@ -93,7 +93,7 @@ namespace SmokeMe
             stopwatch.Start();
             try
             {
-                if (smokeTest.MustBeDiscarded)
+                if (await smokeTest.HasToBeDiscarded() == true)
                 {
                     stopwatch.Stop();
 

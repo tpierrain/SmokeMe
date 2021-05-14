@@ -29,8 +29,11 @@ namespace SmokeMe
         public abstract Task<SmokeTestResult> Scenario();
 
         /// <summary>
-        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+        /// Returns a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
         /// </summary>
-        public virtual bool MustBeDiscarded => false;
+        public virtual async Task<bool> HasToBeDiscarded()
+        {
+            return await Task.FromResult(false);
+        }
     }
 }

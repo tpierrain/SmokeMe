@@ -9,7 +9,10 @@ namespace Sample.Api.SmokeTests
         public override string SmokeTestName => "Discarded Smoke test";
         public override string Description => "Smoke test systematically Discarded";
 
-        public override bool MustBeDiscarded => true;
+        public override async Task<bool> HasToBeDiscarded()
+        {
+            return await Task.FromResult(true);
+        }
 
         public override Task<SmokeTestResult> Scenario()
         {

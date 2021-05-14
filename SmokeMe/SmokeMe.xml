@@ -338,9 +338,9 @@
             </summary>
             <returns>The <see cref="T:SmokeMe.SmokeTestResult"/> of this Smoke test.</returns>
         </member>
-        <member name="P:SmokeMe.SmokeTest.MustBeDiscarded">
+        <member name="M:SmokeMe.SmokeTest.HasToBeDiscarded">
             <summary>
-            Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+            Returns a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
             </summary>
         </member>
         <member name="T:SmokeMe.SmokeTestAutoFinder">

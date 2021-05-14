@@ -16,10 +16,14 @@ namespace SmokeMe.Tests.SmokeTests
             _delay = delay;
         }
 
-        public override bool MustBeDiscarded => !_featureToggles.IsEnabled("featureToggledSmokeTest");
+        public override Task<bool> HasToBeDiscarded()
+        {
+            return Task.FromResult(!_featureToggles.IsEnabled("featureToggledSmokeTest"));
+        }
 
         public override string SmokeTestName => "Feature toggled test";
         public override string Description { get; }
+
         public override Task<SmokeTestResult> Scenario()
         {
             Thread.Sleep(Convert.ToInt32(_delay.TotalMilliseconds));
