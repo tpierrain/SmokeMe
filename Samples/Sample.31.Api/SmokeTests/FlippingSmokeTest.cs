@@ -8,18 +8,13 @@ using SmokeMe.Helpers;
 
 namespace Sample.Api.SmokeTests
 {
-    public class FlippingSmokeTest : ICheckSmoke
+    public class FlippingSmokeTest : SmokeTest
     {
         private readonly IProviderNumbers _numbersProvider;
         private readonly IFuzz _fuzzer;
         private readonly IConfiguration _configuration;
-        public string SmokeTestName => "Flipping smoke test";
-        public string Description => $"For unit testing purpose. Smoke test being able to randomly timeout, succeeded or failed.";
-
-        /// <summary>
-        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
-        /// </summary>
-        public bool MustBeDiscarded => false;
+        public override string SmokeTestName => "Flipping smoke test";
+        public override string Description => $"For unit testing purpose. Smoke test being able to randomly timeout, succeeded or failed.";
 
         public FlippingSmokeTest(IProviderNumbers numbersProvider, IFuzz fuzzer, IConfiguration configuration)
         {
@@ -28,7 +23,7 @@ namespace Sample.Api.SmokeTests
             _configuration = configuration;
         }
 
-        public async Task<SmokeTestResult> Scenario()
+        public override async Task<SmokeTestResult> Scenario()
         {
             var delayInMsec = _fuzzer.GenerateInteger(100, 1700);
 

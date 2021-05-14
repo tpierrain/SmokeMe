@@ -3,10 +3,10 @@
     public class SmokeTestInstanceWithMetaData
     {
         public int? SmokeTestIdentifier { get; set; }
-        public ICheckSmoke SmokeTest { get; }
+        public SmokeTest SmokeTest { get; }
         public string[] Categories { get; }
 
-        public SmokeTestInstanceWithMetaData(ICheckSmoke smokeTest, params string[] categories)
+        public SmokeTestInstanceWithMetaData(SmokeTest smokeTest, params string[] categories)
         {
             SmokeTest = smokeTest;
             Categories = categories;

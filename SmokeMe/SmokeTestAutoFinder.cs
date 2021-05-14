@@ -16,7 +16,7 @@ namespace SmokeMe
         /// <summary>
         /// Instantiates a <see cref="SmokeTestAutoFinder"/>
         /// </summary>
-        /// <param name="serviceProvider">The (IoC) <see cref="IServiceProvider"/> instance needed to instantiate <see cref="ICheckSmoke"/> instances.</param>
+        /// <param name="serviceProvider">The (IoC) <see cref="IServiceProvider"/> instance needed to instantiate <see cref="SmokeTest"/> instances.</param>
         public SmokeTestAutoFinder(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -26,12 +26,12 @@ namespace SmokeMe
         /// Finds all smoke tests scenarii that have to be executed for this API.
         /// </summary>
         /// <param name="requestedCategories">Categories requested by the client.</param>
-        /// <returns>The collection of all <see cref="ICheckSmoke"/> instance declared in this API to be executed.</returns>
+        /// <returns>The collection of all <see cref="SmokeTest"/> instance declared in this API to be executed.</returns>
         public IEnumerable<SmokeTestInstanceWithMetaData> FindAllSmokeTestsToRun(params string[] requestedCategories)
         {
             var smokeTestInstances = new List<SmokeTestInstanceWithMetaData>();
 
-            var types = GetTypesImplementing<ICheckSmoke>(requestedCategories);
+            var types = GetTypesImplementing<SmokeTest>(requestedCategories);
 
             types = RemoveSmokeTestsWithIgnoredAttribute(types);
 
@@ -82,14 +82,14 @@ namespace SmokeMe
             return false;
         }
 
-        private static ICheckSmoke InstantiateSmokeTest(IEnumerable<ConstructorInfo> constructors, IServiceProvider serviceProvider)
+        private static SmokeTest InstantiateSmokeTest(IEnumerable<ConstructorInfo> constructors, IServiceProvider serviceProvider)
         {
             foreach (var constructor in constructors)
             {
                 try
                 {
                     var constructorParameters = PrepareParametersForThisConstructor(constructor, serviceProvider);
-                    var instance = (ICheckSmoke)constructor.Invoke(constructorParameters);
+                    var instance = (SmokeTest)constructor.Invoke(constructorParameters);
                     return instance;
                 }
                 catch (Exception)

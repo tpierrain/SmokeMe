@@ -24,7 +24,7 @@ namespace SmokeMe.Controllers
         /// Instantiates a <see cref="SmokeController"/>.
         /// </summary>
         /// <param name="configuration">The configuration of the API.</param>
-        /// <param name="serviceProvider">A Service provider to be used to instantiate <see cref="ICheckSmoke"/> smoke tests.</param>
+        /// <param name="serviceProvider">A Service provider to be used to instantiate <see cref="SmokeTest"/> smoke tests.</param>
         /// <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
         public SmokeController(IConfiguration configuration, IServiceProvider serviceProvider, IFindSmokeTests smokeTestProvider = null)
         {
@@ -63,7 +63,7 @@ namespace SmokeMe.Controllers
                     return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: GenerateStatusMessageForNoSmokeTestsWithCategories(requestedCategories)));
                 }
                 
-                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them."));
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(SmokeTest)} types in your code base so that the SmokeMe library can detect and run them."));
             }
 
             var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();

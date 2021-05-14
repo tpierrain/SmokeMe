@@ -10,27 +10,27 @@ namespace SmokeMe
     /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
     /// (classical constructor-based injection). Can't be that easy, right? ;-)
     /// </summary>
-    public interface ICheckSmoke
+    public abstract class SmokeTest
     {
         /// <summary>
         /// Name of the smoke test scenario.
         /// </summary>
-        string SmokeTestName { get; }
+        public abstract string SmokeTestName { get; }
 
         /// <summary>
         /// Description of the smoke test scenario.
         /// </summary>
-        string Description { get; }
+        public abstract string Description { get; }
 
         /// <summary>
         /// The code of this smoke test scenario.
         /// </summary>
         /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
-        Task<SmokeTestResult> Scenario();
+        public abstract Task<SmokeTestResult> Scenario();
 
         /// <summary>
         /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
         /// </summary>
-        bool MustBeDiscarded { get; }
+        public virtual bool MustBeDiscarded => false;
     }
 }

@@ -3,32 +3,32 @@
 namespace SmokeMe
 {
     /// <summary>
-    /// Result of a <see cref="ICheckSmoke"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).
+    /// Result of a <see cref="SmokeTest"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).
     /// </summary>
     public class SmokeTestResultWithMetaData
     {
         /// <summary>
-        /// Indicates whether the outcome of this <see cref="ICheckSmoke"/> execution is positive or not.
+        /// Indicates whether the outcome of this <see cref="SmokeTest"/> execution is positive or not.
         /// </summary>
         public bool Outcome => SmokeTestResult.Outcome;
         
         /// <summary>
-        /// Gets the <see cref="Error"/> associated to this <see cref="ICheckSmoke"/> execution.
+        /// Gets the <see cref="Error"/> associated to this <see cref="SmokeTest"/> execution.
         /// </summary>
         public Error ErrorMessage => SmokeTestResult.ErrorMessage;
 
         /// <summary>
-        /// Gets the duration of this <see cref="ICheckSmoke"/> execution.
+        /// Gets the duration of this <see cref="SmokeTest"/> execution.
         /// </summary>
         public TimeSpan? Duration { get; }
 
         /// <summary>
-        /// Gets the name of the executed <see cref="ICheckSmoke"/> instance.
+        /// Gets the name of the executed <see cref="SmokeTest"/> instance.
         /// </summary>
         public string SmokeTestName { get; }
 
         /// <summary>
-        /// Gets the description of the executed <see cref="ICheckSmoke"/> instance.
+        /// Gets the description of the executed <see cref="SmokeTest"/> instance.
         /// </summary>
         public string SmokeTestDescription { get; }
 
@@ -41,8 +41,8 @@ namespace SmokeMe
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
-        /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="ICheckSmoke"/> execution.</param>
-        /// <param name="duration">The duration of this <see cref="ICheckSmoke"/> execution.</param>
+        /// <param name="smokeTestResult">The <see cref="SmokeTestResult"/> associated with this <see cref="SmokeTest"/> execution.</param>
+        /// <param name="duration">The duration of this <see cref="SmokeTest"/> execution.</param>
         /// <param name="smokeTestName">Name of the smoke test.</param>
         /// <param name="smokeTestDescription">Description of the smoke test.</param>
         /// <param name="smokeTestCategories"></param>

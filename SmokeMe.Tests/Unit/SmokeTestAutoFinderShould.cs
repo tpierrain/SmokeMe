@@ -3,6 +3,7 @@ using NFluent;
 using NUnit.Framework;
 using Sample.Api.SmokeTests;
 using SmokeMe.Tests.Helpers;
+using SmokeMe.Tests.SmokeTests;
 
 namespace SmokeMe.Tests.Unit
 {

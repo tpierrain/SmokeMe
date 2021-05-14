@@ -4,18 +4,18 @@ namespace SmokeMe
 {
 
     /// <summary>
-    /// Result of a <see cref="ICheckSmoke"/> execution.
+    /// Result of a <see cref="SmokeTest"/> execution.
     /// </summary>
     public class SmokeTestResult
     {
 
         /// <summary>
-        /// Indicates whether the outcome of this <see cref="ICheckSmoke"/> execution is positive or not.
+        /// Indicates whether the outcome of this <see cref="SmokeTest"/> execution is positive or not.
         /// </summary>
         public bool Outcome { get; }
 
         /// <summary>
-        /// Gets the <see cref="Error"/> associated to this <see cref="ICheckSmoke"/> execution.
+        /// Gets the <see cref="Error"/> associated to this <see cref="SmokeTest"/> execution.
         /// </summary>
         public Error ErrorMessage { get; }
 
@@ -33,7 +33,7 @@ namespace SmokeMe
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResult"/>.
         /// </summary>
-        /// <param name="outcome">The outcome of this <see cref="ICheckSmoke"/> execution.</param>
+        /// <param name="outcome">The outcome of this <see cref="SmokeTest"/> execution.</param>
         public SmokeTestResult(bool? outcome = null)
         {
             outcome ??= true;

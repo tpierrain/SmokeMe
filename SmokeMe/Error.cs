@@ -3,7 +3,7 @@
 namespace SmokeMe
 {
     /// <summary>
-    /// Error during a <see cref="ICheckSmoke"/> excecution.
+    /// Error during a <see cref="SmokeTest"/> excecution.
     /// </summary>
     public class Error
     {
@@ -11,7 +11,7 @@ namespace SmokeMe
         /// Instantiates an <see cref="Error"/>.
         /// </summary>
         /// <param name="errorMessage">The error message.</param>
-        /// <param name="exception">An exception that has been catched during the <see cref="ICheckSmoke"/> execution.</param>
+        /// <param name="exception">An exception that has been catched during the <see cref="SmokeTest"/> execution.</param>
         public Error(string errorMessage, Exception exception)
         {
             Message = errorMessage;
@@ -24,7 +24,7 @@ namespace SmokeMe
         public string Message { get; private set; }
 
         /// <summary>
-        /// The exception that has been catched during the <see cref="ICheckSmoke"/> execution.
+        /// The exception that has been catched during the <see cref="SmokeTest"/> execution.
         /// </summary>
         public Exception Exception { get; private set; }
     }

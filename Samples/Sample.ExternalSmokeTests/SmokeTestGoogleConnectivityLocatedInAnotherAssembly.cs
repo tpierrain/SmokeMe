@@ -6,28 +6,23 @@ using SmokeMe;
 namespace Sample.ExternalSmokeTests
 {
     /// <summary>
-    /// Smoke test only to check that SmokeMe is able to detect and run all <see cref="ICheckSmoke"/>
+    /// Smoke test only to check that SmokeMe is able to detect and run all <see cref="SmokeTest"/>
     /// types wherever they are located (i.e. in other assemblies than the API).
     /// </summary>
     [Category("Connectivity")]
-    public class SmokeTestGoogleConnectivityLocatedInAnotherAssembly : ICheckSmoke
+    public class SmokeTestGoogleConnectivityLocatedInAnotherAssembly : SmokeTest
     {
         private readonly IRestClient _restClient;
 
-        public string SmokeTestName => "Check connectivity towards Google search engine.";
-        public string Description => "Check that the Google search engine is reachable";
-
-        /// <summary>
-        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
-        /// </summary>
-        public bool MustBeDiscarded => false;
+        public override string SmokeTestName => "Check connectivity towards Google search engine.";
+        public override string Description => "Check that the Google search engine is reachable";
 
         public SmokeTestGoogleConnectivityLocatedInAnotherAssembly(IRestClient restClient)
         {
             _restClient = restClient;
         }
 
-        public async Task<SmokeTestResult> Scenario()
+        public override async Task<SmokeTestResult> Scenario()
         {
             // check if Google is still here ;-)
 

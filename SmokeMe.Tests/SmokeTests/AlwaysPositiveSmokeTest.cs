@@ -2,27 +2,22 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmokeMe.Tests.Helpers
+namespace SmokeMe.Tests.SmokeTests
 {
     [Category("Tests")]
-    internal class AlwaysPositiveSmokeTest : ICheckSmoke
+    internal class AlwaysPositiveSmokeTest : SmokeTest
     {
         private readonly TimeSpan _delay;
 
-        public string SmokeTestName => "Always positive smoke test after a delay";
-        public string Description => $"For unit testing purpose. Return positively after a delay of {_delay.TotalMilliseconds} milliseconds";
-
-        /// <summary>
-        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
-        /// </summary>
-        public bool MustBeDiscarded => false;
-
+        public override string SmokeTestName => "Always positive smoke test after a delay";
+        public override string Description => $"For unit testing purpose. Return positively after a delay of {_delay.TotalMilliseconds} milliseconds";
+        
         public AlwaysPositiveSmokeTest(TimeSpan delay)
         {
             _delay = delay;
         }
 
-        public Task<SmokeTestResult> Scenario()
+        public override Task<SmokeTestResult> Scenario()
         {
             Thread.Sleep(Convert.ToInt32(_delay.TotalMilliseconds));
             return Task.FromResult(new SmokeTestResult(true));

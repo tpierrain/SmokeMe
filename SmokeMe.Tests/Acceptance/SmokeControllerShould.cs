@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NFluent;
@@ -12,6 +11,7 @@ using Sample.ExternalSmokeTests;
 using SmokeMe.Controllers;
 using SmokeMe.Infra;
 using SmokeMe.Tests.Helpers;
+using SmokeMe.Tests.SmokeTests;
 
 namespace SmokeMe.Tests.Acceptance
 {
@@ -120,7 +120,7 @@ namespace SmokeMe.Tests.Acceptance
 
             Check.That(reportDto.IsSuccess).IsFalse();
             Check.That(reportDto.Results).IsEmpty();
-            Check.That(reportDto.Status).IsEqualTo($"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(ICheckSmoke)} types in your code base so that the SmokeMe library can detect and run them.");
+            Check.That(reportDto.Status).IsEqualTo($"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(SmokeTest)} types in your code base so that the SmokeMe library can detect and run them.");
         }
 
         [Test]
@@ -274,7 +274,7 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results).HasSize(6);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
-            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Always positive smoke test after a delay", "Throwing exception after a delay", "Feature toggled test", "Always working DB smoke test", "Check connectivity towards Google search engine.");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Always positive smoke test after a delay", "Feature toggled test", "Throwing exception after a delay", "Always working DB smoke test", "Check connectivity towards Google search engine.");
             Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "Tests", "", "", "DB, Booking", "Connectivity");
         }
 
@@ -301,33 +301,6 @@ namespace SmokeMe.Tests.Acceptance
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
         {
             new BookingSmokeTest();
-        }
-    }
-
-    public interface IToggleFeatures
-    {
-        bool IsEnabled(string featureName);
-    }
-
-    public class FeatureToggledAlwaysPositiveSmokeTest : ICheckSmoke
-    {
-        private readonly IToggleFeatures _featureToggles;
-        private readonly TimeSpan _delay;
-
-        public FeatureToggledAlwaysPositiveSmokeTest(IToggleFeatures featureToggles, TimeSpan delay)
-        {
-            _featureToggles = featureToggles;
-            _delay = delay;
-        }
-
-        public bool MustBeDiscarded => !_featureToggles.IsEnabled("featureToggledSmokeTest");
-
-        public string SmokeTestName => "Feature toggled test";
-        public string Description { get; }
-        public Task<SmokeTestResult> Scenario()
-        {
-            Thread.Sleep(Convert.ToInt32(_delay.TotalMilliseconds));
-            return Task.FromResult(new SmokeTestResult(true));
         }
     }
 }

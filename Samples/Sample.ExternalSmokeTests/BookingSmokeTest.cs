@@ -5,17 +5,12 @@ namespace Sample.ExternalSmokeTests
 {
     [Category("DB")]
     [Category("Booking")]
-    public class BookingSmokeTest : ICheckSmoke
+    public class BookingSmokeTest : SmokeTest
     {
-        public string SmokeTestName => "Always working DB smoke test";
-        public string Description => "Succeeding Smoke test for testing purpose";
+        public override string SmokeTestName => "Always working DB smoke test";
+        public override string Description => "Succeeding Smoke test for testing purpose";
 
-        /// <summary>
-        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
-        /// </summary>
-        public bool MustBeDiscarded => false;
-
-        public Task<SmokeTestResult> Scenario()
+        public override Task<SmokeTestResult> Scenario()
         {
             return Task.FromResult(new SmokeTestResult(true));
         }

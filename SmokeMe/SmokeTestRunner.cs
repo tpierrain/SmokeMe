@@ -8,15 +8,15 @@ using SmokeMe.Helpers;
 namespace SmokeMe
 {
     /// <summary>
-    /// Runner for <see cref="ICheckSmoke"/> instances.
+    /// Runner for <see cref="SmokeTest"/> instances.
     /// </summary>
     public class SmokeTestRunner
     {
         /// <summary>
-        /// Executes <see cref="ICheckSmoke"/> instances that has been found for this API.
+        /// Executes <see cref="SmokeTest"/> instances that has been found for this API.
         /// </summary>
         /// <param name="smokeTestsWithMetaData">The <see cref="SmokeTestInstanceWithMetaData"/> instances to be executed in parallel.</param>
-        /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="ICheckSmoke"/> instances to be executed.</param>
+        /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="SmokeTest"/> instances to be executed.</param>
         /// <returns>The <see cref="SmokeTestsSessionReport"/>.</returns>
         public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<SmokeTestInstanceWithMetaData> smokeTestsWithMetaData, TimeSpan globalTimeout)
         {
@@ -124,13 +124,13 @@ namespace SmokeMe
 
         private class SmokeTestWithItsResultWithMetaData
         {
-            public ICheckSmoke SmokeTest { get; }
+            public SmokeTest SmokeTest { get; }
 
             public SmokeTestResultWithMetaData SmokeTestResultWithMetaData { get; }
             
             public int SmokeTestIdentifier { get; }
 
-            public SmokeTestWithItsResultWithMetaData(ICheckSmoke smokeTest, SmokeTestResultWithMetaData smokeTestResultWithMetaData, int smokeTestIdentifier)
+            public SmokeTestWithItsResultWithMetaData(SmokeTest smokeTest, SmokeTestResultWithMetaData smokeTestResultWithMetaData, int smokeTestIdentifier)
             {
                 SmokeTest = smokeTest;
                 SmokeTestResultWithMetaData = smokeTestResultWithMetaData;
