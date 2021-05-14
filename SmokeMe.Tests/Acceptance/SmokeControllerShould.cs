@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using NFluent;
@@ -270,16 +271,63 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results).HasSize(5);
+            Check.That(reportDto.Results).HasSize(6);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
-            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Always positive smoke test after a delay", "Throwing exception after a delay", "Always working DB smoke test", "Check connectivity towards Google search engine.");
-            Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "Tests", "", "DB, Booking", "Connectivity");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Always positive smoke test after a delay", "Throwing exception after a delay", "Feature toggled test", "Always working DB smoke test", "Check connectivity towards Google search engine.");
+            Check.That(reportDto.Results.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "Tests", "", "", "DB, Booking", "Connectivity");
+        }
+
+        [Test]
+        public async Task Be_able_to_discard_Test_execution_when_Indicated_with_MustBeDiscarded_set_to_true()
+        {
+            var configuration = Stub.AConfiguration(true);
+            var serviceProvider = Stub.FeatureToggles(new FeatureToggle("featureToggledSmokeTest", false));
+
+            var smokeTestProvider = Stub.ASmokeTestProvider(new AlwaysPositiveSmokeTest(TimeSpan.FromMilliseconds(50)).WithoutCategory(), new FeatureToggledAlwaysPositiveSmokeTest(serviceProvider.GetService(typeof(IToggleFeatures)) as IToggleFeatures, TimeSpan.FromMilliseconds(50)).WithoutCategory());
+
+            var controller = new SmokeController(configuration, serviceProvider, smokeTestProvider);
+
+            var response = await controller.ExecuteSmokeTests();
+
+            response.CheckIsOk200();
+            var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
+
+            Check.That(reportDto.Results).HasSize(2);
+            Check.That(reportDto.Results.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Feature toggled test");
+            Check.That(reportDto.Results.Select(x => x.Status)).ContainsExactly(Status.Executed, Status.Discarded);
         }
 
         private static void ForceTheLoadingOfTheSampleExternalSmokeTestsAssembly()
         {
             new BookingSmokeTest();
+        }
+    }
+
+    public interface IToggleFeatures
+    {
+        bool IsEnabled(string featureName);
+    }
+
+    public class FeatureToggledAlwaysPositiveSmokeTest : ICheckSmoke
+    {
+        private readonly IToggleFeatures _featureToggles;
+        private readonly TimeSpan _delay;
+
+        public FeatureToggledAlwaysPositiveSmokeTest(IToggleFeatures featureToggles, TimeSpan delay)
+        {
+            _featureToggles = featureToggles;
+            _delay = delay;
+        }
+
+        public bool MustBeDiscarded => !_featureToggles.IsEnabled("featureToggledSmokeTest");
+
+        public string SmokeTestName => "Feature toggled test";
+        public string Description { get; }
+        public Task<SmokeTestResult> Scenario()
+        {
+            Thread.Sleep(Convert.ToInt32(_delay.TotalMilliseconds));
+            return Task.FromResult(new SmokeTestResult(true));
         }
     }
 }

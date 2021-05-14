@@ -42,6 +42,8 @@ namespace SmokeMe.Infra
         /// </summary>
         public double? DurationInMsec { get; }
 
+        public Status Status { get; }
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
         /// </summary>
@@ -51,9 +53,11 @@ namespace SmokeMe.Infra
         /// <param name="error"></param>
         /// <param name="durationTimespan"></param>
         /// <param name="duration"></param>
+        /// <param name="status"></param>
+        /// <param name="smokeTestCategories"></param>
         /// <param name="argSmokeTestCategories"></param>
         public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan,
-            string duration, string[] smokeTestCategories)
+            string duration, Status status, string[] smokeTestCategories)
         {
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
@@ -63,6 +67,7 @@ namespace SmokeMe.Infra
             duration ??= "timeout";
 
             Duration = duration;
+            Status = status;
             SmokeTestCategories = string.Join(", ", smokeTestCategories);
 
             if (durationTimespan.HasValue)

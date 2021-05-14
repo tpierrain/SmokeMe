@@ -93,6 +93,14 @@ namespace SmokeMe
             stopwatch.Start();
             try
             {
+                if (smokeTest.MustBeDiscarded)
+                {
+                    stopwatch.Stop();
+
+                    var smokeTestNonExecution = new SmokeTestResultWithMetaData(new SmokeTestResult(true), stopwatch.Elapsed, smokeTestWithMetaData, discarded: true);
+                    return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestNonExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
+                }
+
                 var smokeTestResult = await smokeTest.Scenario();
 
                 stopwatch.Stop();

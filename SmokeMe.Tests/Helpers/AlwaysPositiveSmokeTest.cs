@@ -12,6 +12,11 @@ namespace SmokeMe.Tests.Helpers
         public string SmokeTestName => "Always positive smoke test after a delay";
         public string Description => $"For unit testing purpose. Return positively after a delay of {_delay.TotalMilliseconds} milliseconds";
 
+        /// <summary>
+        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+        /// </summary>
+        public bool MustBeDiscarded => false;
+
         public AlwaysPositiveSmokeTest(TimeSpan delay)
         {
             _delay = delay;

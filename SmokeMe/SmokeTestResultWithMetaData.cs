@@ -36,6 +36,8 @@ namespace SmokeMe
 
         public string[] SmokeTestCategories { get; }
 
+        public Status Status { get; } = Status.Executed;
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
         /// </summary>
@@ -44,16 +46,28 @@ namespace SmokeMe
         /// <param name="smokeTestName">Name of the smoke test.</param>
         /// <param name="smokeTestDescription">Description of the smoke test.</param>
         /// <param name="smokeTestCategories"></param>
-        private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription, string[] smokeTestCategories)
+        /// <param name="discarded"></param>
+        private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription,
+            string[] smokeTestCategories, bool? discarded)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
             SmokeTestCategories = smokeTestCategories;
+
+            if (discarded.HasValue && discarded.Value == true)
+            {
+                Status = Status.Discarded;
+            }
+            else
+            {
+                Status = Status.Executed;
+            }
         }
 
-        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories)
+        public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData,
+            bool? discarded = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded)
         {
         }
 

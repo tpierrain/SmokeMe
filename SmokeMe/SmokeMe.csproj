@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>1.3.0</Version>
+    <Version>2.0.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
@@ -12,11 +12,10 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>- Add [Category(name)] attribute to target only a subset of our smoke tests afterwards (if queried as querystring.  E.g.: &lt;api-url&gt;/smoke?categories=categoryNameSpecifiedInTheSmokeTestViaAttribute)
-
-- Add [Ignore] attribute to ignore one or more smoke test from our code base (useful to keep it in our code base whereas we don't want to run them now)
-</PackageReleaseNotes>
+    <PackageReleaseNotes>- Add MustBeDiscarded propery on ICheckSmoke interface in order to be able to discard the execution of any smoke test (based on your own feature toggle mechanism for instance).</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

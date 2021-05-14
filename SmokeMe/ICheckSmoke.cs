@@ -27,5 +27,10 @@ namespace SmokeMe
         /// </summary>
         /// <returns>The <see cref="SmokeTestResult"/> of this Smoke test.</returns>
         Task<SmokeTestResult> Scenario();
+
+        /// <summary>
+        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+        /// </summary>
+        bool MustBeDiscarded { get; }
     }
 }

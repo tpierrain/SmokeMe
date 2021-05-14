@@ -4,6 +4,11 @@
         <name>Sample.31.Api</name>
     </assembly>
     <members>
+        <member name="P:Sample.Api.SmokeTests.FlippingSmokeTest.MustBeDiscarded">
+            <summary>
+            Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+            </summary>
+        </member>
         <member name="M:Sample.Api.Startup.ConfigureSwagger(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Mvc.ApiExplorer.IApiVersionDescriptionProvider)">
             <summary>
             Override this method if you need to configure Swagger endpoint, e.g. using UseSwagger() and UseSwaggerUI() extension methods.

@@ -16,6 +16,11 @@ namespace Sample.Api.SmokeTests
         public string SmokeTestName => "Flipping smoke test";
         public string Description => $"For unit testing purpose. Smoke test being able to randomly timeout, succeeded or failed.";
 
+        /// <summary>
+        /// Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+        /// </summary>
+        public bool MustBeDiscarded => false;
+
         public FlippingSmokeTest(IProviderNumbers numbersProvider, IFuzz fuzzer, IConfiguration configuration)
         {
             _numbersProvider = numbersProvider;

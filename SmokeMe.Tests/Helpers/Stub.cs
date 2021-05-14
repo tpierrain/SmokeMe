@@ -3,6 +3,7 @@ using Diverse;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Sample.Api.FakeDomain;
+using SmokeMe.Tests.Acceptance;
 
 namespace SmokeMe.Tests.Helpers
 {
@@ -47,6 +48,19 @@ namespace SmokeMe.Tests.Helpers
             var serviceProvider = Substitute.For<IServiceProvider>();
 
             serviceProvider.GetService(typeof(IProviderNumbers)).Returns(new NumberProvider(new Fuzzer()));
+            return serviceProvider;
+        }
+
+        public static IServiceProvider FeatureToggles(params FeatureToggle[] featureToggles)
+        {
+            var serviceProvider = Substitute.For<IServiceProvider>();
+            var toggleFeatures = Substitute.For<IToggleFeatures>();
+            foreach (var featureToggle in featureToggles)
+            {
+                toggleFeatures.IsEnabled(featureToggle.FeatureName).Returns(featureToggle.FeatureValue);
+            }
+            
+            serviceProvider.GetService(typeof(IToggleFeatures)).Returns(toggleFeatures);
             return serviceProvider;
         }
     }

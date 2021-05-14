@@ -152,6 +152,11 @@
             </summary>
             <returns>The <see cref="T:SmokeMe.SmokeTestResult"/> of this Smoke test.</returns>
         </member>
+        <member name="P:SmokeMe.ICheckSmoke.MustBeDiscarded">
+            <summary>
+            Gets a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
+            </summary>
+        </member>
         <member name="T:SmokeMe.IFindSmokeTests">
             <summary>
             Responsible to find smoke tests to be run within an executable.
@@ -238,7 +243,7 @@
             Gets the duration in milliseconds of this smoke test execution (useful for scripting).
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,System.String[])">
+        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,SmokeMe.Status,System.String[])">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto"/>.
             </summary>
@@ -248,6 +253,8 @@
             <param name="error"></param>
             <param name="durationTimespan"></param>
             <param name="duration"></param>
+            <param name="status"></param>
+            <param name="smokeTestCategories"></param>
             <param name="argSmokeTestCategories"></param>
         </member>
         <member name="T:SmokeMe.Infra.SmokeTestsDisabledReportDto">
@@ -418,7 +425,7 @@
             Gets the description of the executed <see cref="T:SmokeMe.ICheckSmoke"/> instance.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[])">
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean})">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
@@ -427,6 +434,7 @@
             <param name="smokeTestName">Name of the smoke test.</param>
             <param name="smokeTestDescription">Description of the smoke test.</param>
             <param name="smokeTestCategories"></param>
+            <param name="discarded"></param>
         </member>
         <member name="M:SmokeMe.SmokeTestResultWithMetaData.ToString">
             <summary>
