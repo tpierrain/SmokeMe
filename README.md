@@ -176,12 +176,15 @@ Means that smoke test execution has been disabled via configuration.
 ```
 Relying on an interface was not a good idea for extensibility reason. 
 Indeed, when you want to add new characteristics (with default values) to existing smoke tests,
-you are forced to rely on the will and the awareness of every consumer code that has to reference a new extending interface.
+you are forced to rely on the will and the awareness of every consumer code that has to 
+reference a new extending interface.
 
-With v2 we took the decision to replace the former ICheckSmoke interface with a new abstract class: SmokeTest. 
-This will allow us to add more default behaviours and to support new features for your smoke tests in the future without any other breaking change.
+With v2 we took the decision to replace the former ICheckSmoke interface with a new 
+abstract class: SmokeTest. This will allow us to add more default behaviours and to support 
+new features for your smoke tests in the future without any other breaking change.
 
-We realize that migrating your code from v1 to v2 is a major change for you and we are sorry for that inconvenient.
+We realize that migrating your code from v1 to v2 is a major change for you and 
+we are sorry for that inconvenient.
 
 ```
 
@@ -191,7 +194,8 @@ We realize that migrating your code from v1 to v2 is a major change for you and 
 
 1. Replace all your reference to ICheckSmoke with SmokeTest abstract class
 
-2. Add 'override' keyword to all your existing 'SmokeTestName', 'Description' properties and to your 'Scenario()' methods.
+2. Add 'override' keyword to all your existing 'SmokeTestName', 'Description' properties 
+and to your 'Scenario()' methods.
 
 3. That's it ;-)
 
@@ -419,6 +423,19 @@ e.g.:
     }
 
 ```
+
+
+### 10. What is the difference between Ignored and Discarded smoke tests?
+
+
+```
+An Ignored smoke test is a smoke test that won't run until you remove its [Ignore("...")] attribute (compile time).
+
+A Discarded Smoke test is a smoke test that can be run (or not) depending on dynamic conditions (very handy 
+if you want some smoke tests to be enabled with a given n+1 version or any feature toggle for instance).
+
+```
+
 
 ---
 
