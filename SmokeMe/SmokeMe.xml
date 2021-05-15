@@ -126,6 +126,16 @@
             <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
             <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
         </member>
+        <member name="T:SmokeMe.ICheckSmoke">
+            <summary>
+            The ICheckSmoke interface is deprecated and MUST be replaced by SmokeTest abstract class. To do so, just replace all reference to ICheckSmoke with SmokeTest and add the 'override' keyword to your existing SmokeTestName, Description properties, but also to the Scenario() method which is now an abstract method.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.ICheckSmoke.WithTheV2MajorBreakingChangeOfSmokeMeYouMustReplaceAllYourPreviousReferenceToICheckSmokeInterfaceWithTheSmokeTestAbstractClass">
+            <summary>
+            Breaking change: the ICheckSmoke interface is deprecated and MUST be replaced by SmokeTest abstract class. To do so, just replace all reference to ICheckSmoke with SmokeTest and add the 'override' keyword to your existing SmokeTestName, Description properties, but also to the Scenario() method which is now an abstract method.
+            </summary>
+        </member>
         <member name="T:SmokeMe.IFindSmokeTests">
             <summary>
             Responsible to find smoke tests to be run within an executable.
