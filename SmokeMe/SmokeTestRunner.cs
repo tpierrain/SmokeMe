@@ -18,31 +18,54 @@ namespace SmokeMe
         /// <param name="smokeTestsWithMetaData">The <see cref="SmokeTestInstanceWithMetaData"/> instances to be executed in parallel.</param>
         /// <param name="globalTimeout">The maximum amount of time allowed for all <see cref="SmokeTest"/> instances to be executed.</param>
         /// <returns>The <see cref="SmokeTestsSessionReport"/>.</returns>
-        public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(IEnumerable<SmokeTestInstanceWithMetaData> smokeTestsWithMetaData, TimeSpan globalTimeout)
+        public static async Task<SmokeTestsSessionReport> ExecuteAllSmokeTestsInParallel(SmokeTestInstanceWithMetaData[] smokeTestsWithMetaData, TimeSpan globalTimeout)
         {
+            var unignoredSmokeTestsWithMetadata = smokeTestsWithMetaData.Where(s => !s.SmokeTest.GetType().HasIgnoredCustomAttribute());
+
             var tasks = new List<Task<SmokeTestWithItsResultWithMetaData>>();
-            foreach (var smokeTestWithMetaData in smokeTestsWithMetaData.ToArray())
+            foreach (var smokeTestWithMetaData in unignoredSmokeTestsWithMetadata.ToArray())
             {
-                var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTestWithMetaData));
-                tasks.Add(task);
+                if (!smokeTestWithMetaData.SmokeTest.GetType().HasIgnoredCustomAttribute())
+                {
+                    var task = Task.Run(() => StopWatchSafeSmokeTestExecution(smokeTestWithMetaData));
+                    tasks.Add(task);
+                }
             }
 
             var allSmokeTasks = Task.WhenAll(tasks);
             var timeoutTask = Task.Delay(globalTimeout);
 
+            var ignoredSmokeTestsWithMetadata = smokeTestsWithMetaData
+                .Where(s => s.SmokeTest.GetType().HasIgnoredCustomAttribute())
+                .Select(x => new SmokeTestResultWithMetaData(new SmokeTestResult(true), TimeSpan.Zero, new SmokeTestInstanceWithMetaData(x.SmokeTest, x.SmokeTest.GetCategories()), x.SmokeTest.GetType().FullName, discarded: false, status: Status.Ignored))
+                .ToArray();
+
             if (timeoutTask == await Task.WhenAny(timeoutTask, allSmokeTasks).ConfigureAwait(false))
             {
                 if (IsNotAFalsePositive(allSmokeTasks)) // in case they all complete in a short
                 {
-                    var timeoutAndCompletedResultsWithMetadata = await ConcatDeducedTimeoutTestsResultsWithCompletedTestsResults(smokeTestsWithMetaData, tasks);
+                    var timeoutAndCompletedResultsWithMetadata = await ConcatDeducedTimeoutTestsResultsWithCompletedTestsResults(unignoredSmokeTestsWithMetadata, tasks);
+                    var allResults = timeoutAndCompletedResultsWithMetadata.Concat(ignoredSmokeTestsWithMetadata).ToArray();
 
-                    return new TimeoutSmokeTestsSessionReport(globalTimeout, timeoutAndCompletedResultsWithMetadata, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
+                    return new TimeoutSmokeTestsSessionReport(globalTimeout, allResults, $"One or more smoke tests have timeout (global timeout is: {globalTimeout.GetHumanReadableVersion()})");
                 }
             }
 
             var smokeTestWithItsResultWithMetaDatas = await allSmokeTasks;
 
-            return new SmokeTestsSessionReport(smokeTestWithItsResultWithMetaDatas.Select(x => x.SmokeTestResultWithMetaData).ToArray());
+            //var ignoredSmokeTestsWithResultsWithMetadata = smokeTestsWithMetaData
+            //    .Where(s => s.SmokeTest.GetType().HasIgnoredCustomAttribute())
+            //    .Select(x => new SmokeTestWithItsResultWithMetaData(x.SmokeTest, new SmokeTestResultWithMetaData(new SmokeTestResult(true), TimeSpan.Zero, new SmokeTestInstanceWithMetaData(x.SmokeTest, x.SmokeTest.GetCategories()), x.SmokeTest.GetType().FullName, discarded:false, Status.Ignored), x.SmokeTestIdentifier.Value))
+            //    .ToArray();
+
+
+            var smokeTestResultWithMetaDatas = smokeTestWithItsResultWithMetaDatas
+                                                    .Select(x => x.SmokeTestResultWithMetaData)
+                                                    .ToArray();
+
+            var allResults2 = smokeTestResultWithMetaDatas.Concat(ignoredSmokeTestsWithMetadata).ToArray();
+
+            return new SmokeTestsSessionReport(allResults2);
         }
 
         private static async Task<SmokeTestResultWithMetaData[]> ConcatDeducedTimeoutTestsResultsWithCompletedTestsResults(IEnumerable<SmokeTestInstanceWithMetaData> smokeTestsWithMetaData, IEnumerable<Task<SmokeTestWithItsResultWithMetaData>> tasks)

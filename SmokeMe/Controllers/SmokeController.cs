@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace SmokeMe.Controllers
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun(requestedCategories);
 
-            if (!smokeTests.Any())
+            if (ThereIsNoUnignoredSmokeTest(smokeTests))
             {
                 if (requestedCategories.Length > 0)
                 {
@@ -84,6 +85,11 @@ namespace SmokeMe.Controllers
             }
 
             return StatusCode((int)HttpStatusCode.InternalServerError, resultDto);
+        }
+
+        private static bool ThereIsNoUnignoredSmokeTest(IEnumerable<SmokeTestInstanceWithMetaData> smokeTests)
+        {
+            return !smokeTests.Any(t=> !t.SmokeTest.GetType().HasIgnoredCustomAttribute());
         }
 
         private static string GenerateStatusMessageForNoSmokeTestsWithCategories(params string[] categories)

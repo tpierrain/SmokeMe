@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Routing.Matching;
 
 namespace SmokeMe
 {
@@ -61,21 +62,15 @@ namespace SmokeMe
             SmokeTestCategories = smokeTestCategories;
             SmokeTestType = smokeTestType;
 
-            if (status.HasValue && status== Status.Timeout)
-            {
-                Status = Status.Timeout;
-            }
-            else
+            if (status != Status.Ignored)
             {
                 if (discarded.HasValue && discarded.Value == true)
                 {
-                    Status = Status.Discarded;
-                }
-                else
-                {
-                    Status = Status.Executed;
+                    status = Status.Discarded;
                 }
             }
+
+            Status = status.HasValue ? status.Value : Status.Executed;
         }
 
         public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestType,
@@ -91,7 +86,7 @@ namespace SmokeMe
         {
             if (Duration.HasValue)
             {
-                return $"Outcome:{SmokeTestResult.Outcome}({Duration.Value.TotalMilliseconds} msec)";
+                return $"{Status}; Outcome:{SmokeTestResult.Outcome}({Duration.Value.TotalMilliseconds} msec)";
             }
             return $"Outcome:{SmokeTestResult.Outcome}(no defined Duration)";
         }

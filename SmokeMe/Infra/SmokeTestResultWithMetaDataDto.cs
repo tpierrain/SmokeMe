@@ -78,5 +78,10 @@ namespace SmokeMe.Infra
                 DurationInMsec = durationTimespan.Value.TotalMilliseconds;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{SmokeTestType};{Status};{Outcome}";
+        }
     }
 }

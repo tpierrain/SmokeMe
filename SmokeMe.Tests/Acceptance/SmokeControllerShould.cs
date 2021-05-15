@@ -284,7 +284,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(5);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
             Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Throwing exception after a delay", "Check connectivity towards Google search engine.");
@@ -297,9 +297,9 @@ namespace SmokeMe.Tests.Acceptance
         }
 
         [Test]
-        public async Task Publish_the_Type_FullName_of_every_SmokeTest_even_when_timeout()
+        public async Task Publish_the_Type_FullName_of_every_SmokeTest_even_when_they_Timeout_or_are_Discared_or_Ignored()
         {
-            var configuration = Stub.AConfiguration(true, globalTimeoutInMsec: 500);
+            var configuration = Stub.AConfiguration(true, globalTimeoutInMsec: 100);
             var serviceProvider = Stub.ACompleteServiceProvider(configuration, new FeatureToggle("featureToggledSmokeTest", false), new FeatureToggle("mustTimeOut", true));
             var smokeTestAutoFinder = new SmokeTestAutoFinder(serviceProvider);
 
@@ -310,12 +310,16 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.GatewayTimeout);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(6);
+            Check.That(reportDto.Results.NbOfTimeouts).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfFailures).IsEqualTo(3);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
-            Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
-            Check.That(reportDto.Results.NbOfTimeouts).IsEqualTo(1);
 
+            Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfIgnoredTests).IsEqualTo(2);
+
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(5);
+            Check.That(reportDto.Results.TotalOfTestsDetected).IsEqualTo(8);
+            
             /// Booking smoke test must have timeout
             Check.That(reportDto.Results.Timeouts[0].SmokeTestType).IsEqualTo(typeof(BookingSmokeTest).FullName);
             Check.That(reportDto.Results.Timeouts[0].Status).IsEqualTo(Status.Timeout);
@@ -323,6 +327,7 @@ namespace SmokeMe.Tests.Acceptance
             Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysFailingSmokeTest).FullName, typeof(SmokeTestThrowingAnAccessViolationException).FullName, typeof(SmokeTestGoogleConnectivityLocatedInAnotherAssembly).FullName);
             Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysPositiveSmokeTest).FullName);
             Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestType)).ContainsExactly(typeof(FeatureToggledAlwaysPositiveSmokeTest).FullName);
+            Check.That(reportDto.Results.IgnoredTests.Select(x => x.SmokeTestType)).ContainsExactly(typeof(IgnoredFeatureToggledSmokeTest).FullName, typeof(AlwaysWorkingButIgnoredDbSmokeTest).FullName);
         }
 
         [Test]
@@ -340,7 +345,7 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsOk200();
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(2);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
             Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay");

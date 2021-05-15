@@ -4,6 +4,7 @@ namespace SmokeMe
     {
         Executed,
         Timeout,
-        Discarded
+        Discarded,
+        Ignored
     }
 }

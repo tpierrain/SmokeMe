@@ -126,6 +126,18 @@
             <param name="duration">The <see cref="T:System.TimeSpan"/> to be adapted.</param>
             <returns>The human readable string version (with "en-us" culture format) of the <see cref="T:System.TimeSpan"/> provided.</returns>
         </member>
+        <member name="T:SmokeMe.Helpers.TypeExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Type"/>.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Helpers.TypeExtensions.HasIgnoredCustomAttribute(System.Type)">
+            <summary>
+            Indicates whether or not a considered type has the Ignore custom Attribute.
+            </summary>
+            <param name="consideredType">The type we want to check.</param>
+            <returns><b>true</b> if the Type has an [Ignore()] attribute; <b>false</b> otherwise.</returns>
+        </member>
         <member name="T:SmokeMe.ICheckSmoke">
             <summary>
             The ICheckSmoke interface is deprecated and MUST be replaced by SmokeTest abstract class. To do so, just replace all reference to ICheckSmoke with SmokeTest and add the 'override' keyword to your existing SmokeTestName, Description properties, but also to the Scenario() method which is now an abstract method.
@@ -459,7 +471,7 @@
             Runner for <see cref="T:SmokeMe.SmokeTest"/> instances.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTestsInParallel(System.Collections.Generic.IEnumerable{SmokeMe.SmokeTestInstanceWithMetaData},System.TimeSpan)">
+        <member name="M:SmokeMe.SmokeTestRunner.ExecuteAllSmokeTestsInParallel(SmokeMe.SmokeTestInstanceWithMetaData[],System.TimeSpan)">
             <summary>
             Executes <see cref="T:SmokeMe.SmokeTest"/> instances that has been found for this API.
             </summary>

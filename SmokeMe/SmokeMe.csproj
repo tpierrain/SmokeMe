@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Breaking changes:
 - Replace ICheckSmoke interface with SmokeTest abstract class. This will help us to add new behaviours with default values without breaking changes in the future. But for this time, all your smoke tests will have to inherits from SmokeTest instead of ICheckSmoke + to add override keyword for "SmokeTestName" and "Description" Properties, and the "Screnario()" method.
 
-- The payload of the report has been changed in order to split Failures, Successes, Timeouts and Discards in order to quickly and easily detect failing smoke tests (they were previously mixed with other successful smoke tests before).
+- The payload of the report has been changed in order to split IgnoredTests, Failures, Successes, Timeouts and Discards in order to quickly and easily detect failing smoke tests (they were previously mixed with other successful smoke tests before).
 
 - Set GlobalTimeoutInMsecDefaultValue defaut value to 30 seconds.
 
