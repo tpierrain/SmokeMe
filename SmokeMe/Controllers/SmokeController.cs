@@ -72,7 +72,7 @@ namespace SmokeMe.Controllers
             var results = await SmokeTestRunner.ExecuteAllSmokeTestsInParallel(smokeTests, globalTimeout);
 
             // Adapt from business to DTO with extra information
-            var resultDto = SmokeTestSessionResultAdapter.Adapt(results, new ApiRuntimeDescription(), requestedCategories);
+            var resultDto = SmokeTestSessionResultAdapter.Adapt(results, new ApiRuntimeDescription(), requestedCategories, _configuration);
 
             if (resultDto.IsSuccess)
             {

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
+using SmokeMe.Helpers;
 
 namespace SmokeMe.Infra
 {
@@ -11,6 +14,7 @@ namespace SmokeMe.Infra
     {
         private readonly SmokeTestsSessionReport _reports;
         private readonly ApiRuntimeDescription _apiRuntimeDescription;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
@@ -56,7 +60,12 @@ namespace SmokeMe.Infra
         /// Gets the number of Processors this API instance has.
         /// </summary>
         public string NbOfProcessors => _apiRuntimeDescription.NbOfProcessors;
-        
+
+        /// <summary>
+        /// Gets the global timeout for the execution of all smoke tests.
+        /// </summary>
+        public string GlobalTimeout => _configuration.GetSmokeMeGlobalTimeout().GetHumanReadableVersion();
+
         /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
@@ -64,14 +73,16 @@ namespace SmokeMe.Infra
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         /// <param name="smokeTestResultWithMetaDataDtos">The <see cref="IEnumerable&lt;SmokeTestResultWithMetaDataDto&gt;"/> containing all the smoke tests results.</param>
         /// <param name="categories"></param>
+        /// <param name="configuration"></param>
         public SmokeTestsSessionReportDto(SmokeTestsSessionReport reports, ApiRuntimeDescription apiRuntimeDescription,
-            IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos, string[] categories)
+            IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos, string[] categories, IConfiguration configuration)
         {
             _reports = reports;
 
             Results = new SmokeTestsResults(smokeTestResultWithMetaDataDtos.ToArray());
 
             _apiRuntimeDescription = apiRuntimeDescription;
+            _configuration = configuration;
 
             RequestedCategories = categories;
         }

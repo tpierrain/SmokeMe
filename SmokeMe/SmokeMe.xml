@@ -258,13 +258,14 @@
             Adapter from SmokeMe internal model to SmokeMe external DTOs.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.String[])">
+        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.String[],Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Adapts a <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> one.
             </summary>
             <param name="reports">The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to adapt.</param>
             <param name="runtimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> to associate</param>
             <param name="categories"></param>
+            <param name="configuration"></param>
             <returns>The <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> corresponding to the external exposition model of the provided <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance.</returns>
         </member>
         <member name="T:SmokeMe.Infra.SmokeTestsSessionReportDto">
@@ -318,7 +319,12 @@
             Gets the number of Processors this API instance has.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[])">
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.GlobalTimeout">
+            <summary>
+            Gets the global timeout for the execution of all smoke tests.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[],Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
             </summary>
@@ -326,6 +332,7 @@
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
             <param name="smokeTestResultWithMetaDataDtos">The <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing all the smoke tests results.</param>
             <param name="categories"></param>
+            <param name="configuration"></param>
         </member>
         <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription,System.String)">
             <summary>
