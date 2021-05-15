@@ -3,6 +3,7 @@
 A *convention-based* dotnet plugin that will automatically expose all your declared smoke tests behind a  **/smoke** resource in your API.
 
 ![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)   
+![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/breaking-changes.JPG?raw=true)   
   
 # 
 ![twitter icon](https://github.com/42skillz/Smoke/blob/main/Images/Twitter_icon.gif?raw=true) [use case driven on twitter](https://twitter.com/tpierrain) - (thomas@42skillz.com)
