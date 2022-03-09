@@ -48,26 +48,26 @@ namespace SmokeMe.Controllers
         public async Task<IActionResult> ExecuteSmokeTests([FromQuery] params string[] categories)
         {
             var requestedCategories = categories; // adapt name to our context
+            var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();
 
             if (!_configuration.IsSmokeTestExecutionEnabled())
             {
-                return StatusCode((int) HttpStatusCode.ServiceUnavailable, new SmokeTestsDisabledReportDto(new ApiRuntimeDescription()));
+                return StatusCode((int) HttpStatusCode.ServiceUnavailable, new SmokeTestsDisabledReportDto(new ApiRuntimeDescription(), globalTimeout));
             }
 
             // Find all smoke tests to run
             var smokeTests = _smokeTestProvider.FindAllSmokeTestsToRun(requestedCategories);
 
+
             if (ThereIsNoUnignoredSmokeTest(smokeTests))
             {
                 if (requestedCategories.Length > 0)
                 {
-                    return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: GenerateStatusMessageForNoSmokeTestsWithCategories(requestedCategories)));
+                    return StatusCode((int)HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), globalTimeout, status: GenerateStatusMessageForNoSmokeTestsWithCategories(requestedCategories)));
                 }
                 
-                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(SmokeTest)} types in your code base so that the SmokeMe library can detect and run them."));
+                return StatusCode((int) HttpStatusCode.NotImplemented, new SmokeTestsSessionReportDto(new ApiRuntimeDescription(), globalTimeout, status: $"No smoke test have been found in your executing assemblies. Start adding (not ignored) {nameof(SmokeTest)} types in your code base so that the SmokeMe library can detect and run them."));
             }
-
-            var globalTimeout = _configuration.GetSmokeMeGlobalTimeout();
 
             var results = await SmokeTestRunner.ExecuteAllSmokeTestsInParallel(smokeTests, globalTimeout);
 

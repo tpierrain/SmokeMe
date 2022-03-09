@@ -25,7 +25,7 @@ namespace SmokeMe.Infra
                 .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, r.Duration?.GetHumanReadableVersion(), r.Status, r.SmokeTestCategories, r.SmokeTestType));
 
             // Adapt the overall wrapper (with runtime description information too)
-            var result = new SmokeTestsSessionReportDto(reports, runtimeDescription, resultsDto, categories, configuration);
+            var result = new SmokeTestsSessionReportDto(reports, runtimeDescription, resultsDto, categories, configuration.GetSmokeMeGlobalTimeout());
 
             return result;
         }

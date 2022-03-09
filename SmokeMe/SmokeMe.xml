@@ -324,7 +324,7 @@
             Gets the global timeout for the execution of all smoke tests.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[],Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[],System.TimeSpan)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
             </summary>
@@ -334,7 +334,7 @@
             <param name="categories"></param>
             <param name="configuration"></param>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription,System.String)">
+        <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.Infra.ApiRuntimeDescription,System.TimeSpan,System.String)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
             </summary>

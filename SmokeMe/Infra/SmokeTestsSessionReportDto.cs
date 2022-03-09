@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 using SmokeMe.Helpers;
 
 namespace SmokeMe.Infra
@@ -14,7 +13,7 @@ namespace SmokeMe.Infra
     {
         private readonly SmokeTestsSessionReport _reports;
         private readonly ApiRuntimeDescription _apiRuntimeDescription;
-        private readonly IConfiguration _configuration;
+        private readonly TimeSpan _smokeMeGlobalTimeout;
 
         /// <summary>
         /// Returns <b>true</b> if the Smoke test session is succeeded (i.e. all smoke test succeeded), <b>false</b> otherwise.
@@ -64,7 +63,7 @@ namespace SmokeMe.Infra
         /// <summary>
         /// Gets the global timeout for the execution of all smoke tests.
         /// </summary>
-        public string GlobalTimeout => _configuration.GetSmokeMeGlobalTimeout().GetHumanReadableVersion();
+        public string GlobalTimeout => _smokeMeGlobalTimeout.GetHumanReadableVersion();
 
         /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
@@ -75,14 +74,15 @@ namespace SmokeMe.Infra
         /// <param name="categories"></param>
         /// <param name="configuration"></param>
         public SmokeTestsSessionReportDto(SmokeTestsSessionReport reports, ApiRuntimeDescription apiRuntimeDescription,
-            IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos, string[] categories, IConfiguration configuration)
+            IEnumerable<SmokeTestResultWithMetaDataDto> smokeTestResultWithMetaDataDtos, string[] categories, TimeSpan smokeMeGlobalTimeout)
         {
             _reports = reports;
 
             Results = new SmokeTestsResults(smokeTestResultWithMetaDataDtos.ToArray());
 
             _apiRuntimeDescription = apiRuntimeDescription;
-            _configuration = configuration;
+
+            _smokeMeGlobalTimeout = smokeMeGlobalTimeout;
 
             RequestedCategories = categories;
         }
@@ -92,10 +92,11 @@ namespace SmokeMe.Infra
         /// </summary>
         /// <param name="apiRuntimeDescription">The <see cref="ApiRuntimeDescription"/> associated to that smoke test execution.</param>
         /// <param name="runtimeDescription"></param>
-        public SmokeTestsSessionReportDto(ApiRuntimeDescription apiRuntimeDescription, string status = null)
+        public SmokeTestsSessionReportDto(ApiRuntimeDescription apiRuntimeDescription, TimeSpan smokeMeGlobalTimeout, string status = null)
         {
             status ??= string.Empty;
             _reports = new SmokeTestsSessionReport(status);
+            _smokeMeGlobalTimeout = smokeMeGlobalTimeout;
 
             _apiRuntimeDescription = apiRuntimeDescription;
             Results = new SmokeTestsResults(new SmokeTestResultWithMetaDataDto[0]);
