@@ -45,14 +45,16 @@ namespace Sample.Api
 
             services.AddTransient<IToggleFeatures, AlwaysDisabledToggleFeatureManager>();
 
-            Fuzzer.Log +=obj =>
-            {
-            };
+
 
             // -------- Specific services for the API (no need to register anything for Smoke lib usage ---------
             services.AddSingleton<IRestClient, RestClient>();
 
-            services.AddTransient<IFuzz, Fuzzer>();
+            Fuzzer.Log += obj =>
+            {
+            };
+            services.AddSingleton<IFuzz, Fuzzer>();
+
             services.AddTransient<IProviderNumbers, NumberProvider>();
             // --------------------------------------------------------------------------------------------------
 
