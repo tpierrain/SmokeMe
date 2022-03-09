@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
@@ -12,19 +12,14 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>Breaking changes:
-- Replace ICheckSmoke interface with SmokeTest abstract class. This will help us to add new behaviours with default values without breaking changes in the future. But for this time, all your smoke tests will have to inherits from SmokeTest instead of ICheckSmoke + to add override keyword for "SmokeTestName" and "Description" Properties, and the "Screnario()" method.
-
-- The payload of the report has been changed in order to split IgnoredTests, Failures, Successes, Timeouts and Discards in order to quickly and easily detect failing smoke tests (they were previously mixed with other successful smoke tests before).
-
-- Set GlobalTimeoutInMsecDefaultValue defaut value to 30 seconds.
+    <PackageReleaseNotes>Fix:
+- Fix an Issue when no smoke test are implemented yet in a solution (an exception was thrown in some cases)
 
 New features:
-- Introduce the overridable HasToBeDiscarded() virtual method on SmokeTest type in order to be able to discard the execution of any smoke test (based on your own feature toggle mechanism for instance).
-</PackageReleaseNotes>
+- A new property is available in the Report DTO: GlobalTimeoutInMSec</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
-    <AssemblyVersion>2.1.0.0</AssemblyVersion>
-    <FileVersion>2.1.0.0</FileVersion>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
