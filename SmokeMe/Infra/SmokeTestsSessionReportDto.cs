@@ -66,6 +66,12 @@ namespace SmokeMe.Infra
         public string GlobalTimeout => _smokeMeGlobalTimeout.GetHumanReadableVersion();
 
         /// <summary>
+        /// Gets the global timeout for the execution of all smoke tests (in msec).
+        /// </summary>
+        public double GlobalTimeoutInMSec => _smokeMeGlobalTimeout.TotalMilliseconds;
+
+
+        /// <summary>
         /// Instantiates a <see cref="SmokeTestsSessionReportDto"/>.
         /// </summary>
         /// <param name="reports">The <see cref="SmokeTestsSessionReport"/> to be adapted.</param>

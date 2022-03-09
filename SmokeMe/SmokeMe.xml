@@ -324,6 +324,11 @@
             Gets the global timeout for the execution of all smoke tests.
             </summary>
         </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.GlobalTimeoutInMSec">
+            <summary>
+            Gets the global timeout for the execution of all smoke tests (in msec).
+            </summary>
+        </member>
         <member name="M:SmokeMe.Infra.SmokeTestsSessionReportDto.#ctor(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.Collections.Generic.IEnumerable{SmokeMe.Infra.SmokeTestResultWithMetaDataDto},System.String[],System.TimeSpan)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/>.
