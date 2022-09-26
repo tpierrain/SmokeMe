@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Responsible to find smoke tests to be run within an executable.

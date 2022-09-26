@@ -346,6 +346,17 @@
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
             <param name="runtimeDescription"></param>
         </member>
+        <member name="T:SmokeMe.IProcessSmokeTests">
+            <summary>
+            Responsible to run all found smoke tests.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.IProcessSmokeTests.Process(System.String[])">
+            <summary>
+            Run all the instantiated <see cref="T:SmokeMe.SmokeTest"/> instances that have been found in the running code.
+            </summary>
+            <returns>A collection of <see cref="T:SmokeMe.SmokeTest"/> instances.</returns>
+        </member>
         <member name="T:SmokeMe.SmokeTest">
             <summary>
             Smoke test/scenario/code to be executed in order to check that a minimum
@@ -394,6 +405,26 @@
             </summary>
             <param name="requestedCategories">Categories requested by the client.</param>
             <returns>The collection of all <see cref="T:SmokeMe.SmokeTest"/> instance declared in this API to be executed.</returns>
+        </member>
+        <member name="T:SmokeMe.SmokeTestProcessor">
+            <summary>
+            Responsible to run all found smoke tests to retrieve the accurate http status code
+            </summary>
+        </member>
+        <member name="M:SmokeMe.SmokeTestProcessor.#ctor(Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,SmokeMe.IFindSmokeTests)">
+            <summary>
+            Instantiates a <see cref="T:SmokeMe.SmokeTestProcessor"/>
+            </summary>
+            <param name="configuration">The configuration of the API.</param>
+            <param name="serviceProvider">A Service provider to be used to instantiate a <see cref="T:SmokeMe.IFindSmokeTests"/> instance if not provided.</param>
+            <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
+        </member>
+        <member name="M:SmokeMe.SmokeTestProcessor.Process(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="categories"></param>
+            <returns></returns>
         </member>
         <member name="T:SmokeMe.SmokeTestResult">
             <summary>

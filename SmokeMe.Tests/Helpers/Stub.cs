@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Sample.Api.FakeDomain;
 using Sample.ExternalSmokeTests.Utilities;
-using SmokeMe.Tests.Acceptance;
 
 namespace SmokeMe.Tests.Helpers
 {
