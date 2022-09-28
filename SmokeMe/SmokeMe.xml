@@ -34,26 +34,6 @@
             Gets the default value for the global timeout in milliseconds if the (<see cref="F:SmokeMe.Constants.GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
             </summary>
         </member>
-        <member name="T:SmokeMe.Controllers.SmokeController">
-            <summary>
-            Executes smoke test declared for this API.
-            Smoke tests are a set of short functional tests checking that the minimum viable prerequisites for this API is fine.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,SmokeMe.IProcessSmokeTests)">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeController"/>.
-            </summary>
-            <param name="configuration">The configuration of the API.</param>
-            <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:SmokeMe.SmokeTest"/> smoke tests.</param>
-            <param name="smokeTestProcessor">(optional) A smoke test provider (used for unit testing purpose).</param>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeController.ExecuteSmokeTests(System.String[])">
-            <summary>
-            Execute all registered Smoke Tests for this API.
-            </summary>
-            <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
-        </member>
         <member name="T:SmokeMe.Error">
             <summary>
             Error during a <see cref="T:SmokeMe.SmokeTest"/> excecution.
