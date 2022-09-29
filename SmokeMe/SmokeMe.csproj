@@ -52,4 +52,8 @@ New features:
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SmokeMe.Infrastructure\SmokeMe.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

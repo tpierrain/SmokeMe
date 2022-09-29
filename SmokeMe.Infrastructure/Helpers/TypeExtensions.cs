@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace SmokeMe.Helpers
+﻿namespace SmokeMe.Helpers
 {
     /// <summary>
     /// Extension methods for <see cref="Type"/>.

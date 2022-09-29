@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmokeMe.Infra
+﻿namespace SmokeMe.Infra
 {
     /// <summary>
     /// Report for a smoke test execution that could not happened due to configuration settings.

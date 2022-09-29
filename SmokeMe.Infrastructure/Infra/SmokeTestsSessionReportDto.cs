@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SmokeMe.Helpers;
+﻿using SmokeMe.Helpers;
 
 namespace SmokeMe.Infra
 {

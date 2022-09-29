@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Error during a <see cref="SmokeTest"/> excecution.

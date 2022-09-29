@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using SmokeMe.Infra;
 
 namespace SmokeMe;

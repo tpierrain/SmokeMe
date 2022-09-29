@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Result of a <see cref="SmokeTest"/> execution enhanced with meta data about it and its execution (like the <see cref="Duration"/>).

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Represents a failed (due to timeout) smoke test session.

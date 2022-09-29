@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace SmokeMe.Infra
+﻿namespace SmokeMe.Infra
 {
     public class SmokeTestsResults
     {
