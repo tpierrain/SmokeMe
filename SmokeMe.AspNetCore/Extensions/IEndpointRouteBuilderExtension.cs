@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using SmokeMe;
+using SmokeMe.AspNetCore;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -17,10 +18,10 @@ public static class IEndpointRouteBuilderExtension
     public static RouteHandlerBuilder MapSmokeTests(this IEndpointRouteBuilder builder, string endpoint)
     {
         return builder
-            .MapGet(endpoint, async (HttpContext context, [FromQuery] string? category) =>
+            .MapGet(endpoint, async (HttpContext context, [FromQuery] StringList? categories) =>
             {
                 var processor = InstantiateSmokeTestProcessor(context.RequestServices);
-                var (httpStatusCode, sessionReport) = await processor.Process(category);
+                var (httpStatusCode, sessionReport) = await processor.Process(categories);
 
                 return Results.Json(sessionReport, statusCode: httpStatusCode);
             });
