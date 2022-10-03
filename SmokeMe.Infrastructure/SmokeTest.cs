@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Smoke test/scenario/code to be executed in order to check that a minimum

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Allows to associate a Category for a Smoke Test (i.e.: a <see cref="SmokeTest"/> type).

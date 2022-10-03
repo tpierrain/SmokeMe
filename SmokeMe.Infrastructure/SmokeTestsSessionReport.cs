@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace SmokeMe
+﻿namespace SmokeMe
 {
     /// <summary>
     /// Result of a smoke test session.

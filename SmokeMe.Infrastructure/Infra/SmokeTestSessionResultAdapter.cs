@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using SmokeMe.Helpers;
 
 namespace SmokeMe.Infra
