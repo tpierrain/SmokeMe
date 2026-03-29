@@ -24,6 +24,7 @@ Full migration guide: https://github.com/42skillz/SmokeMe/blob/main/MIGRATION-v2
     <PackageId>SmokeMe.AspNetCore</PackageId>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +38,10 @@ Full migration guide: https://github.com/42skillz/SmokeMe/blob/main/MIGRATION-v2
       <PackagePath></PackagePath>
     </None>
     <None Include="..\smoke-icon.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
