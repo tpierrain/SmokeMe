@@ -1,6 +1,6 @@
 # SmokeMe! (a.k.a.  /smoke ) ![.NET](https://github.com/tpierrain/SmokeMe/workflows/.NET/badge.svg)
 
-A *convention-based* dotnet library that will automatically expose all your declared smoke tests behind a  **/smoke** endpoint in your API.
+A *convention-based* dotnet solution to easily declare smoke tests and expose them behind a **/smoke** endpoint in your API.
 
 ![twitter screen](./Images/smoke.jpg)
 ![V3 Released!](./Images/breaking-news-v3.png)
