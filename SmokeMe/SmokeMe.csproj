@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based library for declaring and running smoke tests. Framework-agnostic core — use SmokeMe.AspNetCore for ASP.NET Core integration.</Description>
@@ -30,8 +30,8 @@ v3.0.0 — Breaking changes:
 Your existing SmokeTest classes work as-is. Only the hosting setup changes.
 Full migration guide: https://github.com/tpierrain/SmokeMe/blob/main/MIGRATION-v2-to-v3.md</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <FileVersion>3.1.0.0</FileVersion>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
