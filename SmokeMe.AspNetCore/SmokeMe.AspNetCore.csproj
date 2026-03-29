@@ -13,10 +13,14 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe AspNetCore</PackageTags>
-    <PackageReleaseNotes>v3.0.0:
-- New explicit registration: AddSmokeMe() + MapSmokeEndpoint()
+    <PackageReleaseNotes>v3.0.0 — Breaking changes:
+- New explicit registration: builder.Services.AddSmokeMe() + app.MapSmokeEndpoint()
 - Uses Minimal APIs instead of MVC Controller
-- Supports net8.0 and net9.0</PackageReleaseNotes>
+- Supports net8.0 and net9.0
+- Legacy SmokeController still available (marked [Obsolete], will be removed in v4)
+
+Your existing SmokeTest classes work as-is. Only the hosting setup changes.
+Full migration guide: https://github.com/42skillz/SmokeMe/blob/main/MIGRATION-v2-to-v3.md</PackageReleaseNotes>
     <PackageId>SmokeMe.AspNetCore</PackageId>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
