@@ -13,7 +13,13 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/tpierrain/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe AspNetCore</PackageTags>
-    <PackageReleaseNotes>v3.0.0 — Breaking changes:
+    <PackageReleaseNotes>v3.1.0 — New feature:
+- Added virtual CleanUp() method on SmokeTest base class (issue #9)
+- CleanUp() runs after Scenario() in both success and failure paths
+- CleanUp errors are reported separately (CleanupError field) without affecting test outcome
+- CleanUp is NOT called when the test is discarded
+
+v3.0.0 — Breaking changes:
 - New explicit registration: builder.Services.AddSmokeMe() + app.MapSmokeEndpoint()
 - Uses Minimal APIs instead of MVC Controller
 - Supports net8.0 and net9.0
