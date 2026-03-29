@@ -13,6 +13,7 @@ A *convention-based* dotnet solution to easily declare smoke tests and expose th
 
 
 
+---
 
 ## Smoke tests anyone?
 Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release.
@@ -28,14 +29,14 @@ This may differ from classical health checks:
 
  - **smoke tests** are (*sub-ten of seconds*) integration tests that check *"high-value use cases"* of your API to see if it is globally OK. They can take more time than a classical health check.
 
-
+---
 
 ## Smoke tests are useful at two key moments
 
  1. **Right after a deployment** — run them as a go/no-go gate in your CI/CD pipeline. If any critical use case is broken, you know immediately and can **rollback before your users even notice**.
  2. **Continuously on a running environment** (staging, production) — schedule them at regular intervals to detect when something stops working (a third-party dependency goes down, a configuration drifts, a database becomes unreachable…). This enables **proactive alerting and support** instead of waiting for your users to report the problem.
 
-
+---
 
 ## What SmokeMe brings to the table
 
@@ -45,7 +46,7 @@ All the auto-discovery, infrastructure, plumbing and structured output formattin
 
 > But beyond saving time, the real benefit is **standardization**. By using a convention-based library, all your smoke tests produce the same structured JSON output (see screenshots below). This consistency is what enables tooling: dashboards, CI scripts, alerts — anything that needs to parse and act on smoke test results. This is [the power of sameness](https://medium.com/@tpierrain/the-power-of-sameness-69b32afb78c0) at work.
 
-
+---
 
 ## Packages
 
@@ -58,7 +59,7 @@ SmokeMe v3 is split into two NuGet packages:
 
 If you have smoke tests in a **separate class library**, that project only needs the `SmokeMe` package. Only your **web host** project needs `SmokeMe.AspNetCore`.
 
-
+---
 
 ## It couldn't be easier!
 
