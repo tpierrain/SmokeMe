@@ -458,6 +458,27 @@ public class BookingRoundTripSmokeTest : SmokeTest
 - `CleanUp()` time is included in the total test duration
 
 
+### 11. How can I protect the /smoke endpoint with authorization?
+
+Since v3, `MapSmokeEndpoint()` returns an `IEndpointConventionBuilder`, which means you can chain any standard ASP.NET Core endpoint configuration — including authorization:
+
+```csharp
+
+// Require any authenticated user
+app.MapSmokeEndpoint().RequireAuthorization();
+
+// Require a specific policy
+app.MapSmokeEndpoint().RequireAuthorization("AdminOnly");
+
+// Require a specific role
+app.MapSmokeEndpoint().RequireAuthorization(policy =>
+    policy.RequireRole("Ops", "Admin"));
+
+```
+
+This works exactly like any other Minimal API endpoint. No SmokeMe-specific configuration needed.
+
+
 ---
 
 ## Next steps
