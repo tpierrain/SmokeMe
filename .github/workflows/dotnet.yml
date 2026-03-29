@@ -2,10 +2,10 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
     paths-ignore:
-      - 'README.md'
+      - '**.md'
       - '**.jpg'
+      - '**.png'
 
   pull_request:
     branches: [ main ]
