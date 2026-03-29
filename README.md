@@ -2,13 +2,13 @@
 
 A *convention-based* dotnet library that will automatically expose all your declared smoke tests behind a  **/smoke** endpoint in your API.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)
-![V3 Released!](https://github.com/42skillz/SmokeMe/blob/main/Images/breaking-news-v3.png?raw=true)
+![twitter screen](./Images/smoke.jpg)
+![V3 Released!](./Images/breaking-news-v3.png)
 
 > **Upgrading from v2?** See the [Migration Guide (v2 to v3)](./MIGRATION-v2-to-v3.md) for breaking changes and step-by-step instructions.
 
 #
-![Bluesky icon](https://github.com/42skillz/SmokeMe/blob/main/Images/Bluesky_icon.png?raw=true) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
+![Bluesky icon](./Images/Bluesky_icon.png) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
 
 
 ## Smoke tests anyone?
@@ -16,7 +16,7 @@ Smoke test is preliminary integration testing to reveal simple failures severe e
 
 The expression came from plumbing where a *smoke test* is a technique forcing non-toxic, artificially created smoke through waste and drain pipes under a slight pressure **to find leaks**. In software, we use *smoke tests* in order **to find basic issues in production**.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered-crop.jpg?raw=true)
+![twitter screen](./Images/swaggered-crop.jpg)
 
 This may differ from classical health checks:
 
@@ -175,14 +175,14 @@ And you check the HTTP response type you get:
 
 Means that all your smoke tests have been executed successfully and before the global timeout.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-200.JPG?raw=true)
+![twitter screen](./Images/HTTP-200.JPG)
 
 
 ### HTTP 504 (GatewayTimeout)
 
 Means that one or more smoke tests have timed out (configurable global timeout is 30 seconds by default).
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-504.JPG?raw=true)
+![twitter screen](./Images/HTTP-504.JPG)
 
 
 ### HTTP 501 (Not implemented)
@@ -190,7 +190,7 @@ Means that one or more smoke tests have timed out (configurable global timeout i
 Means that **SmokeMe** could not find any `SmokeTest` type within all the assemblies
 that have been loaded into the execution context of this API.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-501.JPG?raw=true)
+![twitter screen](./Images/HTTP-501.JPG)
 
 
 ### HTTP 500 (Internal Server Error)
@@ -198,14 +198,14 @@ that have been loaded into the execution context of this API.
 Means that **SmokeMe** has executed all your declared `SmokeTest` instances but there has been
 at least one failing smoke test.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-500.JPG?raw=true)
+![twitter screen](./Images/HTTP-500.JPG)
 
 
 ### HTTP 503 (Service Unavailable)
 
 Means that smoke test execution has been disabled via configuration.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-503.JPG?raw=true)
+![twitter screen](./Images/HTTP-503.JPG)
 
 
 ---
