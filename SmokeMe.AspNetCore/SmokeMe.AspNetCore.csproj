@@ -9,9 +9,9 @@
     <Description>ASP.NET Core integration for SmokeMe — exposes smoke tests via a /smoke HTTP endpoint using Minimal APIs. Use AddSmokeMe() + MapSmokeEndpoint().</Description>
     <Copyright>Copyright © Thomas PIERRAIN 2026</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/tpierrain/SmokeMe</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>
-    <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
+    <RepositoryUrl>https://github.com/tpierrain/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe AspNetCore</PackageTags>
     <PackageReleaseNotes>v3.0.0 — Breaking changes:
 - New explicit registration: builder.Services.AddSmokeMe() + app.MapSmokeEndpoint()
@@ -20,7 +20,7 @@
 - Legacy SmokeController still available (marked [Obsolete], will be removed in v4)
 
 Your existing SmokeTest classes work as-is. Only the hosting setup changes.
-Full migration guide: https://github.com/42skillz/SmokeMe/blob/main/MIGRATION-v2-to-v3.md</PackageReleaseNotes>
+Full migration guide: https://github.com/tpierrain/SmokeMe/blob/main/MIGRATION-v2-to-v3.md</PackageReleaseNotes>
     <PackageId>SmokeMe.AspNetCore</PackageId>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>

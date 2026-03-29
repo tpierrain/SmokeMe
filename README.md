@@ -1,4 +1,4 @@
-# SmokeMe! (a.k.a.  /smoke ) ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
+# SmokeMe! (a.k.a.  /smoke ) ![.NET](https://github.com/tpierrain/SmokeMe/workflows/.NET/badge.svg)
 
 A *convention-based* dotnet library that will automatically expose all your declared smoke tests behind a  **/smoke** endpoint in your API.
 
@@ -416,7 +416,7 @@ A **Discarded** smoke test is a smoke test that can be run (or not) depending on
 ## Next steps
 
  - **Security:** with a nice way for you to plug your own ACL and rights mechanism to the /smoke resource (so that not everyone is able to execute your smoke tests in production)
- - Some tooling so that I can easily reuse/run all my smoke tests in classical acceptance testing sessions (see project: https://github.com/42skillz/SmokeMe.TestAdapter)
+ - Some tooling so that I can easily reuse/run all my smoke tests in classical acceptance testing sessions (see project: https://github.com/tpierrain/SmokeMe.TestAdapter)
  - A way to easily declare that you want to prevent 2 or more smoke tests to be ran in // if needed (something like a [Mutex("idOfIDoNotWantToHaveMoreOfThoseSmokeTestsToBeRanInParallel")] attribute for some of our Smoke tests)
  - Some *maximum number of smoke tests to be run in parallel* optional and configurable limitation mechanism
 
@@ -427,4 +427,4 @@ A **Discarded** smoke test is a smoke test that can be run (or not) depending on
 
 ## Hope you will enjoy it!
 
-We value your input and appreciate your feedback. Thus, don't hesitate to leave them on the [**github issues of the project**](https://github.com/42skillz/SmokeMe/issues).
+We value your input and appreciate your feedback. Thus, don't hesitate to leave them on the [**github issues of the project**](https://github.com/tpierrain/SmokeMe/issues).
