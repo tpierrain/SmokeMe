@@ -57,8 +57,8 @@ If you have smoke tests in a **separate class library**, that project only needs
 1. Add both NuGet packages to your API project:
 
 ```xml
-<PackageReference Include="SmokeMe" Version="3.0.1" />
-<PackageReference Include="SmokeMe.AspNetCore" Version="3.0.1" />
+<PackageReference Include="SmokeMe" Version="3.1.0" />
+<PackageReference Include="SmokeMe.AspNetCore" Version="3.1.0" />
 ```
 
 2. Register and map the smoke endpoint in your `Program.cs`:
@@ -81,7 +81,7 @@ That's it. SmokeMe will automatically discover all `SmokeTest` classes across yo
 
 ### B. Write your smoke tests
 
-A smoke test scenario **is just a class deriving from the `SmokeTest` abstract class** with 3 abstract members to override and a few optional virtual methods (like `HasToBeDiscarded()` if you want to couple a smoke test to a feature toggle).
+A smoke test scenario **is just a class deriving from the `SmokeTest` abstract class** with 3 abstract members to override and a few optional virtual methods (like `HasToBeDiscarded()` if you want to couple a smoke test to a feature toggle, or `CleanUp()` if you need to remove production data created during the test).
 
 All the dependencies you need will be automatically injected via constructor injection from your ASP.NET `IServiceProvider`.
 
@@ -409,6 +409,53 @@ e.g.:
 An **Ignored** smoke test is a smoke test that won't run until you remove its `[Ignore]` attribute (compile-time decision).
 
 A **Discarded** smoke test is a smoke test that can be run (or not) depending on dynamic conditions at runtime (very handy if you want some smoke tests to be enabled with a given n+1 version or any feature toggle for instance).
+
+
+### 10. How can I clean up production data created during a smoke test?
+
+Some smoke tests need to create real data in production (e.g. a booking, a user account) to verify that the system works. You don't want this data to remain after the test.
+
+Override the `CleanUp()` virtual method:
+
+```csharp
+
+public class BookingRoundTripSmokeTest : SmokeTest
+{
+    private readonly IBookingService _bookingService;
+    private string _createdBookingId;
+
+    public override string SmokeTestName => "Booking round-trip";
+    public override string Description => "Creates a booking and verifies it can be retrieved, then deletes it.";
+
+    public BookingRoundTripSmokeTest(IBookingService bookingService)
+    {
+        _bookingService = bookingService;
+    }
+
+    public override async Task<SmokeTestResult> Scenario()
+    {
+        _createdBookingId = await _bookingService.CreateTestBookingAsync();
+        var booking = await _bookingService.GetBookingAsync(_createdBookingId);
+
+        return new SmokeTestResult(booking != null);
+    }
+
+    public override async Task CleanUp()
+    {
+        if (_createdBookingId != null)
+        {
+            await _bookingService.DeleteBookingAsync(_createdBookingId);
+        }
+    }
+}
+
+```
+
+**Key behaviors:**
+- `CleanUp()` runs **after `Scenario()`**, whether `Scenario()` succeeded or failed
+- If `CleanUp()` throws, the **test outcome is NOT affected** — the error is reported separately in a `CleanupError` field in the JSON response
+- `CleanUp()` is **NOT called** when the test is discarded (via `HasToBeDiscarded()`)
+- `CleanUp()` time is included in the total test duration
 
 
 ---

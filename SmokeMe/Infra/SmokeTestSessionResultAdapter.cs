@@ -21,7 +21,7 @@ namespace SmokeMe.Infra
         {
             // Adapt the array of results
             var resultsDto = reports.Results
-                .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, r.Duration?.GetHumanReadableVersion(), r.Status, r.SmokeTestCategories, r.SmokeTestType));
+                .Select(r => new SmokeTestResultWithMetaDataDto(r.SmokeTestName, r.SmokeTestDescription, r.Outcome, r.ErrorMessage, r.Duration, r.Duration?.GetHumanReadableVersion(), r.Status, r.SmokeTestCategories, r.SmokeTestType, r.CleanupError));
 
             // Adapt the overall wrapper (with runtime description information too)
             var result = new SmokeTestsSessionReportDto(reports, runtimeDescription, resultsDto, categories, configuration.GlobalTimeout);

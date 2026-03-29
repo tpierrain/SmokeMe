@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**SmokeMe** is a convention-based .NET library (v3.0.0) split into two NuGet packages:
+**SmokeMe** is a convention-based .NET library (v3.1.0) split into two NuGet packages:
 - **SmokeMe** (core, netstandard2.0) — framework-agnostic: reflection discovery, execution, reporting. Zero ASP.NET dependency.
 - **SmokeMe.AspNetCore** (net8.0/net9.0/net10.0) — ASP.NET Core integration via `AddSmokeMe()` + `MapSmokeEndpoint()`.
 
@@ -47,7 +47,7 @@ SmokeTestsSessionReportDto (HTTP response)
 ### Key Types
 
 **SmokeMe (core):**
-- **`SmokeTest`** — Abstract base class. Consumers implement `SmokeTestName`, `Description`, `Scenario()`. Optional: `HasToBeDiscarded()` for feature-toggle integration.
+- **`SmokeTest`** — Abstract base class. Consumers implement `SmokeTestName`, `Description`, `Scenario()`. Optional: `HasToBeDiscarded()` for feature-toggle integration, `CleanUp()` for post-test cleanup.
 - **`ISmokeTestConfiguration`** — Abstraction for timeout + enabled flag. Decoupled from ASP.NET's `IConfiguration`.
 - **`SmokeMeOptions`** — Default implementation of `ISmokeTestConfiguration`.
 - **`SmokeTestAutoFinder`** (`IFindSmokeTests`) — Scans all loaded assemblies for `SmokeTest` subclasses, filters by `[Category]`/`[Ignore]`, instantiates via `IServiceProvider`.
@@ -81,6 +81,11 @@ Defaults defined in `Constants.cs`.
 | `SmokeMe.Tests/` | net10.0 | Tests (NUnit + NFluent + NSubstitute + Diverse) |
 | `Samples/Sample.Api/` | net10.0 | Example API using `AddSmokeMe()` + `MapSmokeEndpoint()` |
 | `Samples/Sample.ExternalSmokeTests/` | netstandard2.0 | Smoke tests in a separate assembly |
+
+## Design Philosophy
+
+- **Simplicity first**: always favor the simplest and most readable solution. Avoid over-engineering, unnecessary abstractions, or clever workarounds when a straightforward approach exists.
+- When adding test doubles (smoke tests for testing purposes), remember that `SmokeTestAutoFinder` discovers ALL `SmokeTest` subclasses via reflection across loaded assemblies — simply update existing test counters to account for new types rather than adding complex mechanisms to hide them.
 
 ## Testing Conventions
 

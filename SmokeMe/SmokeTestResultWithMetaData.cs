@@ -37,8 +37,14 @@ namespace SmokeMe
         public string[] SmokeTestCategories { get; }
 
         public Status Status { get; } = Status.Executed;
-        
+
         public string SmokeTestType { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Error"/> that occurred during <see cref="SmokeTest.CleanUp"/> execution, if any.
+        /// A cleanup error does not affect the <see cref="Outcome"/> of the smoke test.
+        /// </summary>
+        public Error CleanupError { get; }
 
         /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaData"/>.
@@ -52,7 +58,7 @@ namespace SmokeMe
         /// <param name="smokeTestType"></param>
         /// <param name="status"></param>
         private SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, string smokeTestName, string smokeTestDescription,
-            string[] smokeTestCategories, bool? discarded, string smokeTestType, Status? status)
+            string[] smokeTestCategories, bool? discarded, string smokeTestType, Status? status, Error cleanupError)
         {
             SmokeTestResult = smokeTestResult;
             Duration = duration;
@@ -60,6 +66,7 @@ namespace SmokeMe
             SmokeTestDescription = smokeTestDescription;
             SmokeTestCategories = smokeTestCategories;
             SmokeTestType = smokeTestType;
+            CleanupError = cleanupError;
 
             if (status != Status.Ignored)
             {
@@ -73,7 +80,7 @@ namespace SmokeMe
         }
 
         public SmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan? duration, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestType,
-            bool? discarded = null, Status? status = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded, smokeTestType, status)
+            bool? discarded = null, Status? status = null, Error cleanupError = null) : this(smokeTestResult, duration, smokeTestInstanceWithMetaData.SmokeTest.SmokeTestName, smokeTestInstanceWithMetaData.SmokeTest.Description, smokeTestInstanceWithMetaData.Categories, discarded, smokeTestType, status, cleanupError)
         {
         }
 

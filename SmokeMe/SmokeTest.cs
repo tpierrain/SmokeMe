@@ -35,5 +35,18 @@ namespace SmokeMe
         {
             return await Task.FromResult(false);
         }
+
+        /// <summary>
+        /// Optional clean-up logic executed after <see cref="Scenario"/>, regardless of its outcome.
+        /// Override this to remove any production data created during the smoke test.
+        ///
+        /// Note: if CleanUp throws, the test outcome is NOT affected — the error is reported
+        /// separately via the <c>CleanupError</c> field in the response.
+        /// CleanUp is NOT called when the test is discarded (via <see cref="HasToBeDiscarded"/>).
+        /// </summary>
+        public virtual Task CleanUp()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -124,12 +124,22 @@ namespace SmokeMe
                     return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestNonExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
                 }
 
-                var smokeTestResult = await smokeTest.Scenario();
+                SmokeTestResult smokeTestResult;
+                try
+                {
+                    smokeTestResult = await smokeTest.Scenario();
+                }
+                catch (Exception ex)
+                {
+                    smokeTestResult = new SmokeTestResult("", ex);
+                }
+
+                var cleanupError = await SafeCleanUp(smokeTest);
 
                 stopwatch.Stop();
-                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData, smokeTestTypeName:smokeTest.GetType().FullName);
+                var smokeTestExecution = WrapSmokeTestResultWithMetaData(smokeTestResult, stopwatch.Elapsed, smokeTestWithMetaData, smokeTestTypeName: smokeTest.GetType().FullName, cleanupError: cleanupError);
 
-                return new SmokeTestWithItsResultWithMetaData(smokeTest , smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
+                return new SmokeTestWithItsResultWithMetaData(smokeTest, smokeTestExecution, smokeTestWithMetaData.SmokeTestIdentifier.Value);
             }
             catch (Exception ex)
             {
@@ -140,9 +150,22 @@ namespace SmokeMe
             }
         }
 
-        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestTypeName)
+        private static async Task<Error> SafeCleanUp(SmokeTest smokeTest)
         {
-            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTestInstanceWithMetaData, smokeTestType: smokeTestTypeName);
+            try
+            {
+                await smokeTest.CleanUp();
+                return null;
+            }
+            catch (Exception cleanUpEx)
+            {
+                return new Error($"CleanUp failed for {smokeTest.GetType().FullName}", cleanUpEx);
+            }
+        }
+
+        private static SmokeTestResultWithMetaData WrapSmokeTestResultWithMetaData(SmokeTestResult smokeTestResult, TimeSpan elapsedTime, SmokeTestInstanceWithMetaData smokeTestInstanceWithMetaData, string smokeTestTypeName, Error cleanupError = null)
+        {
+            return new SmokeTestResultWithMetaData(smokeTestResult, elapsedTime, smokeTestInstanceWithMetaData, smokeTestType: smokeTestTypeName, cleanupError: cleanupError);
         }
 
         private class SmokeTestWithItsResultWithMetaData

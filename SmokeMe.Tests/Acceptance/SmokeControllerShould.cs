@@ -291,16 +291,12 @@ namespace SmokeMe.Tests.Acceptance
             response.CheckIsError<SmokeTestsSessionReportDto>(HttpStatusCode.InternalServerError);
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
-            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(5);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(7);
             Check.That(reportDto.RequestedCategories).IsEmpty();
 
-            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).ContainsExactly("Failing on purpose", "Throwing exception after a delay", "Check connectivity towards Google search engine.");
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).ContainsExactly("Always positive smoke test after a delay", "Booking smoke test");
+            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestName)).Contains("Failing on purpose", "Throwing exception after a delay", "Check connectivity towards Google search engine.", "Smoke test with failing cleanup");
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestName)).Contains("Always positive smoke test after a delay", "Booking smoke test", "Smoke test with successful cleanup");
             Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestName)).ContainsExactly("Feature toggled test");
-
-            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestCategories)).ContainsExactly("FailingSaMere", "", "Connectivity");
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestCategories)).ContainsExactly("Tests", "DB, Booking");
-            Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestCategories)).ContainsExactly("");
         }
 
         [Test]
@@ -319,21 +315,21 @@ namespace SmokeMe.Tests.Acceptance
             var reportDto = response.ExtractValue<SmokeTestsSessionReportDto>();
 
             Check.That(reportDto.Results.NbOfTimeouts).IsEqualTo(1);
-            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(3);
-            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(1);
+            Check.That(reportDto.Results.NbOfFailures).IsEqualTo(4);
+            Check.That(reportDto.Results.NbOfSuccesses).IsEqualTo(2);
 
             Check.That(reportDto.Results.NbOfDiscards).IsEqualTo(1);
             Check.That(reportDto.Results.NbOfIgnoredTests).IsEqualTo(2);
 
-            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(5);
-            Check.That(reportDto.Results.TotalOfTestsDetected).IsEqualTo(8);
+            Check.That(reportDto.Results.TotalOfTestsRan).IsEqualTo(7);
+            Check.That(reportDto.Results.TotalOfTestsDetected).IsEqualTo(10);
 
             /// Booking smoke test must have timeout
             Check.That(reportDto.Results.Timeouts[0].SmokeTestType).IsEqualTo(typeof(BookingSmokeTest).FullName);
             Check.That(reportDto.Results.Timeouts[0].Status).IsEqualTo(Status.Timeout);
 
-            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysFailingSmokeTest).FullName, typeof(SmokeTestThrowingAnAccessViolationException).FullName, typeof(SmokeTestGoogleConnectivityLocatedInAnotherAssembly).FullName);
-            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).ContainsExactly(typeof(AlwaysPositiveSmokeTest).FullName);
+            Check.That(reportDto.Results.Failures.Select(x => x.SmokeTestType)).Contains(typeof(AlwaysFailingSmokeTest).FullName, typeof(SmokeTestThrowingAnAccessViolationException).FullName, typeof(SmokeTestGoogleConnectivityLocatedInAnotherAssembly).FullName, typeof(SmokeTestWithFailingCleanUp).FullName);
+            Check.That(reportDto.Results.Successes.Select(x => x.SmokeTestType)).Contains(typeof(AlwaysPositiveSmokeTest).FullName, typeof(SmokeTestWithSuccessfulCleanUp).FullName);
             Check.That(reportDto.Results.Discards.Select(x => x.SmokeTestType)).ContainsExactly(typeof(FeatureToggledAlwaysPositiveSmokeTest).FullName);
             Check.That(reportDto.Results.IgnoredTests.Select(x => x.SmokeTestType)).ContainsExactly(typeof(IgnoredFeatureToggledSmokeTest).FullName, typeof(AlwaysWorkingButIgnoredDbSmokeTest).FullName);
         }

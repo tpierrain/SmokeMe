@@ -47,6 +47,12 @@ namespace SmokeMe.Infra
         public string SmokeTestType { get; }
 
         /// <summary>
+        /// Gets the <see cref="Error"/> that occurred during <see cref="SmokeTest.CleanUp"/> execution, if any.
+        /// A cleanup error does not affect the <see cref="Outcome"/> of the smoke test.
+        /// </summary>
+        public Error CleanupError { get; }
+
+        /// <summary>
         /// Instantiates a <see cref="SmokeTestResultWithMetaDataDto"/>.
         /// </summary>
         /// <param name="smokeTestName"></param>
@@ -59,14 +65,15 @@ namespace SmokeMe.Infra
         /// <param name="smokeTestCategories"></param>
         /// <param name="argSmokeTestCategories"></param>
         public SmokeTestResultWithMetaDataDto(string smokeTestName, string smokeTestDescription, bool outcome, Error error, TimeSpan? durationTimespan,
-            string duration, Status status, string[] smokeTestCategories, string smokeTestType)
+            string duration, Status status, string[] smokeTestCategories, string smokeTestType, Error cleanupError = null)
         {
             SmokeTestName = smokeTestName;
             SmokeTestDescription = smokeTestDescription;
             SmokeTestType = smokeTestType;
             Outcome = outcome;
             Error = error;
-            
+            CleanupError = cleanupError;
+
             duration ??= "timeout";
 
             Duration = duration;

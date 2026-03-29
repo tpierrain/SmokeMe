@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>3.0.1</Version>
+    <Version>3.1.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based library for declaring and running smoke tests. Framework-agnostic core — use SmokeMe.AspNetCore for ASP.NET Core integration.</Description>
@@ -13,19 +13,14 @@
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/tpierrain/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>v3.0.0 — Breaking changes:
-- Split into two packages: SmokeMe (core, netstandard2.0) and SmokeMe.AspNetCore (net8.0/net9.0)
-- New ISmokeTestConfiguration interface replaces direct IConfiguration usage
-- Registration is now explicit: AddSmokeMe() + MapSmokeEndpoint()
-- Removed deprecated ICheckSmoke interface (use SmokeTest abstract class)
-- Replaced Newtonsoft.Json with System.Text.Json
-- Removed embedded Swashbuckle and API Versioning dependencies
-
-Your existing SmokeTest classes work as-is. Only the hosting setup changes.
-Full migration guide: https://github.com/tpierrain/SmokeMe/blob/main/MIGRATION-v2-to-v3.md</PackageReleaseNotes>
+    <PackageReleaseNotes>v3.1.0 — New feature:
+- Added virtual CleanUp() method on SmokeTest base class (issue #9)
+- CleanUp() runs after Scenario() in both success and failure paths
+- CleanUp errors are reported separately (CleanupError field) without affecting test outcome
+- CleanUp is NOT called when the test is discarded</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <FileVersion>3.0.1.0</FileVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <FileVersion>3.1.0.0</FileVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

@@ -185,7 +185,13 @@
             Gets the duration in milliseconds of this smoke test execution (useful for scripting).
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,SmokeMe.Status,System.String[],System.String)">
+        <member name="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.CleanupError">
+            <summary>
+            Gets the <see cref="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Error"/> that occurred during <see cref="M:SmokeMe.SmokeTest.CleanUp"/> execution, if any.
+            A cleanup error does not affect the <see cref="P:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.Outcome"/> of the smoke test.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.Infra.SmokeTestResultWithMetaDataDto.#ctor(System.String,System.String,System.Boolean,SmokeMe.Error,System.Nullable{System.TimeSpan},System.String,SmokeMe.Status,System.String[],System.String,SmokeMe.Error)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.Infra.SmokeTestResultWithMetaDataDto"/>.
             </summary>
@@ -361,6 +367,16 @@
             Returns a value indicating whether or not this smoke test must be discarded (may be interesting to coupled with feature toggle mechanism).
             </summary>
         </member>
+        <member name="M:SmokeMe.SmokeTest.CleanUp">
+             <summary>
+             Optional clean-up logic executed after <see cref="M:SmokeMe.SmokeTest.Scenario"/>, regardless of its outcome.
+             Override this to remove any production data created during the smoke test.
+            
+             Note: if CleanUp throws, the test outcome is NOT affected — the error is reported
+             separately via the <c>CleanupError</c> field in the response.
+             CleanUp is NOT called when the test is discarded (via <see cref="M:SmokeMe.SmokeTest.HasToBeDiscarded"/>).
+             </summary>
+        </member>
         <member name="T:SmokeMe.SmokeTestAutoFinder">
             <summary>
             Responsible to find and instantiate smoke tests to be run within an executable.
@@ -443,7 +459,13 @@
             Gets the description of the executed <see cref="T:SmokeMe.SmokeTest"/> instance.
             </summary>
         </member>
-        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean},System.String,System.Nullable{SmokeMe.Status})">
+        <member name="P:SmokeMe.SmokeTestResultWithMetaData.CleanupError">
+            <summary>
+            Gets the <see cref="T:SmokeMe.Error"/> that occurred during <see cref="M:SmokeMe.SmokeTest.CleanUp"/> execution, if any.
+            A cleanup error does not affect the <see cref="P:SmokeMe.SmokeTestResultWithMetaData.Outcome"/> of the smoke test.
+            </summary>
+        </member>
+        <member name="M:SmokeMe.SmokeTestResultWithMetaData.#ctor(SmokeMe.SmokeTestResult,System.Nullable{System.TimeSpan},System.String,System.String,System.String[],System.Nullable{System.Boolean},System.String,System.Nullable{SmokeMe.Status},SmokeMe.Error)">
             <summary>
             Instantiates a <see cref="T:SmokeMe.SmokeTestResultWithMetaData"/>.
             </summary>
