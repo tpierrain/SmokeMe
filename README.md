@@ -7,6 +7,8 @@ A *convention-based* dotnet library that will automatically expose all your decl
 
 > **Upgrading from v2?** See the [Migration Guide (v2 to v3)](./MIGRATION-v2-to-v3.md) for breaking changes and step-by-step instructions.
 
+> **v3 is now split into 2 NuGet packages:** `SmokeMe` (core, netstandard2.0) and `SmokeMe.AspNetCore` (net8.0 / net9.0). See [Packages](#packages) for details.
+
 #
 ![Bluesky icon](./Images/Bluesky_icon.png) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
 
