@@ -1,4 +1,4 @@
-﻿using Diverse;
+using Diverse;
 
 namespace Sample.Api.FakeDomain
 {

@@ -1,20 +1,22 @@
 # SmokeMe! (a.k.a.  /smoke ) ![.NET Core](https://github.com/42skillz/Smoke/workflows/.NET%20Core/badge.svg)
 
-A *convention-based* dotnet plugin that will automatically expose all your declared smoke tests behind a  **/smoke** resource in your API.
+A *convention-based* dotnet library that will automatically expose all your declared smoke tests behind a  **/smoke** endpoint in your API.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/smoke.jpg?raw=true)   
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/breakingChanges.jpg?raw=true)   
-  
-# 
-![twitter icon](https://github.com/42skillz/Smoke/blob/main/Images/Twitter_icon.gif?raw=true) [use case driven on twitter](https://twitter.com/tpierrain) - (thomas@42skillz.com)
+![twitter screen](./Images/smoke.jpg)
+![V3 Released!](./Images/breaking-news-v3.png)
+
+> **Upgrading from v2?** See the [Migration Guide (v2 to v3)](./MIGRATION-v2-to-v3.md) for breaking changes and step-by-step instructions.
+
+#
+![Bluesky icon](./Images/Bluesky_icon.png) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
 
 
 ## Smoke tests anyone?
-Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release. 
+Smoke test is preliminary integration testing to reveal simple failures severe enough to, for example, reject a prospective software release.
 
 The expression came from plumbing where a *smoke test* is a technique forcing non-toxic, artificially created smoke through waste and drain pipes under a slight pressure **to find leaks**. In software, we use *smoke tests* in order **to find basic issues in production**.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/swaggered-crop.jpg?raw=true)   
+![twitter screen](./Images/swaggered-crop.jpg)
 
 This may differ from classical health checks:
 
@@ -29,25 +31,64 @@ This may differ from classical health checks:
 
 ### *"Smoke tests can save your bacon when doing Continuous Delivery!"*
 
-The idea of the **SmokeMe** plugin library is to save you times and let you only focus on writing your functional or technical smoke tests. 
+The idea of the **SmokeMe** library is to save you time and let you only focus on writing your functional or technical smoke tests.
 
-All the auto-discovery, infrastructure and plumbering things are done for you by the pico lib.
+All the auto-discovery, infrastructure and plumbing things are done for you by the library.
+
+
+## Packages
+
+SmokeMe v3 is split into two NuGet packages:
+
+| Package | Target | Purpose |
+|---------|--------|---------|
+| **SmokeMe** | netstandard2.0 | Core library — smoke test base class, discovery, execution. No ASP.NET dependency. |
+| **SmokeMe.AspNetCore** | net8.0 / net9.0 | ASP.NET Core integration — `AddSmokeMe()` + `MapSmokeEndpoint()` |
+
+If you have smoke tests in a **separate class library**, that project only needs the `SmokeMe` package. Only your **web host** project needs `SmokeMe.AspNetCore`.
 
 
 ## It couldn't be easier!
 
-### A. While coding
+### A. Setup your API
 
-1. You add the reference to the **SmokeMe** library in your API project
-2. You code all the smoke tests scenario you want in your code base
-    - A Smoke test scenario **is just a class deriving from the SmokeTest abstract class** with 3 abstract members to be overidden and a few others virtual methods that you can optionally override (like the HasToBeDiscarded() method if you want to couple a smoke test to a toggled feature for instance).
+1. Add both NuGet packages to your API project:
+
+```xml
+<PackageReference Include="SmokeMe" Version="3.0.0" />
+<PackageReference Include="SmokeMe.AspNetCore" Version="3.0.0" />
+```
+
+2. Register and map the smoke endpoint in your `Program.cs`:
+
+```csharp
+using SmokeMe.AspNetCore;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSmokeMe(); // registers smoke test discovery + configuration
+
+var app = builder.Build();
+
+app.MapSmokeEndpoint(); // GET /smoke (default path, customizable)
+
+app.Run();
+```
+
+That's it. SmokeMe will automatically discover all `SmokeTest` classes across your loaded assemblies and run them when you hit `/smoke`.
+
+### B. Write your smoke tests
+
+A smoke test scenario **is just a class deriving from the `SmokeTest` abstract class** with 3 abstract members to override and a few optional virtual methods (like `HasToBeDiscarded()` if you want to couple a smoke test to a feature toggle).
+
+All the dependencies you need will be automatically injected via constructor injection from your ASP.NET `IServiceProvider`.
 
 ```csharp
 
 /// <summary>
 /// Smoke test/scenario/code to be executed in order to check that a minimum
 /// viable capability of your system is working.
-/// 
+///
 /// Note: all the services and dependencies you need for it will be automatically
 /// injected by the SmokeMe framework via the ASP.NET IServiceProvider of your API
 /// (classical constructor-based injection). Can't be that easy, right? ;-)
@@ -98,7 +139,7 @@ __Ignore__
 
 ```
 
-or __Category__ to target one of more subset of Smoke tests.
+or __Category__ to target one or more subsets of smoke tests.
 
 ```csharp
 
@@ -112,9 +153,9 @@ or __Category__ to target one of more subset of Smoke tests.
 ```
 
 
-### B. While deploying or supporting your production
+### C. While deploying or supporting your production
 
-You just GET the (automatically added) **/smoke** ressource **at the root level of your API**.
+You just GET the **/smoke** endpoint **at the root level of your API**.
 
 e.g.:
 
@@ -132,108 +173,87 @@ And you check the HTTP response type you get:
 
 ### HTTP 200 (OK)
 
-Means that all your smoke tests have been executed nicely and before the global timeout allowed by **SmokeMe**
+Means that all your smoke tests have been executed successfully and before the global timeout.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-200.JPG?raw=true)   
+![twitter screen](./Images/HTTP-200.JPG)
 
 
 ### HTTP 504 (GatewayTimeout)
 
-Means that one or more smoke tests have timeout (configurable global timeout is 20 seconds by default)
+Means that one or more smoke tests have timed out (configurable global timeout is 30 seconds by default).
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-504.JPG?raw=true)   
+![twitter screen](./Images/HTTP-504.JPG)
 
 
 ### HTTP 501 (Not implemented)
 
-Means that **SmokeMe** could not find any **ITestSmoke** type within all the assemblies 
+Means that **SmokeMe** could not find any `SmokeTest` type within all the assemblies
 that have been loaded into the execution context of this API.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-501.JPG?raw=true)   
+![twitter screen](./Images/HTTP-501.JPG)
 
 
 ### HTTP 500 (Internal Server Error)
 
-Means that **SmokeMe** has executed all your declared **ITestSmoke** type instances but there have been 
+Means that **SmokeMe** has executed all your declared `SmokeTest` instances but there has been
 at least one failing smoke test.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-500.JPG?raw=true)   
+![twitter screen](./Images/HTTP-500.JPG)
 
 
 ### HTTP 503 (Service Unavailable)
 
 Means that smoke test execution has been disabled via configuration.
 
-![twitter screen](https://github.com/42skillz/Smoke/blob/main/Images/HTTP-503.JPG?raw=true)   
+![twitter screen](./Images/HTTP-503.JPG)
 
+
+---
+
+## Configuration
+
+SmokeMe reads its configuration from your `appsettings.json` under the `Smoke:` section:
+
+```json
+{
+  "Smoke": {
+    "GlobalTimeoutInMsec": 30000,
+    "IsSmokeTestExecutionEnabled": true
+  }
+}
+```
+
+You can also configure programmatically:
+
+```csharp
+builder.Services.AddSmokeMe(options =>
+{
+    options.GlobalTimeout = TimeSpan.FromSeconds(60);
+    options.IsExecutionEnabled = true;
+});
+```
+
+`appsettings.json` values take precedence over programmatic defaults when both are present.
 
 ---
 
 ## FAQ
 
-### 0.1 Why did you break the core ICheckSmoke interface in SmokeMe version 2?
+### 1. Does SmokeMe execute all smoke tests in parallel?
 
-```
-Relying on an interface was not a good idea for extensibility reason. 
-Indeed, when you want to add new characteristics (with default values) to existing smoke tests,
-you are forced to rely on the will and the awareness of every consumer code that has to 
-reference a new extending interface.
+Yes. Every smoke test runs in a dedicated TPL Task.
 
-With v2 we took the decision to replace the former ICheckSmoke interface with a new 
-abstract class: SmokeTest. This will allow us to add more default behaviours and to support 
-new features for your smoke tests in the future without any other breaking change.
+### 2. Does SmokeMe have a global timeout?
 
-We realize that migrating your code from v1 to v2 is a major change for you and 
-we are sorry for that inconvenient.
+Yes. It's 30 seconds by default. You can override this value by setting the `Smoke:GlobalTimeoutInMsec` configuration key in your `appsettings.json` or via `AddSmokeMe(options => ...)`.
 
-```
+### 3. How does SmokeMe find my smoke tests?
 
-### 0.2 How can I migrate from SmokeMe v1.x to v2.x?
-
-```
-
-1. Replace all your reference to ICheckSmoke with SmokeTest abstract class
-
-2. Add 'override' keyword to all your existing 'SmokeTestName', 'Description' properties 
-and to your 'Scenario()' methods.
-
-3. That's it ;-)
-
-```
-
-
-### 1. Does SmokeMe execute all your founded smoke tests in parallel?
-
-```
-Yes. Every smoke test will run in a dedicated TPL's Task.
-```
-
-### 2. Does SmokeMe have a global timeout for all smoke tests to be ran?
-
-```
-Yes. It's 20 seconds by default (20 *1000 milliseconds). But you can override this 
-default value by setting the **Smoke:GlobalTimeoutInMsec** configuration key 
-of your Web API project.
-
-```
-
-### 3. How to make SmokeMe being able to execute all my smoke tests?
-
-```
-More than easy. All you have to do is to add a reference to the **SmokeMe** lib 
-in your API project for it to be able to find all of them. That's it!
-```
+SmokeMe scans all loaded assemblies for types deriving from `SmokeTest`. As long as the assembly containing your smoke tests is loaded (referenced by your API project), they will be discovered automatically.
 
 ### 4. How to code and declare a smoke test?
 
-```
-Easy, all you have to do is to add a reference to the **SmokeMe** lib in your 
-code and to code a smoke test by implementing a type deriving from the 
-SmokeMe.SmokeTest abstract class.
-
-```
-
-e.g.: 
+Implement a class deriving from `SmokeMe.SmokeTest`:
 
 ```csharp
 
@@ -245,22 +265,22 @@ public class AvailabilitiesSmokeTest : SmokeTest
     private readonly IAvailabilityService _availabilityService;
 
     public override string SmokeTestName => "Check Availabilities";
-    public override string Description 
+    public override string Description
         => "TBD: will check something like checking that one can find some availabilities around Marseille city next month.";
 
     /// <summary>
     /// Instantiates a <see cref="AvailabilitiesSmokeTest"/>
     /// </summary>
-    /// <param name="availabilityService">The <see cref="IAvailabilityService"/> we need (will be 
+    /// <param name="availabilityService">The <see cref="IAvailabilityService"/> we need (will be
     /// automatically injected par the SmokeMe library)</param>
     public AvailabilitiesSmokeTest(IAvailabilityService availabilityService)
     {
-        // availability service here is just an example of 
+        // availability service here is just an example of
         // on of your own API-level registered service automatically
         // injected to your smoke test instance by the SmokeMe lib
         _availabilityService = availabilityService;
     }
-        
+
     /// <summary>
     /// The implementation of this smoke test scenario.
     /// </summary>
@@ -280,69 +300,26 @@ public class AvailabilitiesSmokeTest : SmokeTest
 
 ```
 
-### 5. How can I avoid the issue of having error: '"code": "ApiVersionUnspecified" ' when calling /smoke?
+### 5. How can I disable the execution of all smoke tests?
 
-```
-This issue is due to the fact that your API requires an explicit version for every Controller 
-whereas the SmokeMe.SmokeController does not have one on purpose (to avoid crashing 
-when one does not have an explicit versioning configuration nor references 
-to Microsoft.AspNetCore.Mvc.Versioning & Co in its API).
+Set `Smoke:IsSmokeTestExecutionEnabled` to `false` in your configuration:
 
-As a consequence, the /smoke route for your smoke test won't be coupled to any version 
-like /api/v1/ etc. but will be available instead from the root of your API /smoke.
-
-Fortunately the error that may occurs when calling /smoke in those cases may be fixed by a simple option within your API Startup type:
-
-options.AssumeDefaultVersionWhenUnspecified = true;
-
-at the services.AddApiVersioning(...) method invocation level.
-
-
-```
-e.g.: 
-
-```csharp
-
-services.AddApiVersioning(
-    options =>
-    {
-        options.ReportApiVersions = true;
-        options.DefaultApiVersion = new ApiVersion(0,0);
-        options.AssumeDefaultVersionWhenUnspecified = true; // the line you should add in case of problem
-    } );
-
-```
-
-
-### 6. How can I disable the execution of all smoke test?
-
-```
-Just set false to the "Smoke:IsSmokeTestExecutionEnabled" configuration key (default value is true).
-
-e.g.:
-
+```json
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft": "Warning",
-      "Microsoft.Hosting.Lifetime": "Information"
-    }
-  },
   "Smoke": {
     "GlobalTimeoutInMsec": 1500,
     "IsSmokeTestExecutionEnabled": false
-  },
-  "AllowedHosts": "*"
+  }
 }
-
 ```
 
-### 7. How can I run a subset of my smoke tests only?
+The `/smoke` endpoint will return HTTP 503 (Service Unavailable).
+
+### 6. How can I run a subset of my smoke tests only?
 
 All you have to do is:
 
-1. To declare some [Category("myCategoryName")] attributes on the SmokeTest types you want. For instance: 
+1. To declare some [Category("myCategoryName")] attributes on the SmokeTest types you want. For instance:
 
 ```csharp
 
@@ -355,7 +332,7 @@ All you have to do is:
 
 ```
 
-2. To call the /smoke HTTP route with the category you want to run specifically as Querystring. 
+2. To call the /smoke HTTP route with the category you want to run specifically as Querystring.
 
 E.g.:
 
@@ -372,7 +349,7 @@ or if you want to call all smoke tests corresponding to many categories only (as
 
 ```
 
-### 8. How can I Ignore one or more smoke tests?
+### 7. How can I Ignore one or more smoke tests?
 
 Just add an [Ignore] attribute on the smoke tests you want to Ignore.
 e.g.:
@@ -387,7 +364,7 @@ e.g.:
 
 ```
 
-### 9. How can I discard the execution of a smoke tests depending on one of our feature flags?
+### 8. How can I discard the execution of a smoke tests depending on one of our feature flags?
 
 A Discarded Smoke test is a smoke test that exist but won't be run on purpose.
 
@@ -425,16 +402,11 @@ e.g.:
 ```
 
 
-### 10. What is the difference between Ignored and Discarded smoke tests?
+### 9. What is the difference between Ignored and Discarded smoke tests?
 
+An **Ignored** smoke test is a smoke test that won't run until you remove its `[Ignore]` attribute (compile-time decision).
 
-```
-An Ignored smoke test is a smoke test that won't run until you remove its [Ignore("...")] attribute (compile time).
-
-A Discarded Smoke test is a smoke test that can be run (or not) depending on dynamic conditions (very handy 
-if you want some smoke tests to be enabled with a given n+1 version or any feature toggle for instance).
-
-```
+A **Discarded** smoke test is a smoke test that can be run (or not) depending on dynamic conditions at runtime (very handy if you want some smoke tests to be enabled with a given n+1 version or any feature toggle for instance).
 
 
 ---
@@ -454,7 +426,3 @@ if you want some smoke tests to be enabled with a given n+1 version or any featu
 ## Hope you will enjoy it!
 
 We value your input and appreciate your feedback. Thus, don't hesitate to leave them on the [**github issues of the project**](https://github.com/42skillz/SmokeMe/issues).
-
-
-
-

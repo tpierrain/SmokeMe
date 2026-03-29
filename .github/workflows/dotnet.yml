@@ -1,12 +1,12 @@
-name: .NET Core
+name: .NET
 
 on:
   push:
-    branches: [ main ]
-    paths-ignore: 
-      - 'README.md'
+    paths-ignore:
+      - '**.md'
       - '**.jpg'
-  
+      - '**.png'
+
   pull_request:
     branches: [ main ]
 
@@ -15,30 +15,39 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix: 
+      matrix:
         os: [ ubuntu-latest ]
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v4
+    - name: Setup .NET 8.0
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: 8.0.x
+    - name: Setup .NET 9.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
     - name: Install dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Pack
+    - name: Pack SmokeMe
       if: matrix.os == 'ubuntu-latest'
-      run: |
-        arrTag=(${GITHUB_REF//\// })
-        VERSION="${arrTag[2]}"
-        VERSION="${VERSION//v}"
-        dotnet pack --configuration Release
-    - name: Upload Artifact
+      run: dotnet pack SmokeMe/SmokeMe.csproj --configuration Release --no-build
+    - name: Pack SmokeMe.AspNetCore
       if: matrix.os == 'ubuntu-latest'
-      uses: actions/upload-artifact@v2
+      run: dotnet pack SmokeMe.AspNetCore/SmokeMe.AspNetCore.csproj --configuration Release --no-build
+    - name: Upload SmokeMe NuGet
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v4
       with:
-        name: nupkg
-        path: /home/runner/work/SmokeMe/SmokeMe/SmokeMe/bin/Release/*.nupkg
+        name: smokeme-nupkg
+        path: SmokeMe/bin/Release/*.nupkg
+    - name: Upload SmokeMe.AspNetCore NuGet
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: smokeme-aspnetcore-nupkg
+        path: SmokeMe.AspNetCore/bin/Release/*.nupkg
