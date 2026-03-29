@@ -26,17 +26,19 @@ This may differ from classical health checks:
  - **health checks** are sub-second requests made by Load balancers or infrastructure components to your APIs
     - You often just check connectivity with external dependency systems
 
- - **smoke checks** are (*sub-ten of seconds*) integration tests made by you or your CI scripts just after a deployment
-    - You often check *"high-value uses"* of your API to see if it is globally OK
-    - This can take more time than a classical health check
-    - Note: you can also use them in order to monitor your API overall health
+ - **smoke tests** are (*sub-ten of seconds*) integration tests that check *"high-value use cases"* of your API to see if it is globally OK. They can take more time than a classical health check.
+
+Smoke tests are useful at **two key moments**:
+
+ 1. **Right after a deployment** — run them as a go/no-go gate in your CI/CD pipeline. If any critical use case is broken, you know immediately and can **rollback before your users even notice**.
+ 2. **Continuously on a running environment** (staging, production) — schedule them at regular intervals to detect when something stops working (a third-party dependency goes down, a configuration drifts, a database becomes unreachable…). This enables **proactive alerting and support** instead of waiting for your users to report the problem.
 
 
 ### *"Smoke tests can save your bacon when doing Continuous Delivery!"*
 
 The idea of the **SmokeMe** library is to save you time and let you only focus on writing your functional or technical smoke tests.
 
-All the auto-discovery, infrastructure and plumbing things are done for you by the library.
+All the auto-discovery, infrastructure, plumbing and structured output formatting (for easy consumption by dashboards, CI scripts and alerting tools) are done for you by the library.
 
 > But beyond saving time, the real benefit is **standardization**. By using a convention-based library, all your smoke tests produce the same structured JSON output (see screenshots below). This consistency is what enables tooling: dashboards, CI scripts, alerts — anything that needs to parse and act on smoke test results. This is [the power of sameness](https://medium.com/@tpierrain/the-power-of-sameness-69b32afb78c0) at work.
 
