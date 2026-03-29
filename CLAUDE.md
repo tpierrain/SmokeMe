@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**SmokeMe** is a convention-based .NET library (v3.1.0) split into two NuGet packages:
+**SmokeMe** is a convention-based .NET library (v3.2.0) split into two NuGet packages:
 - **SmokeMe** (core, netstandard2.0) — framework-agnostic: reflection discovery, execution, reporting. Zero ASP.NET dependency.
 - **SmokeMe.AspNetCore** (net8.0/net9.0/net10.0) — ASP.NET Core integration via `AddSmokeMe()` + `MapSmokeEndpoint()`.
 

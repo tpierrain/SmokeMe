@@ -68,8 +68,8 @@ If you have smoke tests in a **separate class library**, that project only needs
 1. Add both NuGet packages to your API project:
 
 ```xml
-<PackageReference Include="SmokeMe" Version="3.1.0" />
-<PackageReference Include="SmokeMe.AspNetCore" Version="3.1.0" />
+<PackageReference Include="SmokeMe" Version="3.2.0" />
+<PackageReference Include="SmokeMe.AspNetCore" Version="3.2.0" />
 ```
 
 2. Register and map the smoke endpoint in your `Program.cs`:
