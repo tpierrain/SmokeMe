@@ -28,19 +28,23 @@ This may differ from classical health checks:
 
  - **smoke tests** are (*sub-ten of seconds*) integration tests that check *"high-value use cases"* of your API to see if it is globally OK. They can take more time than a classical health check.
 
-Smoke tests are useful at **two key moments**:
+
+
+## Smoke tests are useful at two key moments
 
  1. **Right after a deployment** — run them as a go/no-go gate in your CI/CD pipeline. If any critical use case is broken, you know immediately and can **rollback before your users even notice**.
  2. **Continuously on a running environment** (staging, production) — schedule them at regular intervals to detect when something stops working (a third-party dependency goes down, a configuration drifts, a database becomes unreachable…). This enables **proactive alerting and support** instead of waiting for your users to report the problem.
 
 
-### *"Smoke tests can save your bacon when doing Continuous Delivery!"*
+
+## What SmokeMe brings to the table
 
 The idea of the **SmokeMe** library is to save you time and let you only focus on writing your functional or technical smoke tests.
 
 All the auto-discovery, infrastructure, plumbing and structured output formatting (for easy consumption by dashboards, CI scripts and alerting tools) are done for you by the library.
 
 > But beyond saving time, the real benefit is **standardization**. By using a convention-based library, all your smoke tests produce the same structured JSON output (see screenshots below). This consistency is what enables tooling: dashboards, CI scripts, alerts — anything that needs to parse and act on smoke test results. This is [the power of sameness](https://medium.com/@tpierrain/the-power-of-sameness-69b32afb78c0) at work.
+
 
 
 ## Packages
@@ -53,6 +57,7 @@ SmokeMe v3 is split into two NuGet packages:
 | **SmokeMe.AspNetCore** | net8.0 / net9.0 | ASP.NET Core integration — `AddSmokeMe()` + `MapSmokeEndpoint()` |
 
 If you have smoke tests in a **separate class library**, that project only needs the `SmokeMe` package. Only your **web host** project needs `SmokeMe.AspNetCore`.
+
 
 
 ## It couldn't be easier!
@@ -83,6 +88,8 @@ app.Run();
 ```
 
 That's it. SmokeMe will automatically discover all `SmokeTest` classes across your loaded assemblies and run them when you hit `/smoke`.
+
+
 
 ### B. Write your smoke tests
 
@@ -158,6 +165,7 @@ or __Category__ to target one or more subsets of smoke tests.
     }
 
 ```
+
 
 
 ### C. While deploying or supporting your production
