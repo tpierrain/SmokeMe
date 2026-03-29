@@ -44,9 +44,9 @@ namespace SmokeMe.Infra
             }
             catch { }
 
-            OsName = Environment.GetEnvironmentVariable("OS");
+            OsName = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
             AzureRegionName = Environment.GetEnvironmentVariable("REGION_NAME");
-            NbOfProcessors = Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS");
+            NbOfProcessors = Environment.ProcessorCount.ToString();
         }
     }
 }
