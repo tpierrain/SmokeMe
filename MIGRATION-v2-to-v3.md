@@ -35,8 +35,8 @@ Remove the old `SmokeMe` package and install both v3 packages:
 <PackageReference Include="SmokeMe" Version="2.x.x" />
 
 <!-- Add -->
-<PackageReference Include="SmokeMe" Version="3.0.0" />
-<PackageReference Include="SmokeMe.AspNetCore" Version="3.0.0" />
+<PackageReference Include="SmokeMe" Version="3.0.1" />
+<PackageReference Include="SmokeMe.AspNetCore" Version="3.0.1" />
 ```
 
 > If you have smoke tests in a **separate assembly** (class library), that assembly only needs the `SmokeMe` package (core). Only your **web host** project needs `SmokeMe.AspNetCore`.
