@@ -65,7 +65,7 @@ namespace SmokeMe.AspNetCore
 
                 if (resultDto.IsSuccess)
                 {
-                    return Results.Ok(resultDto);
+                    return Results.Json(resultDto, statusCode: (int)HttpStatusCode.OK);
                 }
 
                 if (results is TimeoutSmokeTestsSessionReport)

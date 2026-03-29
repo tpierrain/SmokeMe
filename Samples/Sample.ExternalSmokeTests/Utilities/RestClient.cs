@@ -41,6 +41,10 @@ namespace Sample.ExternalSmokeTests.Utilities
         public RestClient()
         {
             _httpClient = new HttpClient();
+            // SocketsHttpHandler (with PooledConnectionLifetime and MaxConnectionsPerServer)
+            // is not available in netstandard2.0. We at least set a reasonable request timeout
+            // to avoid infinite waits. See https://www.stevejgordon.co.uk/httpclient-connection-pooling-in-dotnet-core
+            _httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
 
         public RestClient(HttpMessageHandler handler)
