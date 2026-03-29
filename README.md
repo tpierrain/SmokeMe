@@ -5,12 +5,13 @@ A *convention-based* dotnet solution to easily declare smoke tests and expose th
 ![twitter screen](./Images/smoke.jpg)
 ![V3 Released!](./Images/breaking-news-v3.png)
 
+![Bluesky icon](./Images/Bluesky_icon.png) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
+
 > **Upgrading from v2?** See the [Migration Guide (v2 to v3)](./MIGRATION-v2-to-v3.md) for breaking changes and step-by-step instructions.
 
 > **v3 is now split into 2 NuGet packages:** `SmokeMe` (core, netstandard2.0) and `SmokeMe.AspNetCore` (net8.0 / net9.0). See [Packages](#packages) for details.
 
-#
-![Bluesky icon](./Images/Bluesky_icon.png) [use case driven on Bluesky](https://bsky.app/profile/tpierrain.bsky.social) - (thomas.pierrain@shodo.io)
+
 
 
 ## Smoke tests anyone?
@@ -36,6 +37,8 @@ This may differ from classical health checks:
 The idea of the **SmokeMe** library is to save you time and let you only focus on writing your functional or technical smoke tests.
 
 All the auto-discovery, infrastructure and plumbing things are done for you by the library.
+
+> But beyond saving time, the real benefit is **standardization**. By using a convention-based library, all your smoke tests produce the same structured JSON output (see screenshots below). This consistency is what enables tooling: dashboards, CI scripts, alerts — anything that needs to parse and act on smoke test results. This is [the power of sameness](https://medium.com/@tpierrain/the-power-of-sameness-69b32afb78c0) at work.
 
 
 ## Packages
