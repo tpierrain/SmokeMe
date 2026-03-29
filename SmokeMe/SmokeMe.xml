@@ -34,26 +34,6 @@
             Gets the default value for the global timeout in milliseconds if the (<see cref="F:SmokeMe.Constants.GlobaltimeoutinmsecConfigurationKey"/>) configuration key is not used to override it.
             </summary>
         </member>
-        <member name="T:SmokeMe.Controllers.SmokeController">
-            <summary>
-            Executes smoke test declared for this API.
-            Smoke tests are a set of short functional tests checking that the minimum viable prerequisites for this API is fine.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeController.#ctor(Microsoft.Extensions.Configuration.IConfiguration,System.IServiceProvider,SmokeMe.IFindSmokeTests)">
-            <summary>
-            Instantiates a <see cref="T:SmokeMe.Controllers.SmokeController"/>.
-            </summary>
-            <param name="configuration">The configuration of the API.</param>
-            <param name="serviceProvider">A Service provider to be used to instantiate <see cref="T:SmokeMe.SmokeTest"/> smoke tests.</param>
-            <param name="smokeTestProvider">(optional) A smoke test provider (used for unit testing purpose).</param>
-        </member>
-        <member name="M:SmokeMe.Controllers.SmokeController.ExecuteSmokeTests(System.String[])">
-            <summary>
-            Execute all registered Smoke Tests for this API.
-            </summary>
-            <returns>The <see cref="T:SmokeMe.SmokeTestsSessionReport"/> of the Smoke tests execution.</returns>
-        </member>
         <member name="T:SmokeMe.Error">
             <summary>
             Error during a <see cref="T:SmokeMe.SmokeTest"/> excecution.
@@ -75,25 +55,6 @@
             <summary>
             The exception that has been catched during the <see cref="T:SmokeMe.SmokeTest"/> execution.
             </summary>
-        </member>
-        <member name="T:SmokeMe.Helpers.ConfigurationExtensions">
-            <summary>
-            Extension methods for <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.Helpers.ConfigurationExtensions.GetSmokeMeGlobalTimeout(Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Gets the Global timeout value used by the SmokeMe library (default value may be overriden through configuration file).
-            </summary>
-            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance used by the API.</param>
-            <returns>The Global timeout value.</returns>
-        </member>
-        <member name="M:SmokeMe.Helpers.ConfigurationExtensions.IsSmokeTestExecutionEnabled(Microsoft.Extensions.Configuration.IConfiguration)">
-            <summary>
-            Gets an indication whether the smoke tests execution is enabled or not (default <b>true</b> value may be overriden through configuration file).
-            </summary>
-            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> instance used by the API.</param>
-            <returns><b>true</b> if the smoke test execution is enabled or not, <b>false</b> otherwise.</returns>
         </member>
         <member name="T:SmokeMe.Helpers.ReflectionExtensions">
             <summary>
@@ -137,16 +98,6 @@
             </summary>
             <param name="consideredType">The type we want to check.</param>
             <returns><b>true</b> if the Type has an [Ignore()] attribute; <b>false</b> otherwise.</returns>
-        </member>
-        <member name="T:SmokeMe.ICheckSmoke">
-            <summary>
-            The ICheckSmoke interface is deprecated and MUST be replaced by SmokeTest abstract class. To do so, just replace all reference to ICheckSmoke with SmokeTest and add the 'override' keyword to your existing SmokeTestName, Description properties, but also to the Scenario() method which is now an abstract method.
-            </summary>
-        </member>
-        <member name="M:SmokeMe.ICheckSmoke.WithTheV2MajorBreakingChangeOfSmokeMeYouMustReplaceAllYourPreviousReferenceToICheckSmokeInterfaceWithTheSmokeTestAbstractClass">
-            <summary>
-            Breaking change: the ICheckSmoke interface is deprecated and MUST be replaced by SmokeTest abstract class. To do so, just replace all reference to ICheckSmoke with SmokeTest and add the 'override' keyword to your existing SmokeTestName, Description properties, but also to the Scenario() method which is now an abstract method.
-            </summary>
         </member>
         <member name="T:SmokeMe.IFindSmokeTests">
             <summary>
@@ -258,7 +209,7 @@
             Adapter from SmokeMe internal model to SmokeMe external DTOs.
             </summary>
         </member>
-        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.String[],Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:SmokeMe.Infra.SmokeTestSessionResultAdapter.Adapt(SmokeMe.SmokeTestsSessionReport,SmokeMe.Infra.ApiRuntimeDescription,System.String[],SmokeMe.ISmokeTestConfiguration)">
             <summary>
             Adapts a <see cref="T:SmokeMe.SmokeTestsSessionReport"/> instance to a <see cref="T:SmokeMe.Infra.SmokeTestsSessionReportDto"/> one.
             </summary>
@@ -345,6 +296,39 @@
             </summary>
             <param name="apiRuntimeDescription">The <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/> associated to that smoke test execution.</param>
             <param name="runtimeDescription"></param>
+        </member>
+        <member name="T:SmokeMe.ISmokeTestConfiguration">
+            <summary>
+            Configuration abstraction for the SmokeMe library.
+            Decoupled from ASP.NET Core's IConfiguration to allow usage in non-ASP.NET contexts.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.ISmokeTestConfiguration.GlobalTimeout">
+            <summary>
+            Gets the global timeout for all smoke tests execution.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.ISmokeTestConfiguration.IsExecutionEnabled">
+            <summary>
+            Gets a value indicating whether the smoke test execution is enabled.
+            </summary>
+        </member>
+        <member name="T:SmokeMe.SmokeMeOptions">
+            <summary>
+            Options for configuring the SmokeMe library.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.SmokeMeOptions.GlobalTimeout">
+            <summary>
+            Gets or sets the global timeout for all smoke tests execution.
+            Default: 30 seconds.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.SmokeMeOptions.IsExecutionEnabled">
+            <summary>
+            Gets or sets a value indicating whether the smoke test execution is enabled.
+            Default: true.
+            </summary>
         </member>
         <member name="T:SmokeMe.SmokeTest">
             <summary>

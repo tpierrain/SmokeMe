@@ -1,7 +1,6 @@
 using System.Linq;
 using NFluent;
 using NUnit.Framework;
-using Sample.Api.SmokeTests;
 using SmokeMe.Tests.Helpers;
 using SmokeMe.Tests.SmokeTests;
 
@@ -20,9 +19,8 @@ namespace SmokeMe.Tests.Unit
             var smokeTests = smokeTestAutoFinder.FindAllSmokeTestsToRun();
 
             Check.That(smokeTests.Select(x => x.SmokeTest.GetType()))
-                .Contains(typeof(AlwaysPositiveSmokeTest), 
-                                                typeof(SmokeTestThrowingAnAccessViolationException), 
-                                                typeof(FlippingSmokeTest));
+                .Contains(typeof(AlwaysPositiveSmokeTest),
+                                                typeof(SmokeTestThrowingAnAccessViolationException));
         }
     }
 }

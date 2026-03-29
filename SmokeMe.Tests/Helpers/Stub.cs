@@ -28,6 +28,14 @@ namespace SmokeMe.Tests.Helpers
             return smokeTestProvider;
         }
 
+        public static ISmokeTestConfiguration ASmokeTestConfiguration(bool? isEnabled = null, int? globalTimeoutInMsec = null)
+        {
+            var config = Substitute.For<ISmokeTestConfiguration>();
+            config.GlobalTimeout.Returns(TimeSpan.FromMilliseconds(globalTimeoutInMsec ?? Constants.GlobalTimeoutInMsecDefaultValue));
+            config.IsExecutionEnabled.Returns(isEnabled ?? true);
+            return config;
+        }
+
         public static IConfiguration AConfiguration(bool? isEnabled = null, int? globalTimeoutInMsec = null)
         {
             var configuration = Substitute.For<IConfiguration>();
@@ -60,7 +68,7 @@ namespace SmokeMe.Tests.Helpers
             {
                 toggleFeatures.IsEnabled(featureToggle.FeatureName).Returns(featureToggle.FeatureValue);
             }
-            
+
             serviceProvider.GetService(typeof(IToggleFeatures)).Returns(toggleFeatures);
             return serviceProvider;
         }

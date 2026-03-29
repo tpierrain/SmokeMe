@@ -1,25 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>2.2.0</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Version>3.0.0</Version>
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
-    <Description>A convention-based dotnet plugin that will automatically expose all your declared smoke tests behind a  /smoke resource in your API.</Description>
-    <Copyright>Copyright © Thomas PIERRAIN 2021</Copyright>
+    <Description>A convention-based library for declaring and running smoke tests. Framework-agnostic core — use SmokeMe.AspNetCore for ASP.NET Core integration.</Description>
+    <Copyright>Copyright © Thomas PIERRAIN 2024</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>
     <RepositoryUrl>https://github.com/42skillz/SmokeMe</RepositoryUrl>
     <PackageTags>SmokeTests tests ContinuousDelivery Continuous Delivery Smoke Tests SmokeMe</PackageTags>
-    <PackageReleaseNotes>Fix:
-- Fix an Issue when no smoke test are implemented yet in a solution (an exception was thrown in some cases)
-
-New features:
-- A new property is available in the Report DTO: GlobalTimeoutInMSec</PackageReleaseNotes>
+    <PackageReleaseNotes>v3.0.0 Breaking changes:
+- Split into two packages: SmokeMe (core, netstandard2.0) and SmokeMe.AspNetCore (net8.0/net9.0)
+- New ISmokeTestConfiguration interface replaces direct IConfiguration usage
+- Registration is now explicit: AddSmokeMe() + MapSmokeEndpoint()
+- Removed deprecated ICheckSmoke interface
+- Removed dependency on Newtonsoft.Json (uses System.Text.Json)</PackageReleaseNotes>
     <PackageId>SmokeMe</PackageId>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,13 +34,7 @@ New features:
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
-    <PackageReference Include="Microsoft.OpenApi" Version="1.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>

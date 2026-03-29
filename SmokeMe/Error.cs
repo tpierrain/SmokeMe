@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace SmokeMe
 {
@@ -26,6 +27,7 @@ namespace SmokeMe
         /// <summary>
         /// The exception that has been catched during the <see cref="SmokeTest"/> execution.
         /// </summary>
+        [JsonIgnore]
         public Exception Exception { get; private set; }
     }
 }

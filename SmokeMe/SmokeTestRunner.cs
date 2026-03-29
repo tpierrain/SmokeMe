@@ -105,7 +105,7 @@ namespace SmokeMe
 
         private static bool IsNotAFalsePositive(Task allSmokeTasks)
         {
-            return !allSmokeTasks.IsCompletedSuccessfully;
+            return !(allSmokeTasks.IsCompleted && allSmokeTasks.Status == TaskStatus.RanToCompletion);
         }
 
         private static async Task<SmokeTestWithItsResultWithMetaData> StopWatchSafeSmokeTestExecution(SmokeTestInstanceWithMetaData smokeTestWithMetaData)

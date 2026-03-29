@@ -40,7 +40,7 @@ namespace Sample.ExternalSmokeTests.Utilities
 
         public RestClient()
         {
-            _httpClient = new HttpClient(CreateSocketsHttpHandlerWithReasonableValues());
+            _httpClient = new HttpClient();
         }
 
         public RestClient(HttpMessageHandler handler)
@@ -51,16 +51,6 @@ namespace Sample.ExternalSmokeTests.Utilities
         public RestClient(HttpMessageHandler handler, bool disposeHandler)
         {
             _httpClient = new HttpClient(handler, disposeHandler);
-        }
-
-        // This is to avoid default values which are infinite or Int.MaxValue ; see https://www.stevejgordon.co.uk/httpclient-connection-pooling-in-dotnet-core
-        private SocketsHttpHandler CreateSocketsHttpHandlerWithReasonableValues()
-        {
-            return new SocketsHttpHandler
-            {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
-                MaxConnectionsPerServer = 8
-            };
         }
 
         public void Dispose()
