@@ -7,7 +7,7 @@
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>ASP.NET Core integration for SmokeMe — exposes smoke tests via a /smoke HTTP endpoint using Minimal APIs. Use AddSmokeMe() + MapSmokeEndpoint().</Description>
-    <Copyright>Copyright © Thomas PIERRAIN 2024</Copyright>
+    <Copyright>Copyright © Thomas PIERRAIN 2026</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>

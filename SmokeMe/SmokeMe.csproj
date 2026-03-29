@@ -7,7 +7,7 @@
     <Authors>Thomas PIERRAIN (use case driven)</Authors>
     <Company>42 skillz</Company>
     <Description>A convention-based library for declaring and running smoke tests. Framework-agnostic core — use SmokeMe.AspNetCore for ASP.NET Core integration.</Description>
-    <Copyright>Copyright © Thomas PIERRAIN 2024</Copyright>
+    <Copyright>Copyright © Thomas PIERRAIN 2026</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/42skillz/SmokeMe</PackageProjectUrl>
     <PackageIcon>smoke-icon.jpg</PackageIcon>
