@@ -493,6 +493,13 @@ app.MapSmokeEndpoint().RequireAuthorization(policy =>
 This works exactly like any other Minimal API endpoint. No SmokeMe-specific configuration needed.
 
 
+### 12. Does the smoke report include the runtime environment name?
+
+Yes. The JSON response includes an `environmentName` field that reflects the current hosting environment (e.g. `Development`, `Staging`, `Production`).
+
+SmokeMe reads `ASPNETCORE_ENVIRONMENT` first, then falls back to `DOTNET_ENVIRONMENT` for non-web hosts. This can help you quickly spot misconfigurations — for instance, a production frontend accidentally targeting a development backend.
+
+
 ---
 
 ## Next steps

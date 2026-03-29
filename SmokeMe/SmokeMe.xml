@@ -140,6 +140,11 @@
             Gets the number of Processors this API instance has.
             </summary>
         </member>
+        <member name="P:SmokeMe.Infra.ApiRuntimeDescription.EnvironmentName">
+            <summary>
+            Gets the runtime environment name (e.g. Development, Staging, Production).
+            </summary>
+        </member>
         <member name="M:SmokeMe.Infra.ApiRuntimeDescription.#ctor">
             <summary>
             Instantiates an <see cref="T:SmokeMe.Infra.ApiRuntimeDescription"/>.
@@ -274,6 +279,11 @@
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.NbOfProcessors">
             <summary>
             Gets the number of Processors this API instance has.
+            </summary>
+        </member>
+        <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.EnvironmentName">
+            <summary>
+            Gets the runtime environment name (e.g. Development, Staging, Production).
             </summary>
         </member>
         <member name="P:SmokeMe.Infra.SmokeTestsSessionReportDto.GlobalTimeout">

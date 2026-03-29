@@ -61,6 +61,11 @@ namespace SmokeMe.Infra
         public string NbOfProcessors => _apiRuntimeDescription.NbOfProcessors;
 
         /// <summary>
+        /// Gets the runtime environment name (e.g. Development, Staging, Production).
+        /// </summary>
+        public string EnvironmentName => _apiRuntimeDescription.EnvironmentName;
+
+        /// <summary>
         /// Gets the global timeout for the execution of all smoke tests.
         /// </summary>
         public string GlobalTimeout => _smokeMeGlobalTimeout.GetHumanReadableVersion();

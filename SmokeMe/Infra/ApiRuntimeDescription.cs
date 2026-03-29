@@ -34,6 +34,11 @@ namespace SmokeMe.Infra
         public string NbOfProcessors { get; }
 
         /// <summary>
+        /// Gets the runtime environment name (e.g. Development, Staging, Production).
+        /// </summary>
+        public string EnvironmentName { get; }
+
+        /// <summary>
         /// Instantiates an <see cref="ApiRuntimeDescription"/>.
         /// </summary>
         public ApiRuntimeDescription()
@@ -47,6 +52,8 @@ namespace SmokeMe.Infra
             OsName = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
             AzureRegionName = Environment.GetEnvironmentVariable("REGION_NAME");
             NbOfProcessors = Environment.ProcessorCount.ToString();
+            EnvironmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
+                              ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
         }
     }
 }
