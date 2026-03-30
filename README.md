@@ -48,6 +48,16 @@ All the auto-discovery, infrastructure, plumbing and structured output formattin
 
 ---
 
+## Why not just use E2E tests from the frontend instead?
+
+Some teams insist on implementing smoke tests exclusively as E2E tests driven from the frontend (smoke tests being in that case a subset of E2E tests). That's great when you can pull it off, but it's usually much more complex, slower, and more fragile — which generates **alert fatigue**. A poison that spreads easily and often makes teams give up entirely.
+
+SmokeMe's approach is complementary, but deliberately more pragmatic and actionable than E2E smoke tests.
+
+See also [FAQ #13: Which features should I smoke test?](#13-which-features-should-i-smoke-test-selection-strategy) for a pragmatic selection strategy.
+
+---
+
 ## Packages
 
 SmokeMe v3 is split into two NuGet packages:
@@ -498,6 +508,26 @@ This works exactly like any other Minimal API endpoint. No SmokeMe-specific conf
 Yes. The JSON response includes an `environmentName` field that reflects the current hosting environment (e.g. `Development`, `Staging`, `Production`).
 
 SmokeMe reads `ASPNETCORE_ENVIRONMENT` first, then falls back to `DOTNET_ENVIRONMENT` for non-web hosts. This can help you quickly spot misconfigurations — for instance, a production frontend accidentally targeting a development backend.
+
+
+### 13. Which features should I smoke test? (selection strategy)
+
+The guiding principle: **"perfect is the enemy of good"** — it's always better to improve a little than to do nothing because you can't cover everything perfectly.
+
+That said, the approach is to cover **critical scenarios** of your platform, as long as it's realistic.
+
+**Non-rollbackable features: exclude them.** If a feature triggers something that cannot be undone, don't smoke test it. But do challenge _why_ it's non-rollbackable. Sometimes someone decided against implementing deletion to optimize cost-benefit — and the consequences on performance when the platform scales can be disastrous.
+
+**External dependencies (payment, etc.): exclude them.** Never trigger real payment actions or other irreversible external side effects from a smoke test.
+
+**Service choreography: it gets painful.** When a feature relies on 2-3 internal services via choreography, the smoke test often ends up looking like an orchestrator coordinating checks across services. This is frankly tedious — and it's often a smell indicating that a business-level orchestrator is missing (which would also be very useful for support, by the way).
+
+**Fake data in production: be pragmatic.** Use dedicated fake customer accounts created specifically in production for smoke testing, with no risk of impacting real customers. These tests can generate and consume real production data. When they do:
+- Use `CleanUp()` in the smoke tests themselves (see [FAQ #10](#10-how-can-i-clean-up-production-data-created-during-a-smoke-test))
+- Add a regular garbage-collector worker (that people like to call _Leon_) to clean up anything that wasn't cleaned in real-time (e.g. if a pod was preempted violently)
+- Following the [power of sameness](https://medium.com/@tpierrain/the-power-of-sameness-69b32afb78c0), this often translates into standardized `/cleanup-smoke-data` endpoints across all your APIs
+
+**If the feature is critical, the effort is usually worth it.**
 
 
 ---
